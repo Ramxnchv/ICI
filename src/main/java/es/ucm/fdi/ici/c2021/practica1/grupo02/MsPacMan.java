@@ -13,7 +13,7 @@ public class MsPacMan extends PacmanController{
 	@Override
 	public MOVE getMove(Game game, long timeDue) {
 		this.game=game;
-		int limit = 20;
+		int limit = 30, limitpill=60;
 		
 		GHOST nearestGhost = getNearestChasingGhost(limit);
 		if(nearestGhost != null) {
@@ -25,7 +25,7 @@ public class MsPacMan extends PacmanController{
 			return game.getApproximateNextMoveTowardsTarget(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(nearestGhost), game.getPacmanLastMoveMade(), DM.PATH);
 		}
 		
-		int nearestPill = getNearestPill();
+		int nearestPill = getNearestPill(limitpill);
 		return game.getApproximateNextMoveTowardsTarget(game.getPacmanCurrentNodeIndex(), game.getPillIndex(nearestPill), game.getPacmanLastMoveMade(), DM.PATH);
 	}
 	 
@@ -80,21 +80,21 @@ public class MsPacMan extends PacmanController{
 		return nearestEdible;
 	}
 	
-	private int getNearestPill() {
+	private int getNearestPill(int limit) {
 		
 		int ppill,pill;
 		
 		if(game.getNumberOfActivePowerPills() > 0) {
-			
 			ppill = game.getClosestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(),game.getActivePowerPillsIndices() , DM.PATH);
-			pill = game.getClosestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(), game.getActivePillsIndices(), DM.PATH);
-			int min = (int) Math.min(game.getDistance(game.getPacmanCurrentNodeIndex(), ppill, game.getPacmanLastMoveMade(), DM.PATH), game.getDistance(game.getPacmanCurrentNodeIndex(), pill, game.getPacmanLastMoveMade(), DM.PATH));
-			return min == game.getDistance(game.getPacmanCurrentNodeIndex(), ppill, game.getPacmanLastMoveMade(), DM.PATH) ? ppill : pill;
-			
-		} else {
-			pill = game.getClosestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(), game.getActivePillsIndices(), DM.PATH);
-			return pill;
+			if(game.getDistance(game.getPacmanCurrentNodeIndex(), ppill , game.getPacmanLastMoveMade(), DM.PATH) <= limit) {
+				return ppill;
+			}
 		}
-		
+		pill = game.getClosestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(), game.getActivePillsIndices(), DM.PATH);
+		return pill;
 	}
 }
+
+
+
+
