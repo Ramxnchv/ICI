@@ -1,7 +1,6 @@
 package es.ucm.fdi.ici.c2021.practica1.grupo02;
 
 import java.util.EnumMap;
-//import java.util.Random;
 
 import pacman.controllers.GhostController;
 import pacman.game.Constants.DM;
@@ -13,8 +12,6 @@ public class Ghosts extends GhostController{
 	
 	private EnumMap<GHOST, MOVE> moves = new EnumMap<GHOST, MOVE>(GHOST.class);
 	private Game game;
-	//private MOVE[] allMoves = MOVE.values();
-	//private Random rnd = new Random();
 	
 	@Override
 	public EnumMap<GHOST, MOVE> getMove(Game game, long timeDue) {
@@ -23,7 +20,6 @@ public class Ghosts extends GhostController{
         moves.clear();
         
         GHOST closestGhost = getClosestGhost();
-        
 		
 		for (GHOST ghostType : GHOST.values()) {
 			if (game.doesGhostRequireAction(ghostType)) {
@@ -43,9 +39,6 @@ public class Ghosts extends GhostController{
                     }
 				}
 			}
-			/*else {
-				return null;
-			}*/
         }
         System.out.println(moves);
 		return moves;
@@ -156,14 +149,15 @@ public class Ghosts extends GhostController{
         int meNodeIndex = game.getGhostCurrentNodeIndex(me);
         int pacmanNodeIndex = game.getPacmanCurrentNodeIndex();
 
-        double distToClosest = game.getDistance(meNodeIndex, game.getGhostCurrentNodeIndex(closest), DM.PATH);
         double distToPacman = game.getDistance(meNodeIndex, pacmanNodeIndex, DM.PATH);
 
-        if (distToClosest < 50 && distToPacman < 50) {
+        // Si estas lo suficientemente cerca del pacMan para buscar una ruta alternativa
+        if (distToPacman < 100) {
+
             MOVE meLastMove = game.getGhostLastMoveMade(me);
-        
             GHOST other1 = null, other2 = null;
 
+            // Encuentro de los otros fantasmas
             for(GHOST g : GHOST.values()){
                 if(g != me && g != closest) {
                     other1 = g;
@@ -173,13 +167,17 @@ public class Ghosts extends GhostController{
                 }
             }
 
+            // Nodos vecinos al actual y array con los movimientos de los caminos
             int[] neigh = game.getNeighbouringNodes(meNodeIndex, meLastMove);
-
+            int [][] movements = new int[3][];
+            
+            int i = 0;
             boolean Pathfound = false;
 
+            // Elegimos aquellos caminos en los que no hay un fantasma
             for(int n : neigh) {
-                int[] path = game.getShortestPath(n, pacmanNodeIndex);
-                for(int N : path) {
+                movements[i] = game.getShortestPath(n, pacmanNodeIndex);
+                for(int N : movements[i]) {
                     if (N == game.getGhostCurrentNodeIndex(closest) ||
                         N == game.getGhostCurrentNodeIndex(other1) ||
                         N == game.getGhostCurrentNodeIndex(other2)) {
@@ -187,16 +185,29 @@ public class Ghosts extends GhostController{
                         }
                     if(N == pacmanNodeIndex) 
                         Pathfound = true;
+                        
                 }
-                if (Pathfound) {
-                    nextMove = game.getMoveToMakeToReachDirectNeighbour(meNodeIndex, n);
-                    break;
+                i++;
+            }
+
+            // Si se ha encontrado caminos sin fantasmas se elige el mas rapido
+            if (Pathfound) {
+                int n = 0; // Nodo con el cual se llega por el camino mas rapido
+                int l = Integer.MAX_VALUE;
+                for(int[] a : movements){
+                    if(a != null){
+                        int d = a.length;
+                        if(d < l) {
+                            l = d;
+                            n = a[1]; // Se pone el 1 para evitar que el [0] sea el propio nodo origen
+                            nextMove = game.getNextMoveTowardsTarget(meNodeIndex, n, DM.PATH);
+                        }
+                    }
                 }
             }
         } else {
             nextMove = goForPacman(me);
         }
-
         return nextMove;
     }
 
@@ -207,5 +218,5 @@ public class Ghosts extends GhostController{
 		}
 		
 		return false;
-	}
+    }
 }
