@@ -1,17 +1,23 @@
 package es.ucm.fdi.ici.c2021.practica1.grupo02;
 
 import java.util.EnumMap;
+import java.util.Random;
 
 import pacman.controllers.GhostController;
 import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
+import pacman.game.internal.Maze;
+import pacman.game.internal.Node;
 
 public class Ghosts extends GhostController{
 	
 	private EnumMap<GHOST, MOVE> moves = new EnumMap<GHOST, MOVE>(GHOST.class);
 	private Game game;
+	
+	private final int PACMAN_PROXIMITY_DISTANCE = 100;
+	private final int GHOST_SAFETY_DISTANCE = 70;
 	
 	@Override
 	public EnumMap<GHOST, MOVE> getMove(Game game, long timeDue) {
@@ -20,13 +26,15 @@ public class Ghosts extends GhostController{
         moves.clear();
         
         GHOST closestGhost = getClosestGhost();
+        
+        int farthestNodeFromPacman = game.getFarthestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(), mazeToIndeces(game.getCurrentMaze()), DM.PATH);
 		
 		for (GHOST ghostType : GHOST.values()) {
 			if (game.doesGhostRequireAction(ghostType)) {
                 // El pacman esta cerca de una pill o ya la tiene activada
 				if(game.isGhostEdible(ghostType) || pacmanCloseToPowerPill(limit)) {
                     // Separarse en funcion de los demas Ghosts
-					moves.put(ghostType, game.getApproximateNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(ghostType), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghostType), DM.PATH));
+					moves.put(ghostType, runawayFromPacman(ghostType, closestGhost, farthestNodeFromPacman));
                 }
                 // Nos lo podemos comer
 				else {
@@ -43,6 +51,31 @@ public class Ghosts extends GhostController{
         System.out.println(moves);
 		return moves;
     }
+	
+	private MOVE runawayFromPacman(GHOST me, GHOST closest, int farthest) {
+		
+		if (me == closest || game.getDistance(game.getGhostCurrentNodeIndex(me), game.getPacmanCurrentNodeIndex(), DM.EUCLID) > GHOST_SAFETY_DISTANCE) {
+			return game.getApproximateNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(me), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(me), DM.EUCLID);	
+		}
+		
+		else {
+            int[] neigh = game.getNeighbouringNodes(game.getGhostCurrentNodeIndex(me), game.getGhostLastMoveMade(me));
+            
+            int[] shortestPath = null;
+            int shortestPathLength = Integer.MAX_VALUE; 
+            for (int n : neigh) {
+            	int[] path = game.getShortestPath(game.getGhostCurrentNodeIndex(me), farthest);
+            	if (!pathContainsOtherGhost(path, me, GHOST.values()) && !this.pathContainsPacman(shortestPath, game.getPacmanCurrentNodeIndex()) && path.length <= shortestPathLength) {
+            		shortestPath = path;
+            		shortestPathLength = path.length;
+            	}
+            }
+            
+            if (shortestPath == null) return game.getApproximateNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(me), neigh[new Random().nextInt(neigh.length)], game.getGhostLastMoveMade(me), DM.PATH);
+            else return game.getApproximateNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(me), shortestPath[0], game.getGhostLastMoveMade(me), DM.PATH);
+		}
+		
+	}
 
     private GHOST getClosestGhost() {
         GHOST closest = null;
@@ -63,88 +96,6 @@ public class Ghosts extends GhostController{
 
     private MOVE findCutRoute(GHOST me, GHOST closest) {
         MOVE nextMove = null;
-        /*
-        int[] pacManPos = new int[2];
-        pacManPos[0] = game.getNodeXCood(game.getPacmanCurrentNodeIndex());
-        pacManPos[1] = game.getNodeYCood(game.getPacmanCurrentNodeIndex());
-        MOVE pacmanDir = game.getPacmanLastMoveMade();
-
-        int[] closestPos = new int[2];
-        closestPos[0] = game.getNodeXCood(game.getGhostCurrentNodeIndex(closest));
-        closestPos[1] = game.getNodeYCood(game.getGhostCurrentNodeIndex(closest));
-        MOVE closestDir = game.getGhostLastMoveMade(closest);
-
-        // Posicion del fantasma (no closest)
-        int[] myPos = new int[2];
-        myPos[0] = game.getNodeXCood(game.getGhostCurrentNodeIndex(me));
-        myPos[1] = game.getNodeYCood(game.getGhostCurrentNodeIndex(me));
-
-        // Distancia del mas cercano al pacman
-        int xDist = Math.abs(pacManPos[0] - closestPos[0]);
-        int yDist = Math.abs(pacManPos[1] - closestPos[1]);
-
-        // Ver si estas en la misma fila/columna que el mas cercano
-        int x = Math.abs(closestPos[0] - myPos[0]);
-        int y = Math.abs(closestPos[1] - myPos[1]);
-
-        
-
-        // Si se le asigna la misma direccion que al que esta mas cerca
-        // se encuentra en la misma fila/columna que el mas cercano
-        // y esta a menos de 3 de distancia del mas cercano.
-        if (goForPacman(me) == closestDir && (x == 0 || y == 0) &&
-            game.getDistance(meNodeIndex, game.getGhostCurrentNodeIndex(closest), DM.PATH) < 20) {
-            // Buscar camino alternativo
-            MOVE posibols[] = game.getPossibleMoves(game.getGhostCurrentNodeIndex(me));
-            double index[] = new double[posibols.length];
-            int i = 0;
-            for(MOVE m : posibols){
-                if(m == closestDir){
-                    index[i] = Double.MAX_VALUE;
-                } else {
-                    switch (m) {
-                        case RIGHT: //+1
-                            //game.getwa
-                            game.getMoveToMakeToReachDirectNeighbour(currentNodeIndex, neighbourNodeIndex)
-                            game.getNeighbouringNodes(meNodeIndex, lastModeMade)
-                            index[i] = game.getDistance(meNodeIndex + 1, game.getGhostCurrentNodeIndex(closest), DM.PATH);
-                        break;
-                        case LEFT:  //-1
-                            index[i] = game.getDistance(meNodeIndex - 1, game.getGhostCurrentNodeIndex(closest), DM.PATH);
-                        break;
-                        case UP:    //+27
-                            index[i] = game.getDistance(meNodeIndex + 27, game.getGhostCurrentNodeIndex(closest), DM.PATH);
-                        break;
-                        case DOWN:  //-27
-                            index[i] = game.getDistance(meNodeIndex - 27, game.getGhostCurrentNodeIndex(closest), DM.PATH);
-                        break;
-                        default:
-                            break;
-                    }
-                }
-                i++;
-            }
-            
-            //nextMove = game.getMoveToMakeToReachDirectNeighbour(meNodeIndex, neighbourNodeIndex);
-
-            i = 0;
-            int movement = 0;
-            double min = Double.MAX_VALUE;
-            for(double d : index) {
-                if(d < min){
-                    min = d;
-                    movement = i;
-                }
-                i++;
-            }
-
-            nextMove = posibols[movement];
-
-        }else{
-            nextMove = goForPacman(me);
-        }
-        */
-        //-------------------------------------------------
 
         int meNodeIndex = game.getGhostCurrentNodeIndex(me);
         int pacmanNodeIndex = game.getPacmanCurrentNodeIndex();
@@ -152,7 +103,7 @@ public class Ghosts extends GhostController{
         double distToPacman = game.getDistance(meNodeIndex, pacmanNodeIndex, DM.PATH);
 
         // Si estas lo suficientemente cerca del pacMan para buscar una ruta alternativa
-        if (distToPacman < 100) {
+        if (distToPacman < PACMAN_PROXIMITY_DISTANCE) {
 
             MOVE meLastMove = game.getGhostLastMoveMade(me);
             GHOST other1 = null, other2 = null;
@@ -219,4 +170,30 @@ public class Ghosts extends GhostController{
 		
 		return false;
     }
+	
+	private int[] mazeToIndeces(Maze m) {
+		int[] indices = new int[m.graph.length];	int i = 0;	
+		for (Node n : m.graph) {	indices[i] = n.nodeIndex;	++i;	}
+		return indices;
+	}
+	
+	private boolean pathContainsPacman(int[] path, int pacmanIndex) {
+		if (path != null && path.length > 0) {
+			for (int nodeIndex : path) {
+				if (pacmanIndex == nodeIndex) return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean pathContainsOtherGhost(int[] path, GHOST me, GHOST[] ghosts) {
+		if (path != null && path.length > 0) {
+			for (int nodeIndex : path) {
+				for (GHOST g : ghosts) {
+					if (g != me && game.getGhostCurrentNodeIndex(g) == nodeIndex) return true;
+				}
+			}
+		}
+		return false;
+	}
 }
