@@ -33,14 +33,16 @@ public class MsPacMan extends PacmanController{
 	private MOVE runAway() {
 		MOVE nextMove = null;
 		int pacmanNode = game.getPacmanCurrentNodeIndex();
-		int pill=0;
-		if(game.getNumberOfActivePowerPills() > 0) {
-			pill = game.getClosestNodeIndexFromNodeIndex(pacmanNode, game.getActivePowerPillsIndices(), DM.PATH);
-		}
-		else {
-			pill = game.getClosestNodeIndexFromNodeIndex(pacmanNode, game.getActivePillsIndices(), DM.PATH);
-		}
+		int pill=0, limit = 30;
 		
+		if(getNumGhosts(limit) >= 2) {
+			if(game.getNumberOfActivePowerPills() > 0) {
+				pill = game.getClosestNodeIndexFromNodeIndex(pacmanNode, game.getActivePowerPillsIndices(), DM.PATH);
+			}
+			else {
+				pill = game.getClosestNodeIndexFromNodeIndex(pacmanNode, game.getActivePillsIndices(), DM.PATH);
+			}
+		}
 		int[] neigh = game.getNeighbouringNodes(pacmanNode, game.getPacmanLastMoveMade());
 		int[][] path = new int[3][];
 		
@@ -80,6 +82,16 @@ public class MsPacMan extends PacmanController{
 			
 		}
 		return nextMove;
+	}
+	
+	private int getNumGhosts(int limit) {
+		int i = 0;
+		for(GHOST ghostType : GHOST.values()) {
+			if(game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghostType), DM.EUCLID) < limit) {
+				i++;
+			}
+		}
+		return i;
 	}
 	
 	private GHOST getNearestChasingGhost(int limit) {
