@@ -46,8 +46,9 @@ public class Ghosts extends GhostController{
                     }
                     else { // Soy el mas cercano al pacman asik a por el wachin
                         // Si estoy demasiado cerca de el cambio de ruta ya que jamas le pillare (random si no se pone nada)
-                        if (game.getDistance(game.getGhostCurrentNodeIndex(ghostType), game.getPacmanCurrentNodeIndex(), DM.PATH) < 10 ) {
-                            //game.getApproximateNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghostType), neigh[new Random().nextInt(neigh.length)], game.getGhostLastMoveMade(me), DM.PATH)
+                        if (game.getDistance(game.getGhostCurrentNodeIndex(ghostType), game.getPacmanCurrentNodeIndex(), DM.PATH) < 10 && game.getPacmanLastMoveMade() != game.getGhostLastMoveMade(ghostType)) {
+                        	int[] neigh = game.getNeighbouringNodes(game.getGhostCurrentNodeIndex(ghostType), game.getGhostLastMoveMade(ghostType));
+                            game.getApproximateNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghostType), neigh[new Random().nextInt(neigh.length)], game.getGhostLastMoveMade(ghostType), DM.PATH);
                         }
                         else {
                             moves.put(ghostType, goForPacman(ghostType));
