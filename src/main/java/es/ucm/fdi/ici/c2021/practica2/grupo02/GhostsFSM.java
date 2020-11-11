@@ -3,6 +3,11 @@ package es.ucm.fdi.ici.c2021.practica2.grupo02;
 import java.util.EnumMap;
 
 import es.ucm.fdi.ici.c2021.practica2.grupo02.ghosts.GhostsInput;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.ghosts.actions.ChaseAction;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.ghosts.actions.RunAwayAction;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.ghosts.transitions.GhostsEdibleTransition;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.ghosts.transitions.GhostsNotEdibleAndPacManFarPPill;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.ghosts.transitions.PacManNearPPillTransition;
 import es.ucm.fdi.ici.fsm.FSM;
 import es.ucm.fdi.ici.fsm.SimpleState;
 import pacman.controllers.GhostController;
