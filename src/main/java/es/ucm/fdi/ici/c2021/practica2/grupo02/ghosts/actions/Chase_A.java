@@ -6,10 +6,10 @@ import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
-public class ChaseAction implements Action {
+public class Chase_A implements Action {
 
     GHOST ghost;
-	public ChaseAction( GHOST ghost) {
+	public Chase_A( GHOST ghost) {
 		this.ghost = ghost;
 	}
 
@@ -22,7 +22,4 @@ public class ChaseAction implements Action {
         }
         return MOVE.NEUTRAL;
 	}
-
-	
-
 }

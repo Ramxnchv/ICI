@@ -12,6 +12,11 @@ public class GhostsInput extends Input{
 	private boolean SUEedible;
 	private double minPacmanDistancePPill;
 	
+	private double PacmanDistanceToBLINKY;
+	private double PacmanDistanceToINKY;
+	private double PacmanDistanceToPINKY;
+	private double PacmanDistanceToSUE;
+	
 	public GhostsInput(Game game) {
 		super(game);
 	}
@@ -25,12 +30,36 @@ public class GhostsInput extends Input{
 	
 		int pacman = game.getPacmanCurrentNodeIndex();
 		this.minPacmanDistancePPill = Double.MAX_VALUE;
-		for(int ppill: game.getPowerPillIndices()) {
+		for(int ppill: game.getActivePowerPillsIndices()) {
 			double distance = game.getDistance(pacman, ppill, DM.PATH);
 			this.minPacmanDistancePPill = Math.min(distance, this.minPacmanDistancePPill);
 		}
+		
+		this.PacmanDistanceToBLINKY = game.getDistance(pacman, game.getGhostCurrentNodeIndex(GHOST.BLINKY), DM.PATH);
+		this.PacmanDistanceToINKY = game.getDistance(pacman, game.getGhostCurrentNodeIndex(GHOST.INKY), DM.PATH);
+		this.PacmanDistanceToPINKY = game.getDistance(pacman, game.getGhostCurrentNodeIndex(GHOST.PINKY), DM.PATH);
+		this.PacmanDistanceToSUE = game.getDistance(pacman, game.getGhostCurrentNodeIndex(GHOST.SUE), DM.PATH);
+		
+	}
+	
+	// Distancias
+	public double distToBLINKY() {
+		return PacmanDistanceToBLINKY;
+	}
+	
+	public double distToINKY() {
+		return PacmanDistanceToINKY;
+	}
+	
+	public double distToPINKY() {
+		return PacmanDistanceToPINKY;
+	}
+	
+	public double distToSUE() {
+		return PacmanDistanceToSUE;
 	}
 
+	// Comestibles
 	public boolean isBLINKYedible() {
 		return BLINKYedible;
 	}
