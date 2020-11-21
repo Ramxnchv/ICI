@@ -6,8 +6,6 @@ import es.ucm.fdi.ici.fsm.Input;
 import es.ucm.fdi.ici.fsm.Transition;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.ghosts.GhostsInput;
 
-import pacman.game.Constants.GHOST;
-
 public class GhostEdible_T implements Transition  {
 
 	GHOST ghost;

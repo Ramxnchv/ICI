@@ -2,8 +2,6 @@ package es.ucm.fdi.ici.c2021.practica1.grupo02;
 
 import pacman.Executor;
 import pacman.controllers.GhostController;
-import pacman.controllers.HumanController;
-import pacman.controllers.KeyBoardInput;
 import pacman.controllers.PacmanController;
 
 public class ExecutorTest {

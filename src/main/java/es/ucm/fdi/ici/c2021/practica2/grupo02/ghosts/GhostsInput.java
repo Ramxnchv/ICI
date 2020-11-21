@@ -11,6 +11,10 @@ import pacman.game.Game;
 
 public class GhostsInput extends Input {
 	
+	public static final int PACMAN_DANGER_THRESHOLD = 30;
+	public static final int PPILL_PROXIMITY_THRESHOLD = 30;
+	public static final int SHORT_EDIBLE_TIME_LIMIT = 30;
+	
 	private Map<GHOST, Boolean> ghostEdible;
 	private Map<GHOST, Boolean> ghostEaten;
 	private Map<GHOST, Integer> ghostLairTime;

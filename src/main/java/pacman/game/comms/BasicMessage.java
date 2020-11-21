@@ -2,8 +2,6 @@ package pacman.game.comms;
 
 import pacman.game.Constants.GHOST;
 
-import java.util.Arrays;
-
 /**
  * Represents a message for the game.
  * <p>

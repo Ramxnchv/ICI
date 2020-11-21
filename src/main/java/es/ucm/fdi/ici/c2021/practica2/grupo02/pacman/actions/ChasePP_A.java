@@ -1,7 +1,6 @@
 package es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.actions;
 
 import es.ucm.fdi.ici.fsm.Action;
-import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
