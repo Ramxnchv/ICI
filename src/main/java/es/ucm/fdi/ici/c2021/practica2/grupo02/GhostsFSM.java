@@ -28,9 +28,13 @@ import es.ucm.fdi.ici.practica2.demofsm.ghosts.transitions.PacManNearPPillTransi
 public class GhostsFSM extends GhostController {
 
 	EnumMap<GHOST,FSM> fsms;
+	
 	public GhostsFSM() {
+		
 		fsms = new EnumMap<GHOST,FSM>(GHOST.class);
+		
 		for(GHOST ghost: GHOST.values()) {
+			
 			FSM fsm = new FSM(ghost.name());
 			fsm.addObserver(new ConsoleFSMObserver(ghost.name()));
 			fsm.addObserver(new GraphFSMObserver(ghost.name()));
@@ -49,6 +53,7 @@ public class GhostsFSM extends GhostController {
 			fsm.add(chase, edible, runAway);
 			fsm.add(chase, near, runAway);
 			fsm.add(runAway, toChaseTransition, chase);
+
 			
 			// Init fsm
 			fsm.ready(chase);

@@ -9,6 +9,7 @@ import pacman.game.Game;
 public class RunAway_A implements Action {
 
     GHOST ghost;
+    
 	public RunAway_A(GHOST ghost) {
 		this.ghost = ghost;
 	}
