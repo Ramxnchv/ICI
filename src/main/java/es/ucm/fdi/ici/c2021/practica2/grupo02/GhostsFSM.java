@@ -25,10 +25,10 @@ import es.ucm.fdi.ici.practica2.demofsm.ghosts.transitions.GhostsNotEdibleAndPac
 import es.ucm.fdi.ici.practica2.demofsm.ghosts.transitions.PacManNearPPillTransition;
 */
 
-public class Ghosts extends GhostController {
+public class GhostsFSM extends GhostController {
 
 	EnumMap<GHOST,FSM> fsms;
-	public Ghosts() {
+	public GhostsFSM() {
 		fsms = new EnumMap<GHOST,FSM>(GHOST.class);
 		for(GHOST ghost: GHOST.values()) {
 			FSM fsm = new FSM(ghost.name());

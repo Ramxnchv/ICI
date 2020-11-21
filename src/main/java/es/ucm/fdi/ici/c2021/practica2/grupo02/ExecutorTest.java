@@ -16,7 +16,7 @@ package es.ucm.fdi.ici.c2021.practica2.grupo02;
 					.build();
 						
 					PacmanController pacMan = /*new MsPacManFSM(); */new HumanController(new KeyBoardInput());
-					GhostController ghosts = new Ghosts();
+					GhostController ghosts = new GhostsFSM();
 						
 					System.out.println(
 					executor.runGame(pacMan, ghosts, 40)
