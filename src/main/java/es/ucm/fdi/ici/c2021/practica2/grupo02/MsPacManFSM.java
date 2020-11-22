@@ -88,7 +88,6 @@ public class MsPacManFSM extends PacmanController {
 	     */
 	    @Override
 	    public MOVE getMove(Game game, long timeDue) {
-	    	Input in = new MsPacManInput(game); 
-	    	return fsm.run(in);
+	    	return fsm.run(new MsPacManInput(game));
 	    }
 }

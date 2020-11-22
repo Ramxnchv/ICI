@@ -10,10 +10,11 @@ import pacman.game.Game;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.ghosts.actions.*;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.ghosts.transitions.*;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.ghosts.GhostsInput;
-
+import es.ucm.fdi.ici.fsm.CompoundState;
 //FSM
 import es.ucm.fdi.ici.fsm.FSM;
 import es.ucm.fdi.ici.fsm.SimpleState;
+import es.ucm.fdi.ici.fsm.State;
 import es.ucm.fdi.ici.fsm.observers.ConsoleFSMObserver;
 import es.ucm.fdi.ici.fsm.observers.GraphFSMObserver;
 
@@ -40,24 +41,50 @@ public class GhostsFSM extends GhostController {
 			fsm.addObserver(new GraphFSMObserver(ghost.name()));
 
 			
-			//Acciones
-			SimpleState chase = new SimpleState("chase", new Chase_A(ghost));
-			SimpleState runAway = new SimpleState("runAway", new RunAway_A(ghost));
+				FSM aggresive = new FSM("Aggro");
+				
+					FSM attack = new FSM("Attack");
+					State chase = new SimpleState("Direct chase", new Chase_A(ghost));
+					State fillZone = new SimpleState("Fill Zone", new FillZone_A(ghost));
+					attack.add(chase, new NotTooCloseToPacman_T(ghost), fillZone);
+					attack.add(fillZone, new TooCloseToPacman_T(ghost), chase);
+					attack.ready(chase);
+						
+				
+				State attackMachine = new CompoundState("Attack", attack);
+				State cautiousRunAway = new SimpleState("Cautious run away", new RunAway_A(ghost));
+				
+				aggresive.add(attackMachine, new PPill_GhostToPM_T(ghost), cautiousRunAway);
+				aggresive.add(cautiousRunAway, new PMNotCloseToPPill_T(ghost), attackMachine);
+				aggresive.ready(attackMachine);
+			State aggresiveMachine = new CompoundState("Aggresive", aggresive);
+				
+				FSM defensive = new FSM("Defensive");
+					
+					FSM survive = new FSM("Defensive");
+					State runAway = new SimpleState("Direct RunAway", new RunAway_A(ghost));
+					State farthest = new SimpleState("Go to farthest node", new FarthestNode_A(ghost));
+					survive.add(runAway, new NotTooCloseToPacman_T(ghost), farthest);
+					survive.add(farthest, new TooCloseToPacman_T(ghost), runAway);
+					survive.ready(runAway);
+					
+				State surviveMachine = new CompoundState("Survive", survive);
+				State earlyChase = new SimpleState("Early chase", new Chase_A(ghost));
+				
+				defensive.add(surviveMachine, new ShortEdibleTime_NotTooClose_T(ghost), earlyChase);
+				defensive.add(earlyChase, new PacmanAteOtherPPill_T(ghost), surviveMachine);
+				defensive.ready(surviveMachine);
+			State defensiveMachine = new CompoundState("Defensive", defensive);
 			
-			//Transiciones
-			GhostEdible_T edible = new GhostEdible_T(ghost);
-			PPill_GhostToPM_T near = new PPill_GhostToPM_T(ghost);
-			GhostsNotEdibleAndPacManFarPPill_T toChaseTransition = new GhostsNotEdibleAndPacManFarPPill_T(ghost);
+			State initialState = new SimpleState("Initial state", new RandomMove_A(ghost));
 			
-			//Actualizacion fsm
-			fsm.add(chase, edible, runAway);
-			fsm.add(chase, near, runAway);
-			fsm.add(runAway, toChaseTransition, chase);
-
-			
-			// Init fsm
-			fsm.ready(chase);
-			fsms.put(ghost, fsm);
+			fsm.add(aggresiveMachine, new GhostEdible_T(ghost), defensiveMachine);	
+			fsm.add(defensiveMachine, new GhostNotEdible_T(ghost), aggresiveMachine);
+			fsm.add(initialState, new GhostLeftBox_T(ghost), aggresiveMachine);
+			fsm.add(defensiveMachine, new GhostEaten_T(ghost), initialState);
+		
+			fsm.ready(initialState);
+				
 		}
 	}
 	
