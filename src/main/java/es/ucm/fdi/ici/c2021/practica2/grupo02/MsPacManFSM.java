@@ -66,7 +66,6 @@ public class MsPacManFSM extends PacmanController {
 	    	fsm.ready(chase);
 	    	
 	    	
-	    	
 	    	JFrame frame = new JFrame();
 	    	JPanel main = new JPanel();
 	    	main.setLayout(new BorderLayout());
