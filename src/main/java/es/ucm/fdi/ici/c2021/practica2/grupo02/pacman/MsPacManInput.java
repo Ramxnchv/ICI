@@ -11,7 +11,7 @@ import pacman.game.Game;
 
 public class MsPacManInput extends Input {
 	
-	public static final int GHOST_PROXIMITY_THRESHOLD = 50;
+	public static final int GHOST_PROXIMITY_THRESHOLD = 25;
 	
 	//mapas con info de fantasmas
 	private Map<GHOST, Boolean> ghostEdible;
@@ -31,18 +31,19 @@ public class MsPacManInput extends Input {
 	//constructor
 	public MsPacManInput(Game game) {
 		super(game);
-		ghostEdible = new HashMap<GHOST, Boolean>();
-		ghostDistanceToPacman = new HashMap<GHOST, Double>();
-		
 	}
 
 	@Override
 	public void parseInput() {
 		
 		//Cargar los maps con ghosts para saber si son comestibles o no y sus distancias a pacman
+		
+		ghostEdible = new HashMap<GHOST, Boolean>();
+		ghostDistanceToPacman = new HashMap<GHOST, Double>();
+		
 		for (GHOST g : GHOST.values()) {
 			ghostEdible.put(g, game.isGhostEdible(g));
-			ghostDistanceToPacman.put(g, game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(g), DM.PATH));
+			ghostDistanceToPacman.put(g, game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(g), DM.EUCLID));
 		}
 		
 		//Obtener fantasma mas cercano
@@ -68,9 +69,16 @@ public class MsPacManInput extends Input {
 		
 		//Comprobar numero de fantasmas cercanos a PacMan
 		this.numberOfGhostsNear = 0;
+		
 		for(GHOST g: GHOST.values()) {
-			if(game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(g), DM.PATH) <= GHOST_PROXIMITY_THRESHOLD) {
-				this.numberOfGhostsNear++;
+			boolean edible = game.isGhostEdible(g);
+			boolean initialnode = game.getGhostCurrentNodeIndex(g) == game.getGhostInitialNodeIndex();
+			
+			if(edible!=false && initialnode!=false) {
+				double distance = game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(g), game.getPacmanLastMoveMade(), DM.PATH); 
+				if(distance <= GHOST_PROXIMITY_THRESHOLD) {
+					this.numberOfGhostsNear++;
+				}
 			}
 		}
 		
@@ -80,7 +88,7 @@ public class MsPacManInput extends Input {
 		//Comprobar si existe algun camino hacia pill sin fantasmas
 		int pacmanNode = game.getPacmanCurrentNodeIndex();
 		int pill=0;
-		pill = game.getClosestNodeIndexFromNodeIndex(pacmanNode, game.getActivePillsIndices(), DM.PATH);
+		pill = game.getClosestNodeIndexFromNodeIndex(pacmanNode, game.getActivePowerPillsIndices(), DM.PATH);
 		
 		int[] neigh = game.getNeighbouringNodes(pacmanNode, game.getPacmanLastMoveMade());
 		int[][] path = new int[3][];
@@ -108,7 +116,7 @@ public class MsPacManInput extends Input {
 		if (path != null && path.length > 0) {
 			for (int nodeIndex : path) {
 				for (GHOST g : ghosts) {
-					if (game.getGhostCurrentNodeIndex(g) == nodeIndex) return true;
+					if (game.getGhostCurrentNodeIndex(g) == nodeIndex && !game.isGhostEdible(g)) return true;
 				}
 			}
 		}

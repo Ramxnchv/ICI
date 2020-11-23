@@ -7,7 +7,6 @@ import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
 public class ChaseGhost_A implements Action {
-	private final int GHOSTS_VISIBILITY_FOLLOW_LIMIT = 100;
 	private int MsPacMan;
 	private Game game;
 	private GHOST chasedGhost;
@@ -17,11 +16,11 @@ public class ChaseGhost_A implements Action {
 	public MOVE execute(Game game) {
 		this.game= game;
 		this.MsPacMan = game.getPacmanCurrentNodeIndex();
-		this.chasedGhost = getNearestEdibleGhost(GHOSTS_VISIBILITY_FOLLOW_LIMIT);
+		this.chasedGhost = getNearestEdibleGhost();
 		return game.getApproximateNextMoveTowardsTarget(MsPacMan, game.getGhostCurrentNodeIndex(chasedGhost), game.getPacmanLastMoveMade(), DM.PATH);
 	}
 	
-	private GHOST getNearestEdibleGhost(int limit) {
+	private GHOST getNearestEdibleGhost() {
 		int [] ghostPositions = new int[4];
 		
 		int i=0;
@@ -37,7 +36,7 @@ public class ChaseGhost_A implements Action {
 		GHOST nearestEdible=null;
 		
 		for (GHOST ghostType : GHOST.values()) {
-			if(game.getGhostCurrentNodeIndex(ghostType)==value && game.getDistance(value,game.getPacmanCurrentNodeIndex(),DM.PATH) <= limit) {
+			if(game.getGhostCurrentNodeIndex(ghostType)==value) {
 				nearestEdible = ghostType;
 				break;
 			}

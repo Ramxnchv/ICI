@@ -7,7 +7,7 @@ import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
 public class RunAway_A implements Action{
-	private final int GHOSTS_VISIBILITY_LIMIT = 100;
+	private final int GHOSTS_VISIBILITY_LIMIT = 10000;
 	private int MsPacMan;
 	private Game game;
 	private GHOST nearestGhost;
@@ -16,13 +16,13 @@ public class RunAway_A implements Action{
 	public MOVE execute(Game game) {
 		this.game=game;
 		this.MsPacMan = game.getPacmanCurrentNodeIndex();
-		this.nearestGhost= getNearestChasingGhost(GHOSTS_VISIBILITY_LIMIT);
+		this.nearestGhost= getNearestChasingGhost();
 		
-		return game.getNextMoveAwayFromTarget(MsPacMan, game.getGhostCurrentNodeIndex(getNearestChasingGhost(GHOSTS_VISIBILITY_LIMIT)), DM.PATH);
+		return game.getNextMoveAwayFromTarget(MsPacMan, game.getGhostCurrentNodeIndex(nearestGhost), DM.PATH);
 		
 	}
 	
-	private GHOST getNearestChasingGhost(int limit) {
+	private GHOST getNearestChasingGhost() {
 		int [] ghostPositions = new int[4];
 		
 		int i=0;
@@ -44,6 +44,7 @@ public class RunAway_A implements Action{
 					break;
 				}
 			}
+			
 		}
 		
 		return nearest;

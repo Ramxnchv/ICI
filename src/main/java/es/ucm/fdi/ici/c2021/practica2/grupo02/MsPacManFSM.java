@@ -13,6 +13,7 @@ import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.actions.RunAway_A;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.ChaseGhostConditions_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.ChasePPConditions_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.ChasePillConditions_T;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.EatenPowerPill_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.ExistAtLeast1FreeGhostsPath_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.NotExistAnyFreeGhostsPath_T;
 import es.ucm.fdi.ici.fsm.CompoundState;
@@ -52,9 +53,11 @@ public class MsPacManFSM extends PacmanController {
 	    	Transition chasePPConditions = new ChasePPConditions_T();
 	    	Transition chaseGhostConditions = new ChaseGhostConditions_T();
 	    	Transition chasePillConditions = new ChasePillConditions_T();
+	    	Transition eatenPowerPill = new EatenPowerPill_T();
 	    	
 	    	cfsm1.add(chasePill, chasePPConditions, chasePP);
 	    	cfsm1.add(chasePP, chaseGhostConditions, chaseGhost);
+	    	cfsm1.add(chasePill, eatenPowerPill, chaseGhost);
 	    	cfsm1.add(chaseGhost, chasePillConditions, chasePill);
 	    	cfsm1.ready(chasePill);
 	    	
@@ -70,6 +73,7 @@ public class MsPacManFSM extends PacmanController {
 	    	JPanel main = new JPanel();
 	    	main.setLayout(new BorderLayout());
 	    	main.add(observer.getAsPanel(true, null), BorderLayout.CENTER);
+	    	main.add(c1observer.getAsPanel(true, null), BorderLayout.SOUTH);
 	    	frame.getContentPane().add(main);
 	    	frame.pack();
 	    	frame.setVisible(true);
