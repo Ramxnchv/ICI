@@ -9,7 +9,7 @@ public class ChasePPConditions_T implements Transition{
 	@Override
 	public boolean evaluate(Input in) {
 		MsPacManInput input = (MsPacManInput) in;
-		return input.getNumberOfGhostsNear() > 2 && input.getActivePowerPills() > 0;
+		return input.getNumberOfGhostsNear() >= 2 && input.getActivePowerPills() > 0;
 	}
 	
 	@Override
