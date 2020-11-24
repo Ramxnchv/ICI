@@ -14,7 +14,7 @@ public class ChasePPConditions_T implements Transition{
 	
 	@Override
 	public String toString() {
-		return "2 ghosts near and ActivePowerPills > 0";
+		return "Hay 2 o mas fantasmas cerca";
 	}
 
 }

@@ -11,22 +11,24 @@ import pacman.game.Game;
 
 public class MsPacManInput extends Input {
 	
-	public static final int GHOST_PROXIMITY_THRESHOLD = 25;
+	public static final int GHOST_PROXIMITY_THRESHOLD = 80;
+	public static final int LAIR_NODE = 1292;
 	
 	//mapas con info de fantasmas
 	private Map<GHOST, Boolean> ghostEdible;
 	private Map<GHOST, Double> ghostDistanceToPacman;
 	
 	//info de game para transiciones entre estados (simples) dentro de chase
-	public GHOST nearestGhost;
-	public int edibleGhosts;
-	public boolean nearestGhostEdible;
-	public int numberOfGhostsNear;
-	public int activePowerPills;
+	private GHOST nearestGhost;
+	private int edibleGhosts;
+	private boolean nearestGhostEdible;
+	private int numberOfGhostsNear;
+	private int activePowerPills;
+	private double distance2Closest;
 	
 	//info de game para transicion desde chase a runAway y viceversa
-	public boolean freeGhostsPath;
-	private int[][] path;
+	private boolean freeGhostsPath;
+	private int[] path;
 	
 	//constructor
 	public MsPacManInput(Game game) {
@@ -55,6 +57,12 @@ public class MsPacManInput extends Input {
 			}
 		}
 		
+		//Obtener distancia al mas cercano
+		distance2Closest = 1000000000;
+		if(game.getGhostCurrentNodeIndex(nearestGhost)!=LAIR_NODE && game.isGhostEdible(nearestGhost)==false) {
+			this.distance2Closest = game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(nearestGhost), DM.PATH);
+		}
+		
 		//Obtener numero de fantasmas comestibles
 		this.edibleGhosts = 0;
 		
@@ -72,9 +80,9 @@ public class MsPacManInput extends Input {
 		
 		for(GHOST g: GHOST.values()) {
 			boolean edible = game.isGhostEdible(g);
-			boolean initialnode = game.getGhostCurrentNodeIndex(g) == game.getGhostInitialNodeIndex();
+			boolean initialnode = game.getGhostCurrentNodeIndex(g) == LAIR_NODE;
 			
-			if(edible!=false && initialnode!=false) {
+			if(edible==false && initialnode==false) {
 				double distance = game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(g), game.getPacmanLastMoveMade(), DM.PATH); 
 				if(distance <= GHOST_PROXIMITY_THRESHOLD) {
 					this.numberOfGhostsNear++;
@@ -88,26 +96,29 @@ public class MsPacManInput extends Input {
 		//Comprobar si existe algun camino hacia pill sin fantasmas
 		int pacmanNode = game.getPacmanCurrentNodeIndex();
 		int pill=0;
-		pill = game.getClosestNodeIndexFromNodeIndex(pacmanNode, game.getActivePowerPillsIndices(), DM.PATH);
+		if(game.getNumberOfActivePowerPills() > 0) {
+			pill = game.getClosestNodeIndexFromNodeIndex(pacmanNode, game.getActivePowerPillsIndices(), DM.PATH);
+		}
+		else {
+			pill = game.getClosestNodeIndexFromNodeIndex(pacmanNode, game.getActivePillsIndices(), DM.PATH);
+		}
 		
 		int[] neigh = game.getNeighbouringNodes(pacmanNode, game.getPacmanLastMoveMade());
-		int[][] path = new int[3][];
 		
-		int i=0;
 		boolean pathfound=false;
+		
 		for(int n:neigh) {
 			//para cada nodo vecino quiero los caminos hacia pills que no tengan fantasmas en medio
-			path[i] = game.getShortestPath(n, pill);
-			if(this.pathContainsAnyGhost(path[i],GHOST.values())) {
-				path[i]=null;
-				break;
+			this.path = game.getShortestPath(n, pill);
+			if(this.pathContainsAnyGhost(path,GHOST.values())==false) {
+				pathfound = true; break;
 			}
-			if (pathContainsPills(path[i],pill)){pathfound = true;} 
-			i++;
 		}
+		
+		
 		//devuelvo si existen caminos sin fantasmas para evaluate en transicion y el array de caminos
 		this.freeGhostsPath = pathfound;
-		this.path = path;
+		
 		
 	}
 	
@@ -116,7 +127,7 @@ public class MsPacManInput extends Input {
 		if (path != null && path.length > 0) {
 			for (int nodeIndex : path) {
 				for (GHOST g : ghosts) {
-					if (game.getGhostCurrentNodeIndex(g) == nodeIndex && !game.isGhostEdible(g)) return true;
+					if (game.getGhostCurrentNodeIndex(g) == nodeIndex && game.isGhostEdible(g)==false) return true;
 				}
 			}
 		}
@@ -159,8 +170,9 @@ public class MsPacManInput extends Input {
 		return freeGhostsPath;
 	}
 
-	public int[][] getPath() {
-		return path;
+	public double getDistance2Closest() {
+		return distance2Closest;
 	}
+	
 	
 }

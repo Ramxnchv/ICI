@@ -9,12 +9,12 @@ public class ChasePillConditions_T implements Transition{
 	@Override
 	public boolean evaluate(Input in) {
 		MsPacManInput input = (MsPacManInput) in;
-		return input.getEdibleGhosts() == 0 || !input.isNearestGhostEdible();
+		return input.getEdibleGhosts() == 0 || input.isNearestGhostEdible()==false;
 	}
 	
 	@Override
 	public String toString() {
-		return "EdibleGhosts = 0 or nearestGhost != edible";
+		return "No hay fantasmas comestibles cerca";
 	}
 	
 }

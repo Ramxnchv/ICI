@@ -9,12 +9,12 @@ public class NotExistAnyFreeGhostsPath_T implements Transition{
 	@Override
 	public boolean evaluate(Input in) {
 		MsPacManInput input = (MsPacManInput) in;
-		return input.isFreeGhostsPath() == false;
+		return input.isFreeGhostsPath() == false || input.getNumberOfGhostsNear() >= 3 || input.getDistance2Closest() <= 25;
 	}
 
 	@Override
 	public String toString() {
-		return "NotExistsAnyFreeGhostsPath";
+		return "Todos los caminos tienen fantasmas";
 	}
 	
 }

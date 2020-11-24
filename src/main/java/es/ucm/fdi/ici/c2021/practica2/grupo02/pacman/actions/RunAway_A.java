@@ -7,47 +7,69 @@ import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
 public class RunAway_A implements Action{
-	private final int GHOSTS_VISIBILITY_LIMIT = 10000;
+	
+	//Tomamos un punto (en el centro del mapa) como referencia 
+	//para huir cuando estamos acorralados comprobando caminos sin fantasmas (que se descartan)
+	
 	private int MsPacMan;
+	private int referencePoint= 1292;
 	private Game game;
-	private GHOST nearestGhost;
 	
 	@Override
 	public MOVE execute(Game game) {
+		MOVE nextMove = MOVE.NEUTRAL;
 		this.game=game;
 		this.MsPacMan = game.getPacmanCurrentNodeIndex();
-		this.nearestGhost= getNearestChasingGhost();
+		this.referencePoint = game.getClosestNodeIndexFromNodeIndex(MsPacMan, game.getActivePillsIndices(), DM.PATH);
 		
-		return game.getNextMoveAwayFromTarget(MsPacMan, game.getGhostCurrentNodeIndex(nearestGhost), DM.PATH);
+		int[] neigh = game.getNeighbouringNodes(MsPacMan, game.getPacmanLastMoveMade());
 		
+		int[][] path = getFreeGhostsPaths(neigh);
+		
+		
+		 int n = 0; // Nodo con el cual se llega por el camino mas rapido
+         int l = Integer.MAX_VALUE;
+         for(int[] a : path){
+             if(a != null && a.length>0){
+                  int d = a.length;
+                  if(d < l) {
+                     l = d;
+                     n = a[0]; // Se pone el 1 para evitar que el [0] sea el propio nodo origen
+                     nextMove = game.getNextMoveTowardsTarget(MsPacMan, n, DM.PATH);
+                  }
+              }
+         }
+		
+		return nextMove;
 	}
 	
-	private GHOST getNearestChasingGhost() {
-		int [] ghostPositions = new int[4];
+	private int[][] getFreeGhostsPaths(int[] neigh){
+		
+		int[][] path = new int[3][];
 		
 		int i=0;
-		for (GHOST ghostType : GHOST.values()) {
-			if(game.isGhostEdible(ghostType) == false) {
-				ghostPositions[i]=game.getGhostCurrentNodeIndex(ghostType);
-				i++;
+		for(int n:neigh) {
+			//para cada nodo vecino quiero los caminos que no tengan fantasmas en medio
+			path[i] = game.getShortestPath(n, this.referencePoint);
+			if(this.pathContainsAnyGhost(path[i],GHOST.values())) {
+				path[i]=null;
+				break;
 			}
+			i++;
 		}
 		
-		GHOST nearest=null;
-		
-		if(ghostPositions.length > 0) {
-			int value = game.getClosestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(), ghostPositions, DM.PATH);
-
-			for (GHOST ghostType : GHOST.values()) {
-				if(game.getGhostCurrentNodeIndex(ghostType)==value) {
-					nearest = ghostType;
-					break;
+		return path;
+	}
+	
+	
+	private boolean pathContainsAnyGhost(int[] path, GHOST[] ghosts) {
+		if (path != null && path.length > 0) {
+			for (int nodeIndex : path) {
+				for (GHOST g : ghosts) {
+					if (game.getGhostCurrentNodeIndex(g) == nodeIndex) return true;
 				}
 			}
-			
 		}
-		
-		return nearest;
+		return false;
 	}
-
 }

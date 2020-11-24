@@ -11,13 +11,17 @@ public class ChaseGhost_A implements Action {
 	private Game game;
 	private GHOST chasedGhost;
 	
+	//La accion chaseGhost consiste en perseguir al fantasma comestible mas cercano
 	
 	@Override
 	public MOVE execute(Game game) {
 		this.game= game;
 		this.MsPacMan = game.getPacmanCurrentNodeIndex();
 		this.chasedGhost = getNearestEdibleGhost();
-		return game.getApproximateNextMoveTowardsTarget(MsPacMan, game.getGhostCurrentNodeIndex(chasedGhost), game.getPacmanLastMoveMade(), DM.PATH);
+		if(chasedGhost!=null) {
+			return game.getApproximateNextMoveTowardsTarget(MsPacMan, game.getGhostCurrentNodeIndex(chasedGhost), game.getPacmanLastMoveMade(), DM.PATH);
+		}
+		return MOVE.NEUTRAL;
 	}
 	
 	private GHOST getNearestEdibleGhost() {

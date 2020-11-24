@@ -30,7 +30,7 @@ public class ChasePP_A implements Action{
 		 int n = 0; // Nodo con el cual se llega por el camino mas rapido
          int l = Integer.MAX_VALUE;
          for(int[] a : path){
-             if(a != null){
+             if(a != null && a.length>0){
                   int d = a.length;
                   if(d < l) {
                      l = d;

@@ -14,7 +14,7 @@ public class EatenPowerPill_T implements Transition{
 	
 	@Override
 	public String toString() {
-		return "Eaten powerpill in pill path";
+		return "He comido powerpill buscando una pill";
 	}
 
 }

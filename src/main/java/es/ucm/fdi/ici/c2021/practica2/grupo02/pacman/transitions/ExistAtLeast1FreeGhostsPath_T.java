@@ -14,7 +14,7 @@ public class ExistAtLeast1FreeGhostsPath_T implements Transition{
 	
 	@Override
 	public String toString() {
-		return "ExistsAtLeast1FreeGhostsPath";
+		return "Existe 1 camino hacia pills sin fantasmas";
 	}
 
 }

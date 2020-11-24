@@ -14,7 +14,7 @@ public class ChaseGhostConditions_T implements Transition{
 	
 	@Override
 	public String toString() {
-		return "EdibleGhosts > 0 and nearestGhost = edible";
+		return "Hay fantasmas comestibles cerca";
 	}
 
 }
