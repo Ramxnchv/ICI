@@ -5,22 +5,24 @@ import es.ucm.fdi.ici.fsm.Input;
 import es.ucm.fdi.ici.fsm.Transition;
 import pacman.game.Constants.GHOST;
 
-public class GhostEaten_T implements Transition {
+public class GhostLeftLair_T implements Transition {
 
 	GHOST ghost;
-	public GhostEaten_T(GHOST ghost) {
+
+	public GhostLeftLair_T(GHOST ghost) {
 		super();
 		this.ghost = ghost;
 	}
-
+	
 	@Override
 	public boolean evaluate(Input in) {
-		GhostsInput input = (GhostsInput) in;
-		return input.getGhostEaten(ghost);
+		GhostsInput input = (GhostsInput)in;
+		return input.getLairTime(ghost) <= 0;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "Ghost has been eaten";
+		return "Ghost left lair";
 	}
+
 }

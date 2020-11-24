@@ -1,6 +1,10 @@
 package es.ucm.fdi.ici.c2021.practica2.grupo02;
 
+import java.awt.BorderLayout;
 import java.util.EnumMap;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import pacman.controllers.GhostController;
 import pacman.game.Constants.GHOST;
@@ -37,13 +41,13 @@ public class GhostsFSM extends GhostController {
 		for(GHOST ghost: GHOST.values()) {
 			
 			FSM fsm = new FSM(ghost.name());
-			fsm.addObserver(new ConsoleFSMObserver(ghost.name()));
-			fsm.addObserver(new GraphFSMObserver(ghost.name()));
-
+			//fsm.addObserver(new ConsoleFSMObserver(ghost.name() + ""));
 			
 				FSM aggresive = new FSM("Aggro");
+				//aggresive.addObserver(new ConsoleFSMObserver(ghost.name() + "aggresive FSM"));
 				
 					FSM attack = new FSM("Attack");
+					//attack.addObserver(new ConsoleFSMObserver(ghost.name() + ""));
 					State cutRoute = new SimpleState("Cut Pacman Route", new FindCutRoute_A(ghost));
 					State chase = new SimpleState("Direct chase", new DirectChase_A(ghost));
 					attack.add(chase, new NotTooCloseToPacman_T(ghost), cutRoute);
@@ -60,8 +64,10 @@ public class GhostsFSM extends GhostController {
 			State aggresiveMachine = new CompoundState("Aggresive", aggresive);
 				
 				FSM defensive = new FSM("Defensive");
+				//defensive.addObserver(new ConsoleFSMObserver(ghost.name() + "defensive FSM"));
 					
 					FSM survive = new FSM("Defensive");
+					//survive.addObserver(new ConsoleFSMObserver(ghost.name() + "survive FSM"));
 					State runAway = new SimpleState("Direct RunAway", new RunAway_A(ghost));
 					State farthest = new SimpleState("Go to farthest node", new FarthestNode_A(ghost));
 					survive.add(runAway, new NotTooCloseToPacman_T(ghost), farthest);
@@ -78,14 +84,26 @@ public class GhostsFSM extends GhostController {
 			
 			State initialState = new SimpleState("Initial state", new RandomMove_A(ghost));
 			
+			fsm.add(defensiveMachine, new GhostIsInLair_T(ghost), initialState);
+			fsm.add(initialState, new GhostLeftLair_T(ghost), aggresiveMachine);
 			fsm.add(aggresiveMachine, new GhostEdible_T(ghost), defensiveMachine);	
 			fsm.add(defensiveMachine, new GhostNotEdible_T(ghost), aggresiveMachine);
-			fsm.add(initialState, new GhostLeftBox_T(ghost), aggresiveMachine);
-			fsm.add(defensiveMachine, new GhostEaten_T(ghost), initialState);
 		
 			fsm.ready(initialState);
 			
 			fsms.put(ghost, fsm);
+			
+//			GraphFSMObserver graphObserver = new GraphFSMObserver(ghost.name());
+//			fsm.addObserver(graphObserver);
+//			
+//			JFrame frame = new JFrame();
+//	    	JPanel main = new JPanel();
+//	    	main.setLayout(new BorderLayout());
+//	    	main.add(graphObserver.getAsPanel(true, null), BorderLayout.CENTER);
+//	    	frame.getContentPane().add(main);
+//	    	frame.pack();
+//	    	frame.setVisible(true);
+			
 		}
 	}
 	

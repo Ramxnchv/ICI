@@ -1,5 +1,6 @@
 package es.ucm.fdi.ici.c2021.practica2.grupo02.ghosts;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,26 +30,17 @@ public class GhostsInput extends Input {
 	
 	// ------------------------------ Constructor -------------------------------
 	public GhostsInput(Game game) {
-		super(game);
-		/*
-		ghostEdible = new HashMap<GHOST, Boolean>();
-		ghostEaten = new HashMap<GHOST, Boolean>();
-		ghostLairTime = new HashMap<GHOST, Integer>();
-		ghostEdibleTime= new HashMap<GHOST, Integer>();
-		ghostDistanceToPacman = new HashMap<GHOST, Double>();
-		*/
+		super(game);		
 	}
 
 	@Override
 	public void parseInput() {
-		if(ghostEdible == null) {
-			ghostEdible = new HashMap<GHOST, Boolean>();
-			ghostEaten = new HashMap<GHOST, Boolean>();
-			ghostLairTime = new HashMap<GHOST, Integer>();
-			ghostEdibleTime= new HashMap<GHOST, Integer>();
-			ghostDistanceToPacman = new HashMap<GHOST, Double>();
-		}
 		
+		ghostEdible = new EnumMap<GHOST, Boolean>(GHOST.class);
+		ghostEaten = new EnumMap<GHOST, Boolean>(GHOST.class);
+		ghostLairTime = new EnumMap<GHOST, Integer>(GHOST.class);
+		ghostEdibleTime= new EnumMap<GHOST, Integer>(GHOST.class);
+		ghostDistanceToPacman = new EnumMap<GHOST, Double>(GHOST.class);
 		
 		for (GHOST g : GHOST.values()) {
 			ghostEdible.put(g, game.isGhostEdible(g));
@@ -78,6 +70,7 @@ public class GhostsInput extends Input {
 	
 	//------------------------------------- GETTERS --------------------------------------------
 	// Fantasma mas cercano al pacman
+
 	public GHOST getClosest() {
 		return closestGhostToPacman;
 	}

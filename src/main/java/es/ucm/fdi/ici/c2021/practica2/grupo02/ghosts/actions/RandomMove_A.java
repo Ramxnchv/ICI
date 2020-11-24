@@ -18,7 +18,11 @@ public class RandomMove_A implements Action {
 
 	@Override
 	public MOVE execute(Game g) {
-		MOVE [] possibleMoves = g.getPossibleMoves(g.getGhostCurrentNodeIndex(me));
-		return possibleMoves[(new Random()).nextInt() % possibleMoves.length];
+		if (g.doesGhostRequireAction(me)) {
+			MOVE [] possibleMoves = g.getPossibleMoves(g.getGhostCurrentNodeIndex(me));
+			return possibleMoves[(new Random()).nextInt() % possibleMoves.length];
+		}
+		
+		return null;
 	}
 }
