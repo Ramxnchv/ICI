@@ -14,7 +14,7 @@ public class ChasePillConditions_T implements Transition{
 	
 	@Override
 	public String toString() {
-		return "EdibleGhosts = 0 and nearestGhost != edible";
+		return "EdibleGhosts = 0 or nearestGhost != edible";
 	}
 	
 }

@@ -9,7 +9,7 @@ public class NotExistAnyFreeGhostsPath_T implements Transition{
 	@Override
 	public boolean evaluate(Input in) {
 		MsPacManInput input = (MsPacManInput) in;
-		return input.isFreeGhostsPath() == false || input.getNumberOfGhostsNear() >= 3;
+		return input.isFreeGhostsPath() == false;
 	}
 
 	@Override
