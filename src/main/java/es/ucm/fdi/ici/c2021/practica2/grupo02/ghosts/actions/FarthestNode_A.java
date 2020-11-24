@@ -14,9 +14,8 @@ public class FarthestNode_A implements Action {
 		this.me = me;
 	}
 	
-	
 	@Override
-	public MOVE execute(Game arg0) {
+	public MOVE execute(Game g) {
 		// TODO Auto-generated method stub
 		return null;
 	}

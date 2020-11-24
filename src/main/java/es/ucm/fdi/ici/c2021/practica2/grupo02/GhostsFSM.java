@@ -44,10 +44,10 @@ public class GhostsFSM extends GhostController {
 				FSM aggresive = new FSM("Aggro");
 				
 					FSM attack = new FSM("Attack");
-					State chase = new SimpleState("Direct chase", new Chase_A(ghost));
-					State fillZone = new SimpleState("Fill Zone", new FillZone_A(ghost));
-					attack.add(chase, new NotTooCloseToPacman_T(ghost), fillZone);
-					attack.add(fillZone, new TooCloseToPacman_T(ghost), chase);
+					State cutRoute = new SimpleState("Cut Pacman Route", new FindCutRoute_A(ghost));
+					State chase = new SimpleState("Direct chase", new DirectChase_A(ghost));
+					attack.add(chase, new NotTooCloseToPacman_T(ghost), cutRoute);
+					attack.add(cutRoute, new TooCloseToPacman_T(ghost), chase);
 					attack.ready(chase);
 						
 				
@@ -69,7 +69,7 @@ public class GhostsFSM extends GhostController {
 					survive.ready(runAway);
 					
 				State surviveMachine = new CompoundState("Survive", survive);
-				State earlyChase = new SimpleState("Early chase", new Chase_A(ghost));
+				State earlyChase = new SimpleState("Early chase", new FindCutRoute_A(ghost));
 				
 				defensive.add(surviveMachine, new ShortEdibleTime_NotTooClose_T(ghost), earlyChase);
 				defensive.add(earlyChase, new PacmanAteOtherPPill_T(ghost), surviveMachine);
@@ -84,7 +84,8 @@ public class GhostsFSM extends GhostController {
 			fsm.add(defensiveMachine, new GhostEaten_T(ghost), initialState);
 		
 			fsm.ready(initialState);
-				
+			
+			fsms.put(ghost, fsm);
 		}
 	}
 	
@@ -96,17 +97,12 @@ public class GhostsFSM extends GhostController {
 		
 		GhostsInput in = new GhostsInput(game);
 		
-		for(GHOST ghost: GHOST.values())
-		{
+		for(GHOST ghost: GHOST.values()) {
 			FSM fsm = fsms.get(ghost);
 			MOVE move = fsm.run(in);
 			result.put(ghost, move);
 		}
 		
 		return result;
-		
-	
-		
 	}
-
 }

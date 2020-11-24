@@ -20,4 +20,9 @@ public class TooCloseToPacman_T implements Transition {
 		return input.getGhostDistanceToPacman(ghost) <= GhostsInput.PACMAN_DANGER_THRESHOLD;
 	}
 
+	@Override
+	public String toString() {
+		return "Ghost too close to Pacman";
+	}
+	
 }

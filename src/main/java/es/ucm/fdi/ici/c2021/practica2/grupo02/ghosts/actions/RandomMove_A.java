@@ -21,5 +21,4 @@ public class RandomMove_A implements Action {
 		MOVE [] possibleMoves = g.getPossibleMoves(g.getGhostCurrentNodeIndex(me));
 		return possibleMoves[(new Random()).nextInt() % possibleMoves.length];
 	}
-
 }

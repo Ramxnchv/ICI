@@ -12,7 +12,6 @@ public class NotTooCloseToPacman_T implements Transition {
 	public NotTooCloseToPacman_T(GHOST ghost) {
 		super();
 		this.ghost = ghost;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -21,4 +20,8 @@ public class NotTooCloseToPacman_T implements Transition {
 		return input.getGhostDistanceToPacman(ghost) > GhostsInput.PACMAN_DANGER_THRESHOLD;
 	}
 
+	@Override
+	public String toString() {
+		return "Ghost not too close to Pacman";
+	}
 }

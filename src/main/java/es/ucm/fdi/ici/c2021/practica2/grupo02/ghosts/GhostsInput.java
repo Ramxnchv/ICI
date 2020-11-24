@@ -11,7 +11,7 @@ import pacman.game.Game;
 
 public class GhostsInput extends Input {
 	
-	public static final int PACMAN_DANGER_THRESHOLD = 30;
+	public static final int PACMAN_DANGER_THRESHOLD = 50;
 	public static final int PPILL_PROXIMITY_THRESHOLD = 30;
 	public static final int SHORT_EDIBLE_TIME_LIMIT = 30;
 	
@@ -19,7 +19,7 @@ public class GhostsInput extends Input {
 	private Map<GHOST, Boolean> ghostEaten;
 	private Map<GHOST, Integer> ghostLairTime;
 	private Map<GHOST, Integer> ghostEdibleTime;
-	private Map<GHOST, Double> ghostDistanceToPacman;	
+	private Map<GHOST, Double> ghostDistanceToPacman;
 	
 	// Distancia del Pacman a la Pill
 	private double minPacmanDistancePPill;
@@ -29,18 +29,26 @@ public class GhostsInput extends Input {
 	
 	// ------------------------------ Constructor -------------------------------
 	public GhostsInput(Game game) {
-		 super(game);
-		 
-		 ghostEdible = new HashMap<GHOST, Boolean>();
-		 ghostEaten = new HashMap<GHOST, Boolean>();
-		 ghostLairTime = new HashMap<GHOST, Integer>();
-		 ghostEdibleTime= new HashMap<GHOST, Integer>();
-		 ghostDistanceToPacman = new HashMap<GHOST, Double>();
-
+		super(game);
+		/*
+		ghostEdible = new HashMap<GHOST, Boolean>();
+		ghostEaten = new HashMap<GHOST, Boolean>();
+		ghostLairTime = new HashMap<GHOST, Integer>();
+		ghostEdibleTime= new HashMap<GHOST, Integer>();
+		ghostDistanceToPacman = new HashMap<GHOST, Double>();
+		*/
 	}
 
 	@Override
 	public void parseInput() {
+		if(ghostEdible == null) {
+			ghostEdible = new HashMap<GHOST, Boolean>();
+			ghostEaten = new HashMap<GHOST, Boolean>();
+			ghostLairTime = new HashMap<GHOST, Integer>();
+			ghostEdibleTime= new HashMap<GHOST, Integer>();
+			ghostDistanceToPacman = new HashMap<GHOST, Double>();
+		}
+		
 		
 		for (GHOST g : GHOST.values()) {
 			ghostEdible.put(g, game.isGhostEdible(g));
