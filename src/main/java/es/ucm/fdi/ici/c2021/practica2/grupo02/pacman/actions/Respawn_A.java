@@ -8,6 +8,7 @@ import pacman.game.Game;
 
 public class Respawn_A implements Action{
 	//Esta accion realiza un movimiento aleatorio si pacman está en el punto de aparicion
+	//para que no siga siempre la misma ruta
 	@Override
 	public MOVE execute(Game game) {
 		int pacman = game.getPacmanCurrentNodeIndex();
