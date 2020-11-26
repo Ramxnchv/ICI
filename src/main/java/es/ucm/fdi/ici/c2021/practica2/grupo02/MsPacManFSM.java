@@ -9,6 +9,7 @@ import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.MsPacManInput;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.actions.ChaseGhost_A;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.actions.ChasePP_A;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.actions.ChasePill_A;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.actions.Respawn_A;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.actions.RunAway_A;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.DangerChasingGhost_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.Danger_T;
@@ -20,6 +21,8 @@ import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.NoDangerAndEdib
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.NoDanger_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.NoEdibleGhosts_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.NoFreeGhostPath2PP_T;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.NotSpawnPoint_T;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.SpawnPoint_T;
 import es.ucm.fdi.ici.fsm.CompoundState;
 import es.ucm.fdi.ici.fsm.FSM;
 import es.ucm.fdi.ici.fsm.Input;
@@ -74,7 +77,7 @@ public class MsPacManFSM extends PacmanController {
 	    	cfsm2.add(chasePPRunAway, notFreePath2PP, directRunAway);
 	    	cfsm2.ready(directRunAway);
 	    	
-	    	CompoundState runAway = new CompoundState("RUN_AWAY", cfsm2);
+	    	CompoundState runAway = new CompoundState("Run Away", cfsm2);
 	    	
 	    	//CHASE NEAREST GHOST
 	    	
@@ -83,6 +86,12 @@ public class MsPacManFSM extends PacmanController {
 	    	Transition edibleGhostNear = new EdibleGhostNear_T();
 	    	Transition noEdibleGhosts = new NoEdibleGhosts_T();
 	    	
+	    	//SPAWN
+	    	
+	    	SimpleState respawn = new SimpleState("Respawn", new Respawn_A());
+	    	Transition spawnPoint = new SpawnPoint_T();
+	    	Transition notSpawnPoint = new NotSpawnPoint_T();
+	    	
 	    	//MAIN MSPACMANFSM
 	    	
 	    	Transition danger = new Danger_T();
@@ -90,6 +99,8 @@ public class MsPacManFSM extends PacmanController {
 	    	Transition noDanger = new NoDanger_T();
 	    	Transition noDangerAndEdibleGhostNear = new NoDangerAndEdibleGhostNear_T();
 	    	
+	    	fsm.add(respawn, notSpawnPoint, farm);
+	    	fsm.add(runAway, spawnPoint , respawn);
 	    	fsm.add(farm, danger, runAway);
 	    	fsm.add(runAway, noDanger, farm);
 	    	fsm.add(farm, edibleGhostNear, chaseGhost);
@@ -98,7 +109,7 @@ public class MsPacManFSM extends PacmanController {
 	    	fsm.add(chaseGhost, danger2, runAway);
 	    	
 	    	
-	    	fsm.ready(farm);
+	    	fsm.ready(respawn);
 	    	
 	    	
 	    	JFrame frame = new JFrame();

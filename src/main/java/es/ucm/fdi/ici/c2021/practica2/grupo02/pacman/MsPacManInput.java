@@ -18,17 +18,16 @@ public class MsPacManInput extends Input {
 	private Map<GHOST, Boolean> ghostEdible;
 	private Map<GHOST, Double> ghostDistanceToPacman;
 	
-	//info de game para transiciones entre estados (simples) dentro de chase
+	//info de game para transiciones entre estados
 	private GHOST nearestGhost;
 	private int edibleGhosts;
 	private boolean nearestGhostEdible;
 	private int numberOfGhostsNear;
 	private int activePowerPills;
 	private double distance2Closest;
-	
-	//info de game para transicion desde chase a runAway y viceversa
 	private boolean freeGhostsPath;
 	private int[] path;
+	private boolean spawnPoint;
 	
 	//constructor
 	public MsPacManInput(Game game) {
@@ -119,7 +118,8 @@ public class MsPacManInput extends Input {
 		//devuelvo si existen caminos sin fantasmas para evaluate en transicion y el array de caminos
 		this.freeGhostsPath = pathfound;
 		
-		
+		//comprobar si pacman está en el punto de aparicion
+		this.spawnPoint = game.getPacmanCurrentNodeIndex() == game.getPacManInitialNodeIndex();
 	}
 	
 	//comprobacion sobre si el camino tiene fantasmas
@@ -173,6 +173,9 @@ public class MsPacManInput extends Input {
 	public double getDistance2Closest() {
 		return distance2Closest;
 	}
-	
+
+	public boolean isSpawnPoint() {
+		return spawnPoint;
+	}
 	
 }
