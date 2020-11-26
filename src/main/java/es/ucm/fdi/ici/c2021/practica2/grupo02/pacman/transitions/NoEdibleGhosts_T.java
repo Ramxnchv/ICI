@@ -9,7 +9,7 @@ public class NoEdibleGhosts_T implements Transition{
 	@Override
 	public boolean evaluate(Input in) {
 		MsPacManInput input = (MsPacManInput) in;
-		return false;
+		return input.getEdibleGhosts() == 0;
 	}
 	
 	@Override

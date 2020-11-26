@@ -9,7 +9,7 @@ public class GhostsFarFromPP_T implements Transition{
 	@Override
 	public boolean evaluate(Input in) {
 		MsPacManInput input = (MsPacManInput) in;
-		return false;
+		return input.getDistance2Closest() >= MsPacManInput.GHOST_PROXIMITY_THRESHOLD;
 	}
 	
 	@Override

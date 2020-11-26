@@ -10,7 +10,7 @@ public class Danger_T implements Transition{
 	public boolean evaluate(Input in) {
 		// TODO Auto-generated method stub
 		MsPacManInput input = (MsPacManInput) in;
-		return false;
+		return input.getNumberOfGhostsNear() >= 3;
 	}
 	
 	@Override

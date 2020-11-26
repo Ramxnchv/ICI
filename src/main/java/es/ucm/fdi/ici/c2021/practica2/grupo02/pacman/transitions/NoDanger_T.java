@@ -9,7 +9,7 @@ public class NoDanger_T implements Transition{
 	@Override
 	public boolean evaluate(Input in) {
 		MsPacManInput input = (MsPacManInput) in;
-		return false;
+		return input.getNumberOfGhostsNear() < 3;
 	}
 	@Override
 	public String toString() {
