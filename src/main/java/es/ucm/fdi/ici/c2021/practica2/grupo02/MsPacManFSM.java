@@ -10,6 +10,7 @@ import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.actions.ChaseGhost_A;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.actions.ChasePP_A;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.actions.ChasePill_A;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.actions.RunAway_A;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.DangerChasingGhost_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.Danger_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.EdibleGhostNear_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.FreeGhostsPath2PP_T;
@@ -59,7 +60,7 @@ public class MsPacManFSM extends PacmanController {
 	    	
 	    	//RUNAWAY
 	    	
-	    	FSM cfsm2 = new FSM("FARM");
+	    	FSM cfsm2 = new FSM("RUNAWAY");
 	    	GraphFSMObserver c2observer = new GraphFSMObserver(cfsm2.toString());
 	    	cfsm2.addObserver(c2observer);
 	    	
@@ -85,6 +86,7 @@ public class MsPacManFSM extends PacmanController {
 	    	//MAIN MSPACMANFSM
 	    	
 	    	Transition danger = new Danger_T();
+	    	Transition danger2 = new DangerChasingGhost_T();
 	    	Transition noDanger = new NoDanger_T();
 	    	Transition noDangerAndEdibleGhostNear = new NoDangerAndEdibleGhostNear_T();
 	    	
@@ -93,7 +95,7 @@ public class MsPacManFSM extends PacmanController {
 	    	fsm.add(farm, edibleGhostNear, chaseGhost);
 	    	fsm.add(chaseGhost, noEdibleGhosts, farm);
 	    	fsm.add(runAway, noDangerAndEdibleGhostNear, chaseGhost);
-	    	fsm.add(chaseGhost, danger, runAway);
+	    	fsm.add(chaseGhost, danger2, runAway);
 	    	
 	    	
 	    	fsm.ready(farm);
