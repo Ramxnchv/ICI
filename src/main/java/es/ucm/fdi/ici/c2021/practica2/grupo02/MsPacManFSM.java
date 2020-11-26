@@ -13,8 +13,17 @@ import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.actions.RunAway_A;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.ChaseGhostConditions_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.ChasePPConditions_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.ChasePillConditions_T;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.Danger_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.EatenPowerPill_T;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.EdibleGhostNear_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.ExistAtLeast1FreeGhostsPath_T;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.FreeGhostsPath2PP_T;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.GhostsFarFromPP_T;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.NearGhostsAndFreeGhostsPath_T;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.NoDangerAndEdibleGhostNear_T;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.NoDanger_T;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.NoEdibleGhosts_T;
+import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.NoFreeGhostPath2PP_T;
 import es.ucm.fdi.ici.c2021.practica2.grupo02.pacman.transitions.NotExistAnyFreeGhostsPath_T;
 import es.ucm.fdi.ici.fsm.CompoundState;
 import es.ucm.fdi.ici.fsm.FSM;
@@ -36,37 +45,64 @@ public class MsPacManFSM extends PacmanController {
 	    	GraphFSMObserver observer = new GraphFSMObserver(fsm.toString());
 	    	fsm.addObserver(observer);
 	    	
-	    	SimpleState runAway = new SimpleState("runAway", new RunAway_A());
+	    	//FARM
 	    	
-	    	Transition notFreeGhostsPath = new NotExistAnyFreeGhostsPath_T();
-	    	Transition freeGhostsPath = new ExistAtLeast1FreeGhostsPath_T();
-	    	
-	    	
-	    	FSM cfsm1 = new FSM("Chase");
+	    	FSM cfsm1 = new FSM("FARM");
 	    	GraphFSMObserver c1observer = new GraphFSMObserver(cfsm1.toString());
 	    	cfsm1.addObserver(c1observer);
 	    	
-	    	SimpleState chasePill = new SimpleState("chasePill", new ChasePill_A());
+	    	SimpleState chasePill = new SimpleState("chasePills", new ChasePill_A());
 	    	SimpleState chasePP = new SimpleState("chasePP", new ChasePP_A());
-	    	SimpleState chaseGhost = new SimpleState("chaseGhost", new ChaseGhost_A());
 	    	
-	    	Transition chasePPConditions = new ChasePPConditions_T();
-	    	Transition chaseGhostConditions = new ChaseGhostConditions_T();
-	    	Transition chasePillConditions = new ChasePillConditions_T();
-	    	Transition eatenPowerPill = new EatenPowerPill_T();
+	    	Transition nearGhosts = new NearGhostsAndFreeGhostsPath_T();
+	    	Transition farGhosts = new GhostsFarFromPP_T();
 	    	
-	    	cfsm1.add(chasePill, chasePPConditions, chasePP);
-	    	cfsm1.add(chasePP, chaseGhostConditions, chaseGhost);
-	    	cfsm1.add(chasePill, eatenPowerPill, chaseGhost);
-	    	cfsm1.add(chaseGhost, chasePillConditions, chasePill);
+	    	cfsm1.add(chasePill, nearGhosts, chasePP);
+	    	cfsm1.add(chasePP, farGhosts, chasePill);
 	    	cfsm1.ready(chasePill);
 	    	
-	    	CompoundState chase = new CompoundState("chase", cfsm1);
+	    	CompoundState farm = new CompoundState("FARM", cfsm1);
 	    	
-	    	fsm.add(chase, notFreeGhostsPath, runAway);
-	    	fsm.add(runAway, freeGhostsPath, chase);
+	    	//RUNAWAY
 	    	
-	    	fsm.ready(chase);
+	    	FSM cfsm2 = new FSM("FARM");
+	    	GraphFSMObserver c2observer = new GraphFSMObserver(cfsm2.toString());
+	    	cfsm2.addObserver(c2observer);
+	    	
+	    	SimpleState directRunAway = new SimpleState("directRunAway", new RunAway_A());
+	    	SimpleState chasePPRunAway = new SimpleState("chasePP", new ChasePP_A());
+	    	
+	    	Transition freePath2PP = new FreeGhostsPath2PP_T();
+	    	Transition notFreePath2PP = new NoFreeGhostPath2PP_T();
+	    	
+	    	cfsm2.add(directRunAway, freePath2PP, chasePPRunAway);
+	    	cfsm2.add(chasePPRunAway, notFreePath2PP, directRunAway);
+	    	cfsm2.ready(directRunAway);
+	    	
+	    	CompoundState runAway = new CompoundState("RUN_AWAY", cfsm2);
+	    	
+	    	//CHASE NEAREST GHOST
+	    	
+	    	SimpleState chaseGhost = new SimpleState("Chase Ghost", new ChaseGhost_A());
+	    	
+	    	Transition edibleGhostNear = new EdibleGhostNear_T();
+	    	Transition noEdibleGhosts = new NoEdibleGhosts_T();
+	    	
+	    	//MAIN MSPACMANFSM
+	    	
+	    	Transition danger = new Danger_T();
+	    	Transition noDanger = new NoDanger_T();
+	    	Transition noDangerAndEdibleGhostNear = new NoDangerAndEdibleGhostNear_T();
+	    	
+	    	fsm.add(farm, danger, runAway);
+	    	fsm.add(runAway, noDanger, farm);
+	    	fsm.add(farm, edibleGhostNear, chaseGhost);
+	    	fsm.add(chaseGhost, noEdibleGhosts, farm);
+	    	fsm.add(runAway, noDangerAndEdibleGhostNear, chaseGhost);
+	    	fsm.add(chaseGhost, danger, runAway);
+	    	
+	    	
+	    	fsm.ready(farm);
 	    	
 	    	
 	    	JFrame frame = new JFrame();
@@ -74,6 +110,7 @@ public class MsPacManFSM extends PacmanController {
 	    	main.setLayout(new BorderLayout());
 	    	main.add(observer.getAsPanel(true, null), BorderLayout.CENTER);
 	    	main.add(c1observer.getAsPanel(true, null), BorderLayout.SOUTH);
+	    	main.add(c2observer.getAsPanel(true, null), BorderLayout.NORTH);
 	    	frame.getContentPane().add(main);
 	    	frame.pack();
 	    	frame.setVisible(true);
