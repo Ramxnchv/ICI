@@ -40,14 +40,15 @@ public class MsPacManFSM extends PacmanController {
 		public MsPacManFSM() {
 	    	fsm = new FSM("MsPacMan");
 	    	
-	    	GraphFSMObserver observer = new GraphFSMObserver(fsm.toString());
-	    	fsm.addObserver(observer);
+	    	//GraphFSMObserver observer = new GraphFSMObserver(fsm.toString());
+	    	//fsm.addObserver(observer);
 	    	
 	    	//FARM
 	    	
 	    	FSM cfsm1 = new FSM("FARM");
-	    	GraphFSMObserver c1observer = new GraphFSMObserver(cfsm1.toString());
-	    	cfsm1.addObserver(c1observer);
+	    	
+	    	//GraphFSMObserver c1observer = new GraphFSMObserver(cfsm1.toString());
+	    	//cfsm1.addObserver(c1observer);
 	    	
 	    	SimpleState chasePill = new SimpleState("chasePills", new ChasePill_A());
 	    	SimpleState chasePP = new SimpleState("chasePP", new ChasePP_A());
@@ -64,8 +65,8 @@ public class MsPacManFSM extends PacmanController {
 	    	//RUNAWAY
 	    	
 	    	FSM cfsm2 = new FSM("RUNAWAY");
-	    	GraphFSMObserver c2observer = new GraphFSMObserver(cfsm2.toString());
-	    	cfsm2.addObserver(c2observer);
+	    	//GraphFSMObserver c2observer = new GraphFSMObserver(cfsm2.toString());
+	    	//cfsm2.addObserver(c2observer);
 	    	
 	    	SimpleState directRunAway = new SimpleState("directRunAway", new RunAway_A());
 	    	SimpleState chasePPRunAway = new SimpleState("chasePP", new ChasePP_A());

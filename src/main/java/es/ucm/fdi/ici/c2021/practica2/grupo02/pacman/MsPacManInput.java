@@ -1,6 +1,6 @@
 package es.ucm.fdi.ici.c2021.practica2.grupo02.pacman;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -39,8 +39,8 @@ public class MsPacManInput extends Input {
 		
 		//Cargar los maps con ghosts para saber si son comestibles o no y sus distancias a pacman
 		
-		ghostEdible = new HashMap<GHOST, Boolean>();
-		ghostDistanceToPacman = new HashMap<GHOST, Double>();
+		ghostEdible = new EnumMap<GHOST, Boolean>(GHOST.class);
+		ghostDistanceToPacman = new EnumMap<GHOST, Double>(GHOST.class);
 		
 		for (GHOST g : GHOST.values()) {
 			ghostEdible.put(g, game.isGhostEdible(g));
