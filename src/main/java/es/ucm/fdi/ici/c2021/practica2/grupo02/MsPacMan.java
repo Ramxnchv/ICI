@@ -33,11 +33,11 @@ import pacman.controllers.PacmanController;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
-public class MsPacManFSM extends PacmanController {
+public class MsPacMan extends PacmanController {
 
 		FSM fsm;
 		
-		public MsPacManFSM() {
+		public MsPacMan() {
 	    	fsm = new FSM("MsPacMan");
 	    	
 	    	//GraphFSMObserver observer = new GraphFSMObserver(fsm.toString());
