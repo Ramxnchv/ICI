@@ -33,5 +33,6 @@
 	<classpathentry kind="lib" path="lib/gs-ui-swing-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/PacManEngineFSM.jar"/>
 	<classpathentry kind="lib" path="lib/PacManEngineFSMGraphObserver.jar"/>
+	<classpathentry kind="lib" path="lib/PacManEngineRules.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
