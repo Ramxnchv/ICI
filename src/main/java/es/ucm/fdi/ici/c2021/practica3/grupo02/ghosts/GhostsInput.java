@@ -101,15 +101,20 @@ public class GhostsInput extends Input {
 		return minPacmanDistancePPill;
 	}
 	
+	public String closestToPacman(GHOST g) {
+		if (g.equals(getClosest())) return "true";
+		else return "false";
+	}
+	
 	@Override
 	public Collection<String> getFacts() {
 		Vector<String> facts = new Vector<String>();
-		//facts.add(String.format("(BLINKY (edible %s))", this.BLINKYedible));
-		//facts.add(String.format("(INKY (edible %s))", this.INKYedible));
-		//facts.add(String.format("(PINKY (edible %s))", this.PINKYedible));
-		//facts.add(String.format("(SUE (edible %s))", this.SUEedible));
-		//facts.add(String.format("(MSPACMAN (mindistancePPill %d))", 
-		//(int)this.minPacmanDistancePPill));
+		facts.add(String.format("(BLINKY (edible %s)(lairTime %d)(edibleTime %d)(distToPacman %d)(closestToPacman %s))", getGhostEdible(GHOST.BLINKY), getLairTime(GHOST.BLINKY), getEdibleTime(GHOST.BLINKY), (int)getGhostDistanceToPacman(GHOST.BLINKY), closestToPacman(GHOST.BLINKY)));
+		facts.add(String.format("(INKY (edible %s)(lairTime %d)(edibleTime %d)(distToPacman %d)(closestToPacman %s))", getGhostEdible(GHOST.INKY), getLairTime(GHOST.INKY), getEdibleTime(GHOST.INKY), (int)getGhostDistanceToPacman(GHOST.INKY), closestToPacman(GHOST.INKY)));
+		facts.add(String.format("(PINKY (edible %s)(lairTime %d)(edibleTime %d)(distToPacman %d)(closestToPacman %s))", getGhostEdible(GHOST.PINKY), getLairTime(GHOST.PINKY), getEdibleTime(GHOST.PINKY), (int)getGhostDistanceToPacman(GHOST.PINKY), closestToPacman(GHOST.PINKY)));
+		facts.add(String.format("(SUE (edible %s)(lairTime %d)(edibleTime %d)(distToPacman %d)(closestToPacman %s))", getGhostEdible(GHOST.SUE), getLairTime(GHOST.SUE), getEdibleTime(GHOST.SUE), (int)getGhostDistanceToPacman(GHOST.SUE), closestToPacman(GHOST.SUE)));
+		facts.add(String.format("(MSPACMAN (mindistancePPill %d))", 
+		(int)getMinPacmanDistancePPill()));
 		return facts;
 	}
 	

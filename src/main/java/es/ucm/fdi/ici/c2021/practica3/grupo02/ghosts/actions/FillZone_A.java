@@ -8,10 +8,10 @@ import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
 // Action para buscar caminos que corten la ruta del Pacman
-public class FindCutRoute_A implements Action {
+public class FillZone_A implements Action {
 
     GHOST ghost;
-	public FindCutRoute_A( GHOST ghost) {
+	public FillZone_A( GHOST ghost) {
 		this.ghost = ghost;
 	}
 
