@@ -37,7 +37,7 @@
 ;RULES
 
 (defrule PINKYrandom
-	(PINKY (lairTime ?lt) (test > ?lt 0))
+	(PINKY (lairTime ?lt)) (test (> ?lt 0))
 	=>
 	(assert (ACTION (id PINKYrandom) (info "PINKY en la jaula --> salida aleatoria")))
 )
@@ -60,26 +60,26 @@
 (defrule PINKYrunsAwayMSPACMANclosePPill ;HUIDA PREVENTIVA
 	(PINKY (edible false))
 	(MSPACMAN (mindistancePPill ?d)) (test (<= ?d 30))
-	(PINKY (distToPacman ?dp) (test (<= ?dp 30))) 
+	(PINKY (distToPacman ?dp)) (test (<= ?dp 30))
 	=>  
 	(assert (ACTION (id PINKYrunsAway) (info "PINKY cerca de MSPacman Y éste cerca PPill --> huir"))) )
 
 (defrule PINKYrunsAway ;HUÍDA DIRECTA
 	(PINKY (edible true))
-	(PINKY (distToPacman ?dp) (test <= ?dp 30)) 
+	(PINKY (distToPacman ?dp)) (test (<= ?dp 30)) 
 	=>  
 	(assert (ACTION (id PINKYrunsAway) (info "PINKY comestible y muy cerca --> huir") )))
 	
 (defrule PINKYgoesToFarthestNode ;IR AL PUNTO MÁS LEJANO
 	(PINKY (edible true))
-	(PINKY (distToPacman ?dp) (test > ?dp 30))
+	(PINKY (distToPacman ?dp)) (test (> ?dp 30))
 	=>
 	(assert (ACTION (id PINKYgoesToFarthestNode) (info "PINKY comestible y no muy cerca --> aumentar distancia"))))
 
 (defrule PINKYearlyChases ; PERSECUCIÓN PRECOZ
 	(PINKY (edible true))
-	(PINKY (distToPacman ?dp) (test > ?dp 30))
-	(PINKY (edibleTime ?et) (test > ?et 30))
+	(PINKY (distToPacman ?dp)) (test (> ?dp 30))
+	(PINKY (edibleTime ?et)) (test (> ?et 30))
 	=>
-	(assert (ACTION PINKYchases) (info "PINKY comestible por poco tiempo y no muy cerca --> perseguir"))
+	(assert (ACTION (id PINKYchases) (info "PINKY comestible por poco tiempo y no muy cerca --> perseguir")))
 )	

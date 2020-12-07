@@ -37,7 +37,7 @@
 ;RULES
 
 (defrule SUErandom
-	(SUE (lairTime ?lt) (test > ?lt 0))
+	(SUE (lairTime ?lt)) (test (> ?lt 0))
 	=>
 	(assert (ACTION (id SUErandom) (info "SUE en la jaula --> salida aleatoria")))
 )
@@ -60,26 +60,26 @@
 (defrule SUErunsAwayMSPACMANclosePPill ;HUIDA PREVENTIVA
 	(SUE (edible false))
 	(MSPACMAN (mindistancePPill ?d)) (test (<= ?d 30))
-	(SUE (distToPacman ?dp) (test (<= ?dp 30))) 
+	(SUE (distToPacman ?dp)) (test (<= ?dp 30)) 
 	=>  
 	(assert (ACTION (id SUErunsAway) (info "SUE cerca de MSPacman Y éste cerca PPill --> huir"))) )
 
 (defrule SUErunsAway ;HUÍDA DIRECTA
 	(SUE (edible true))
-	(SUE (distToPacman ?dp) (test <= ?dp 30)) 
+	(SUE (distToPacman ?dp)) (test (<= ?dp 30))
 	=>  
 	(assert (ACTION (id SUErunsAway) (info "SUE comestible y muy cerca --> huir") )))
 	
 (defrule SUEgoesToFarthestNode ;IR AL PUNTO MÁS LEJANO
 	(SUE (edible true))
-	(SUE (distToPacman ?dp) (test > ?dp 30))
+	(SUE (distToPacman ?dp)) (test (> ?dp 30))
 	=>
 	(assert (ACTION (id SUEgoesToFarthestNode) (info "SUE comestible y no muy cerca --> aumentar distancia"))))
 
 (defrule SUEearlyChases ; PERSECUCIÓN PRECOZ
 	(SUE (edible true))
-	(SUE (distToPacman ?dp) (test > ?dp 30))
-	(SUE (edibleTime ?et) (test > ?et 30))
+	(SUE (distToPacman ?dp)) (test (> ?dp 30))
+	(SUE (edibleTime ?et)) (test (> ?et 30))
 	=>
 	(assert (ACTION SUEchases) (info "SUE comestible por poco tiempo y no muy cerca --> perseguir"))
 )	

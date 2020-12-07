@@ -37,7 +37,7 @@
 ;RULES
 
 (defrule INKYrandom
-	(INKY (lairTime ?lt) (test > ?lt 0))
+	(INKY (lairTime ?lt)) (test (> ?lt 0))
 	=>
 	(assert (ACTION (id INKYrandom) (info "INKY en la jaula --> salida aleatoria")))
 )
@@ -60,28 +60,28 @@
 (defrule INKYrunsAwayMSPACMANclosePPill ;HUIDA PREVENTIVA
 	(INKY (edible false))
 	(MSPACMAN (mindistancePPill ?d)) (test (<= ?d 30))
-	(INKY (distToPacman ?dp) (test (<= ?dp 30))) 
+	(INKY (distToPacman ?dp)) (test (<= ?dp 30)) 
 	=>  
 	(assert (ACTION (id INKYrunsAway) (info "INKY cerca de MSPacman Y éste cerca PPill --> huir"))) )
 
 (defrule INKYrunsAway ;HUÍDA DIRECTA
 	(INKY (edible true))
-	(INKY (distToPacman ?dp) (test <= ?dp 30)) 
+	(INKY (distToPacman ?dp)) (test (<= ?dp 30)) 
 	=>  
 	(assert (ACTION (id INKYrunsAway) (info "INKY comestible y muy cerca --> huir") )))
 	
 (defrule INKYgoesToFarthestNode ;IR AL PUNTO MÁS LEJANO
 	(INKY (edible true))
-	(INKY (distToPacman ?dp) (test > ?dp 30))
+	(INKY (distToPacman ?dp)) (test (> ?dp 30))
 	=>
 	(assert (ACTION (id INKYgoesToFarthestNode) (info "INKY comestible y no muy cerca --> aumentar distancia"))))
 
 (defrule INKYearlyChases ; PERSECUCIÓN PRECOZ
 	(INKY (edible true))
-	(INKY (distToPacman ?dp) (test > ?dp 30))
-	(INKY (edibleTime ?et) (test > ?et 30))
+	(INKY (distToPacman ?dp)) (test (> ?dp 30))
+	(INKY (edibleTime ?et)) (test (> ?et 30))
 	=>
-	(assert (ACTION INKYchases) (info "INKY comestible por poco tiempo y no muy cerca --> perseguir"))
+	(assert (ACTION (id INKYchases) (info "INKY comestible por poco tiempo y no muy cerca --> perseguir")))
 )	
 
 	
