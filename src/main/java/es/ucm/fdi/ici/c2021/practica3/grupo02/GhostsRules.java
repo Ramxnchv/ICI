@@ -18,7 +18,7 @@ import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
-public class GhostsRules  extends GhostController  {
+public class GhostsRules extends GhostController  {
 
 	private static final String RULES_PATH = "src\\main\\java\\es\\ucm\\fdi\\ici\\c2021\\practica3\\grupo02\\";
 	

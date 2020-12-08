@@ -15,7 +15,7 @@ package es.ucm.fdi.ici.c2021.practica3.grupo02;
 					.setScaleFactor(3.0)
 					.build();
 						
-					PacmanController pacMan = /*new MsPacMan();*/ new HumanController(new KeyBoardInput());
+					PacmanController pacMan = new PacManRules(); //new HumanController(new KeyBoardInput());
 					GhostController ghosts = new GhostsRules();
 						
 					System.out.println(

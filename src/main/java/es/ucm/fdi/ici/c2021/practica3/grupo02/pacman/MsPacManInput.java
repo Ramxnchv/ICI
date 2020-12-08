@@ -61,7 +61,7 @@ public class MsPacManInput extends Input {
 		
 		//Obtener distancia al mas cercano
 		distance2Closest = 1000000000;
-		if(game.getGhostCurrentNodeIndex(nearestGhost)!=LAIR_NODE && game.isGhostEdible(nearestGhost)==false) {
+		if( game.getGhostCurrentNodeIndex(nearestGhost)!=LAIR_NODE && game.isGhostEdible(nearestGhost)==false) {
 			this.distance2Closest = game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(nearestGhost), DM.PATH);
 		}
 		
@@ -82,7 +82,7 @@ public class MsPacManInput extends Input {
 		
 		for(GHOST g: GHOST.values()) {
 			boolean edible = game.isGhostEdible(g);
-			boolean initialnode = game.getGhostCurrentNodeIndex(g) == LAIR_NODE;
+			boolean initialnode = game.getGhostLairTime(g) >= 0;
 			
 			if(edible==false && initialnode==false) {
 				double distance = game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(g), game.getPacmanLastMoveMade(), DM.PATH); 
@@ -178,13 +178,16 @@ public class MsPacManInput extends Input {
 	}
 
 	public boolean isSpawnPoint() {
-		return spawnPoint;
+		return spawnPoint || game.getNumberOfPills() == 0;
 	}
 
 	@Override
 	public Collection<String> getFacts() {
-		// TODO Auto-generated method stub
-		return null;
+		Vector<String> facts = new Vector<String>();
+		facts.add(String.format("(MSPACMAN (edibleGhosts %d) (nearestGhostEdible %s) (numberOfGhostsNear %d) (activePowerPills %d) (freeGhostsPath %s) (distance2Closest %d) (spawnPoint %s))", 
+				getEdibleGhosts(), isNearestGhostEdible(), getNumberOfGhostsNear(), getActivePowerPills(), isFreeGhostsPath(), (int) getDistance2Closest(), isSpawnPoint()));
+		
+		return facts;
 	}
 	
 }
