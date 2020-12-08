@@ -20,7 +20,7 @@ public class GhostsInput extends Input {
 	
 	private Map<GHOST, Boolean> ghostEdible;
 	private Map<GHOST, Boolean> ghostEaten;
-	private Map<GHOST, Integer> ghostLairTime;
+	private Map<GHOST, Double> ghostDistanceToNearestPPill;
 	private Map<GHOST, Integer> ghostEdibleTime;
 	private Map<GHOST, Double> ghostDistanceToPacman;
 	
@@ -40,22 +40,27 @@ public class GhostsInput extends Input {
 		
 		ghostEdible = new EnumMap<GHOST, Boolean>(GHOST.class);
 		ghostEaten = new EnumMap<GHOST, Boolean>(GHOST.class);
-		ghostLairTime = new EnumMap<GHOST, Integer>(GHOST.class);
+		ghostDistanceToNearestPPill = new EnumMap<GHOST, Double>(GHOST.class);
 		ghostEdibleTime= new EnumMap<GHOST, Integer>(GHOST.class);
 		ghostDistanceToPacman = new EnumMap<GHOST, Double>(GHOST.class);
+		
+		this.minPacmanDistancePPill = Double.MAX_VALUE;
+		int closestPPillNode = 0;
+		for(int ppill: game.getActivePowerPillsIndices()) {
+			double distance = game.getDistance(game.getPacmanCurrentNodeIndex(), ppill, DM.PATH);
+			if(distance < this.minPacmanDistancePPill) {
+				this.minPacmanDistancePPill = distance;
+				closestPPillNode = ppill;
+			}
+		}
 		
 		for (GHOST g : GHOST.values()) {
 			ghostEdible.put(g, game.isGhostEdible(g));
 			ghostEaten.put(g, game.wasGhostEaten(g));
-			ghostLairTime.put(g, game.getGhostLairTime(g));
+			//ghostLairTime.put(g, game.getGhostLairTime(g));
 			ghostEdibleTime.put(g, game.getGhostEdibleTime(g));
 			ghostDistanceToPacman.put(g, game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(g), DM.PATH));
-		}
-		
-		this.minPacmanDistancePPill = Double.MAX_VALUE;
-		for(int ppill: game.getActivePowerPillsIndices()) {
-			double distance = game.getDistance(game.getPacmanCurrentNodeIndex(), ppill, DM.PATH);
-			this.minPacmanDistancePPill = Math.min(distance, this.minPacmanDistancePPill);
+			ghostDistanceToNearestPPill.put(g, game.getDistance(game.getGhostCurrentNodeIndex(g), closestPPillNode, DM.PATH));
 		}
 		
 		// Fantasma mas cercano
@@ -81,8 +86,8 @@ public class GhostsInput extends Input {
 		return ghostEdibleTime.get(g);
 	} 
 	
-	public int getLairTime(GHOST g) {
-		return ghostLairTime.get(g);
+	public boolean getStartIniNode(GHOST g) {
+		return game.getGhostInitialNodeIndex() == game.getGhostCurrentNodeIndex(g);
 	} 
 	
 	public boolean getGhostEdible(GHOST g) {
@@ -101,6 +106,10 @@ public class GhostsInput extends Input {
 		return minPacmanDistancePPill;
 	}
 	
+	public double getDistanceToNearestPPill(GHOST g) {
+		return ghostDistanceToNearestPPill.get(g);
+	}
+	
 	public boolean closestToPacman(GHOST g) {
 		return g.equals(getClosest());
 	}
@@ -108,12 +117,11 @@ public class GhostsInput extends Input {
 	@Override
 	public Collection<String> getFacts() {
 		Vector<String> facts = new Vector<String>();
-		facts.add(String.format("(BLINKY (edible %s) (lairTime %d) (edibleTime %d) (distToPacman %d) (closestToPacman %s))", getGhostEdible(GHOST.BLINKY), getLairTime(GHOST.BLINKY), getEdibleTime(GHOST.BLINKY), (int)getGhostDistanceToPacman(GHOST.BLINKY), closestToPacman(GHOST.BLINKY)));
-		facts.add(String.format("(INKY (edible %s) (lairTime %d) (edibleTime %d) (distToPacman %d) (closestToPacman %s))", getGhostEdible(GHOST.INKY), getLairTime(GHOST.INKY), getEdibleTime(GHOST.INKY), (int)getGhostDistanceToPacman(GHOST.INKY), closestToPacman(GHOST.INKY)));
-		facts.add(String.format("(PINKY (edible %s) (lairTime %d) (edibleTime %d) (distToPacman %d) (closestToPacman %s))", getGhostEdible(GHOST.PINKY), getLairTime(GHOST.PINKY), getEdibleTime(GHOST.PINKY), (int)getGhostDistanceToPacman(GHOST.PINKY), closestToPacman(GHOST.PINKY)));
-		facts.add(String.format("(SUE (edible %s) (lairTime %d) (edibleTime %d) (distToPacman %d) (closestToPacman %s))", getGhostEdible(GHOST.SUE), getLairTime(GHOST.SUE), getEdibleTime(GHOST.SUE), (int)getGhostDistanceToPacman(GHOST.SUE), closestToPacman(GHOST.SUE)));
-		facts.add(String.format("(MSPACMAN (mindistancePPill %d))", 
-		(int)getMinPacmanDistancePPill()));
+		facts.add(String.format("(BLINKY (edible %s) (iniNode %s) (edibleTime %d) (distToPacman %d) (distToNearestPPill %d) (closestToPacman %s))",	getGhostEdible(GHOST.BLINKY), getStartIniNode(GHOST.BLINKY),getEdibleTime(GHOST.BLINKY), (int)getGhostDistanceToPacman(GHOST.BLINKY), (int)getDistanceToNearestPPill(GHOST.BLINKY), closestToPacman(GHOST.BLINKY)));
+		facts.add(String.format("(INKY (edible %s) (iniNode %s) (edibleTime %d) (distToPacman %d) (distToNearestPPill %d) (closestToPacman %s))", getGhostEdible(GHOST.INKY), getStartIniNode(GHOST.INKY), getEdibleTime(GHOST.INKY), (int)getGhostDistanceToPacman(GHOST.INKY), (int)getDistanceToNearestPPill(GHOST.INKY),closestToPacman(GHOST.INKY)));
+		facts.add(String.format("(PINKY (edible %s) (iniNode %s) (edibleTime %d) (distToPacman %d) (distToNearestPPill %d) (closestToPacman %s))", getGhostEdible(GHOST.PINKY), getStartIniNode(GHOST.PINKY), getEdibleTime(GHOST.PINKY), (int)getGhostDistanceToPacman(GHOST.PINKY), (int)getDistanceToNearestPPill(GHOST.PINKY),closestToPacman(GHOST.PINKY)));
+		facts.add(String.format("(SUE (edible %s) (iniNode %s) (edibleTime %d) (distToPacman %d) (distToNearestPPill %d) (closestToPacman %s))", getGhostEdible(GHOST.SUE), getStartIniNode(GHOST.SUE), getEdibleTime(GHOST.SUE), (int)getGhostDistanceToPacman(GHOST.SUE), (int)getDistanceToNearestPPill(GHOST.SUE),closestToPacman(GHOST.SUE)));
+		facts.add(String.format("(MSPACMAN (mindistancePPill %d))", (int)getMinPacmanDistancePPill()));
 		return facts;
 	}
 	
