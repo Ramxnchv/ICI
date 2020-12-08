@@ -64,7 +64,7 @@ public class GhostsRules extends GhostController  {
 			ghostRuleEngines.put(ghost, engine);
 			
 			//add observer to every Ghost
-			//ConsoleRuleEngineObserver observer = new ConsoleRuleEngineObserver(ghost.name(), true);
+			//ConsoleRuleEngineObserver observer = new ConsoleRuleEngineObserver(ghost.name(), false);
 			//engine.addObserver(observer);
 		}
 		

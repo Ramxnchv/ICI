@@ -19,9 +19,8 @@ package es.ucm.fdi.ici.c2021.practica3.grupo02;
 					GhostController ghosts = new GhostsRules();
 						
 					System.out.println(
-					executor.runGame(pacMan, ghosts, 40)
+					executor.runGame(pacMan, ghosts, 200)
 				);
 			}
 
 }
-
