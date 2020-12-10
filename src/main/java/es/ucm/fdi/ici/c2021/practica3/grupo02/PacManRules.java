@@ -34,8 +34,8 @@ public class PacManRules extends PacmanController{
 		String rulesFile = String.format("%s/%srules.clp", RULES_PATH, "pacman");
 		pacmanEngine  = new RuleEngine("pacman",rulesFile, map);
 		
-		ConsoleRuleEngineObserver observer = new ConsoleRuleEngineObserver("pacman", true);
-		pacmanEngine.addObserver(observer);
+		//ConsoleRuleEngineObserver observer = new ConsoleRuleEngineObserver("pacman", true);
+		//pacmanEngine.addObserver(observer);
 		
 	}
 	

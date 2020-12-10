@@ -21,7 +21,7 @@ public class RandomMove_A implements Action {
 	public MOVE execute(Game g) {
 		if (g.doesGhostRequireAction(me)) {
 			MOVE [] possibleMoves = g.getPossibleMoves(g.getGhostCurrentNodeIndex(me));
-			return possibleMoves[(new Random()).nextInt() % possibleMoves.length];
+			return possibleMoves[(new Random()).nextInt(possibleMoves.length)];
 		}
 		
 		return null;
