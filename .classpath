@@ -36,5 +36,7 @@
 	<classpathentry kind="lib" path="lib/PacManEngineRules.jar"/>
 	<classpathentry kind="lib" path="lib/jess.jar"/>
 	<classpathentry kind="lib" path="lib/jsr94.jar"/>
+	<classpathentry kind="lib" path="lib/jFuzzyLogic.jar"/>
+	<classpathentry kind="lib" path="lib/PacManEngineFuzzy.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
