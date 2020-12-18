@@ -1,4 +1,4 @@
-package es.ucm.fdi.ici.c2021.practica4.grupo02;
+package es.ucm.fdi.ici.c2021.practica4.grupo02.pacman;
 
 import es.ucm.fdi.ici.fuzzy.ActionSelector;
 import es.ucm.fdi.ici.fuzzy.FuzzyEngine;
@@ -9,7 +9,7 @@ import pacman.game.Game;
 
 public class MsPacManFuzzy extends PacmanController {
 
-	private static final String RULES_PATH = "src/main/java/es/ucm/fdi/ici/c2021/practica4/grupo02/";
+	private static final String RULES_PATH = "src/main/java/es/ucm/fdi/ici/c2021/practica4/grupo02/pacman/";
 	FuzzyEngine fuzzyEngine;
 	MsPacManInput input ;
 	
@@ -18,9 +18,9 @@ public class MsPacManFuzzy extends PacmanController {
 		ActionSelector actionSelector = new MsPacManActionSelector();
 		 input = new MsPacManInput();
 		 
-		ConsoleFuzzyEngineObserver observer = new ConsoleFuzzyEngineObserver("MsPacMan","MsPacManRules");
+		//ConsoleFuzzyEngineObserver observer = new ConsoleFuzzyEngineObserver("MsPacMan","MsPacManRules");
 		fuzzyEngine = new FuzzyEngine("MsPacMan",RULES_PATH+"mspacman.fcl","FuzzyMsPacMan",actionSelector);
-		fuzzyEngine.addObserver(observer);
+		//fuzzyEngine.addObserver(observer);
 	}
 	
 	

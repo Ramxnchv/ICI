@@ -1,9 +1,12 @@
 package es.ucm.fdi.ici.c2021.practica4.grupo02;
 
 
+import es.ucm.fdi.ici.c2021.practica4.grupo02.ghosts.GhostsFuzzy;
+import es.ucm.fdi.ici.c2021.practica4.grupo02.pacman.MsPacManFuzzy;
 import pacman.Executor;
 import pacman.controllers.GhostController;
 import pacman.controllers.PacmanController;
+import pacman.game.Constants.GHOST;
 
 
 public class ExecutorTest {
@@ -18,7 +21,14 @@ public class ExecutorTest {
                 .build();
 
         PacmanController pacMan = new MsPacManFuzzy();
-        GhostController ghosts = new GhostsRandom();
+        GhostController ghosts = new GhostsFuzzy();
+        
+        /*
+        GhostController[] ghosts = new GhostController[4];
+        for(GHOST g : GHOST.values()) {
+        	ghosts[g.ordinal()] = new GhostsRandom();
+        }
+        */
         
         System.out.println( 
         		executor.runGame(pacMan, ghosts, 40)

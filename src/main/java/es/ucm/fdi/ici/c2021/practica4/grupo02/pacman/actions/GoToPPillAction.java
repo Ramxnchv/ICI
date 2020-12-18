@@ -1,4 +1,4 @@
-package es.ucm.fdi.ici.c2021.practica4.grupo02.actions;
+package es.ucm.fdi.ici.c2021.practica4.grupo02.pacman.actions;
 
 
 import java.util.Random;

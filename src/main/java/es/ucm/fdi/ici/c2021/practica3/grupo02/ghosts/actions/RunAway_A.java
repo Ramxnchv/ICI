@@ -21,7 +21,7 @@ public class RunAway_A implements Action {
                 return game.getApproximateNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(ghost),
                         game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.PATH);
         }
-        return MOVE.NEUTRAL;	
+        return MOVE.NEUTRAL;
 	}
 
 	@Override
