@@ -9,10 +9,15 @@ VAR_INPUT				// Define input variables
 	PINKYconfidence : REAL;
 	INKYconfidence : REAL;
 	SUEconfidence : REAL;
+	BLINKYDir : REAL;
+	PINKYDir : REAL;
+	INKYDir : REAL;
+	SUEDir : REAL;
 END_VAR
 
 VAR_OUTPUT				// Define output variable
 	runAway : REAL;
+	dirCondifence : REAL;
 END_VAR
 
 FUZZIFY BLINKYdistance			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
@@ -60,6 +65,14 @@ DEFUZZIFY runAway			// Defzzzify output variable 'tip' : {'cheap', 'average', 'g
 	TERM calm := (0,1) (5,1) (15,0);
 	TERM nervious := gauss 15 5;
 	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+DEFUZZIFY dirCondifence			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+	TERM north := gauss 20 60;
+	TERM south := gauss 60 100;
+	TERM west := gauss 0 40, gauss 80 120;
+	TERM east := gauss 40 80;
 	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
 	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
 END_DEFUZZIFY
