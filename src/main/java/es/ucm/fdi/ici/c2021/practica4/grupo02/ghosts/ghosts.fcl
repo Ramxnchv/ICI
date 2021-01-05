@@ -1,4 +1,4 @@
-FUNCTION_BLOCK FuzzyMsPacMan	// Block definition (there may be more than one block per file)
+FUNCTION_BLOCK FuzzyGhosts	// Block definition (there may be more than one block per file)
 
 VAR_INPUT				// Define input variables
 	BLINKYdistance : REAL;
@@ -9,58 +9,91 @@ VAR_INPUT				// Define input variables
 	PINKYconfidence : REAL;
 	INKYconfidence : REAL;
 	SUEconfidence : REAL;
-	BLINKYDir : REAL;
-	PINKYDir : REAL;
-	INKYDir : REAL;
-	SUEDir : REAL;
+	BLINKYdirection : REAL;
+	PINKYdirection : REAL;
+	INKYdirection : REAL;
+	SUEdirection : REAL;
 END_VAR
 
 VAR_OUTPUT				// Define output variable
 	runAway : REAL;
-	dirCondifence : REAL;
+	nextTurn : REAL;
 END_VAR
 
-FUZZIFY BLINKYdistance			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
+FUZZIFY BLINKYdistance			// Fuzzify input variable 'distance': {'near', 'medium' , 'far'}
 	TERM near := (0, 1) (60, 0) ; 
 	TERM medium := gauss 75 25;
 	TERM far := (90, 0) (150, 1) (200, 1);
 END_FUZZIFY
-FUZZIFY PINKYdistance			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
+FUZZIFY PINKYdistance			// Fuzzify input variable 'distance': {'near', 'medium' , 'far'}
 	TERM near := (0, 1) (60, 0) ; 
 	TERM medium := gauss 75 25;
 	TERM far := (90, 0) (150, 1) (200, 1);
 END_FUZZIFY
-FUZZIFY INKYdistance			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
+FUZZIFY INKYdistance			// Fuzzify input variable 'distance': {'near', 'medium' , 'far'}
 	TERM near := (0, 1) (60, 0) ; 
 	TERM medium := gauss 75 25;
 	TERM far := (90, 0) (150, 1) (200, 1);
 END_FUZZIFY
-FUZZIFY SUEdistance			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
+FUZZIFY SUEdistance			// Fuzzify input variable 'distance': {'near', 'medium' , 'far'}
 	TERM near := (0, 1) (60, 0) ; 
 	TERM medium := gauss 75 25;
 	TERM far := (90, 0) (150, 1) (200, 1);
 END_FUZZIFY
 
-FUZZIFY BLINKYconfidence			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
+FUZZIFY BLINKYconfidence			// Fuzzify input variable 'confidence': {'low', 'medium' , 'high'}
 	TERM low := (0,1)(25,1)(50,0) ; 
 	TERM medium := gauss 50 25;
 	TERM high := (50,0)(75,1)(100,1);
 END_FUZZIFY
-FUZZIFY INKYconfidence			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
+FUZZIFY INKYconfidence			// Fuzzify input variable 'confidence': {'low', 'medium' , 'high'}
 	TERM low := (0,1)(25,1)(50,0) ; 
 	TERM medium := gauss 50 25;
 	TERM high := (50,0)(75,1)(100,1);
 END_FUZZIFY
-FUZZIFY PINKYconfidence			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
+FUZZIFY PINKYconfidence			// Fuzzify input variable 'confidence': {'low', 'medium' , 'high'}
 	TERM low := (0,1)(25,1)(50,0) ; 
 	TERM medium := gauss 50 25;
 	TERM high := (50,0)(75,1)(100,1);
 END_FUZZIFY
-FUZZIFY SUEconfidence			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
+FUZZIFY SUEconfidence			// Fuzzify input variable 'confidence': {'low', 'medium' , 'high'}
 	TERM low := (0,1)(25,1)(50,0) ; 
 	TERM medium := gauss 50 25;
 	TERM high := (50,0)(75,1)(100,1);
 END_FUZZIFY
+
+FUZZIFY BLINKYdirection			// Fuzzify input variable 'direction': { 'west' , 'north' ,'east' , 'south' }
+	TERM none := (-1,1)(0,0);
+	TERM north := (0,1)(25,0)(75,0)(100,1);
+	TERM east := (0,0)(25,1)(50,0);
+	TERM south := (25,0)(50,1)(75,0);
+	TERM west := (50,0)(75,1)(100,0);
+END_FUZZIFY
+
+FUZZIFY PINKYdirection			// Fuzzify input variable 'direction': { 'west' , 'north' ,'east' , 'south' }
+	TERM none := (-1,1)(0,0);
+	TERM north := (0,1)(25,0)(75,0)(100,1);
+	TERM east := (0,0)(25,1)(50,0);
+	TERM south := (25,0)(50,1)(75,0);
+	TERM west := (50,0)(75,1)(100,0);
+END_FUZZIFY
+
+FUZZIFY INKYdirection			// Fuzzify input variable 'direction': { 'west' , 'north' ,'east' , 'south' }
+	TERM none := (-1,1)(0,0);
+	TERM north := (0,1)(25,0)(75,0)(100,1);
+	TERM east := (0,0)(25,1)(50,0);
+	TERM south := (25,0)(50,1)(75,0);
+	TERM west := (50,0)(75,1)(100,0);
+END_FUZZIFY
+
+FUZZIFY SUEdirection			// Fuzzify input variable 'direction': { 'west' , 'north' ,'east' , 'south' }
+	TERM none := (-1,1)(0,0);
+	TERM north := (0,1)(25,0)(75,0)(100,1);
+	TERM east := (0,0)(25,1)(50,0);
+	TERM south := (25,0)(50,1)(75,0);
+	TERM west := (50,0)(75,1)(100,0);
+END_FUZZIFY
+
 DEFUZZIFY runAway			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
 	TERM calm := (0,1) (5,1) (15,0);
 	TERM nervious := gauss 15 5;
@@ -68,20 +101,22 @@ DEFUZZIFY runAway			// Defzzzify output variable 'tip' : {'cheap', 'average', 'g
 	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
 	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
 END_DEFUZZIFY
-DEFUZZIFY dirCondifence			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
-	TERM north := gauss 20 60;
-	TERM south := gauss 60 100;
-	TERM west := gauss 0 40, gauss 80 120;
-	TERM east := gauss 40 80;
+
+DEFUZZIFY nextTurn			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+	TERM random := (-1,1);
+	TERM up := (0,1)(25,0)(75,0)(100,1);
+	TERM right := (0,0)(25,1)(50,0);
+	TERM down := (25,0)(50,1)(75,0);
+	TERM left := (50,0)(75,1)(100,0);
 	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
 	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
 END_DEFUZZIFY
 
 
-RULEBLOCK MsPacManRules
+RULEBLOCK GhostsRules
 	AND : MIN;			// Use 'min' for 'and' (also implicit use 'max' for 'or' to fulfill DeMorgan's Law)
-	ACT : MIN;			// Use 'min' activation method
-	ACCU : MAX;			// Use 'MAX' accumulation method (Other options PROBOR and SUM)
+	//ACT : MIN;			// Use 'min' activation method
+	//ACCU : MAX;			// Use 'MAX' accumulation method (Other options PROBOR and SUM)
 
 	RULE 1 : IF BLINKYdistance IS near AND BLINKYconfidence IS high THEN runAway IS emergency;
 	RULE 2 : IF PINKYdistance IS near AND PINKYconfidence IS high THEN runAway IS emergency;
@@ -95,6 +130,26 @@ RULEBLOCK MsPacManRules
 	RULE 10 : IF PINKYdistance IS far THEN runAway IS calm;
 	RULE 11 : IF INKYdistance IS far THEN runAway IS calm;
 	RULE 12 : IF SUEdistance IS far THEN runAway IS calm;
+	RULE 13 : IF BLINKYdirection IS none THEN nextTurn IS random;
+	RULE 14 : IF BLINKYdirection IS north THEN nextTurn IS up;
+	RULE 15 : IF BLINKYdirection IS west THEN nextTurn IS left;
+	RULE 16 : IF BLINKYdirection IS south THEN nextTurn IS down;
+	RULE 17 : IF BLINKYdirection IS east THEN nextTurn IS right;
+	RULE 18 : IF PINKYdirection IS none THEN nextTurn IS random;
+	RULE 19 : IF PINKYdirection IS north THEN nextTurn IS up;
+	RULE 20 : IF PINKYdirection IS west THEN nextTurn IS left;
+	RULE 21 : IF PINKYdirection IS south THEN nextTurn IS down;
+	RULE 22 : IF PINKYdirection IS east THEN nextTurn IS right;
+	RULE 23 : IF INKYdirection IS none THEN nextTurn IS random;
+	RULE 24 : IF INKYdirection IS north THEN nextTurn IS up;
+	RULE 25 : IF INKYdirection IS west THEN nextTurn IS left;
+	RULE 26 : IF INKYdirection IS south THEN nextTurn IS down;
+	RULE 27 : IF INKYdirection IS east THEN nextTurn IS right;
+	RULE 28 : IF SUEdirection IS none THEN nextTurn IS random;
+	RULE 29 : IF SUEdirection IS north THEN nextTurn IS up;
+	RULE 30 : IF SUEdirection IS west THEN nextTurn IS left;
+	RULE 31 : IF SUEdirection IS south THEN nextTurn IS down;
+	RULE 32 : IF SUEdirection IS east THEN nextTurn IS right;
 END_RULEBLOCK
 
 END_FUNCTION_BLOCK
