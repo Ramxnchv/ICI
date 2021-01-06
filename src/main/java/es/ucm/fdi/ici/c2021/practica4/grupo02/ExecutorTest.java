@@ -19,7 +19,7 @@ public class ExecutorTest {
                 .setScaleFactor(3.0)
                 .build();
 
-        PacmanController pacMan = /*new MsPacManFuzzy();*/new HumanController(new KeyBoardInput());
+        PacmanController pacMan = new MsPacManFuzzy();/*new HumanController(new KeyBoardInput());*/
         GhostController ghosts = new Ghosts();
         
         System.out.println( 
