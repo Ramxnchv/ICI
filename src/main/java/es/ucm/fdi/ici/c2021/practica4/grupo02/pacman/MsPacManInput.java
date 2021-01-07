@@ -11,8 +11,8 @@ import pacman.game.Game;
 
 public class MsPacManInput implements Input {
 
-	double[] distance = {50,50,50,50};
-	double[] confidence = {100,100,100,100};
+	private double[] distance = {50,50,50,50};
+	private double[] confidence = {100,100,100,100};
 	private EnumMap <GHOST, EnumMap<MOVE, Integer>> movements;
 	
 	public MsPacManInput() {

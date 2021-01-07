@@ -22,9 +22,9 @@ public final class GhostsFuzzy extends POGhostController {
 		ActionSelector actionSelector = new GhostsActionSelector();
 		input = new GhostsInput();
 		 
-		 ConsoleFuzzyEngineObserver observer = new ConsoleFuzzyEngineObserver("Ghosts","GhostsRules");
+		 //ConsoleFuzzyEngineObserver observer = new ConsoleFuzzyEngineObserver("Ghosts","GhostsRules");
 			fuzzyEngine = new FuzzyEngine("Ghosts",RULES_PATH+"ghosts.fcl","FuzzyGhosts",actionSelector);
-			fuzzyEngine.addObserver(observer);
+			//fuzzyEngine.addObserver(observer);
 	}
 	
 	@Override
