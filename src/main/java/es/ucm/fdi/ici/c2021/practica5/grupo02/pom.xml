@@ -1,0 +1,6 @@
+<!-- https://mvnrepository.com/artifact/es.ucm.fdi.gaia/jCOLIBRI -->
+<dependency>
+    <groupId>es.ucm.fdi.gaia</groupId>
+    <artifactId>jCOLIBRI</artifactId>
+    <version>3.2</version>
+</dependency>
