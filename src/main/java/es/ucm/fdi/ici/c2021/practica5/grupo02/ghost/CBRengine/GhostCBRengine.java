@@ -72,6 +72,8 @@ public class GhostCBRengine implements StandardCBRApplication {
 		
 		simConfig = new ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig();
 		simConfig.setDescriptionSimFunction(new Average());
+		
+		//--------------------------------
 		// Falta la pos de los otros ghosts
 		simConfig.addMapping(new Attribute("nearestPPill",GhostDescription.class), new Interval(15000));
 		simConfig.addMapping(new Attribute("iniDistToPacman",GhostDescription.class), new Interval(4000));
@@ -93,6 +95,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 			this.action = actionSelector.findAction();
 		}else {
 			//Compute NN
+			// Hay que crear nuestro propio NNScoring?
 			Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(caseBase.getCases(), query, simConfig);
 			
 			// This simple implementation only uses 1NN

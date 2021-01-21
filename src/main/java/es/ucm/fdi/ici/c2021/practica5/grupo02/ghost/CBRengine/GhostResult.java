@@ -6,7 +6,7 @@ import ucm.gaia.jcolibri.cbrcore.CaseComponent;
 public class GhostResult implements CaseComponent, Cloneable {
 
 	Integer id;
-	Double score; // Calculo de la distancia inicial al pacman al empezar la accion y al terminarla
+	Double score;
 	
 	public Integer getId() {
 		return id;
