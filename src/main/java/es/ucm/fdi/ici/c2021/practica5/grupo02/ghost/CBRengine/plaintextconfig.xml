@@ -1,0 +1,23 @@
+<TextFileConfiguration>
+	<FilePath>es/ucm/fdi/ici/practica5/data/generalcasebase.txt</FilePath>
+	<Delimiters>,</Delimiters>
+	<DescriptionClassName>es.ucm.fdi.ici.practica5.CBRengine.MsPacManDescription</DescriptionClassName>
+	<DescriptionMappings>
+		<Map>id</Map>
+		<Map>score</Map>
+		<Map>time</Map>
+		<Map>nearestPPill</Map>		
+		<Map>nearestGhost</Map>		
+		<Map>edibleGhost</Map>		
+	</DescriptionMappings>
+	<SolutionClassName>es.ucm.fdi.ici.practica5.CBRengine.MsPacManSolution</SolutionClassName>
+	<SolutionMappings>
+		<Map>id</Map>
+		<Map>action</Map>
+	</SolutionMappings>
+	<ResultClassName>es.ucm.fdi.ici.practica5.CBRengine.MsPacManResult</ResultClassName>
+	<ResultMappings>
+		<Map>id</Map>
+		<Map>score</Map>
+	</ResultMappings>
+</TextFileConfiguration>

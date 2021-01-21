@@ -1,12 +1,12 @@
-package es.ucm.fdi.ici.c2021.practica5.grupo02.CBRengine;
+package es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine;
 
 import ucm.gaia.jcolibri.cbrcore.Attribute;
 import ucm.gaia.jcolibri.cbrcore.CaseComponent;
 
-public class MsPacManResult implements CaseComponent, Cloneable {
+public class GhostResult implements CaseComponent, Cloneable {
 
 	Integer id;
-	Integer score;
+	Double score; // Calculo de la distancia inicial al pacman al empezar la accion y al terminarla
 	
 	public Integer getId() {
 		return id;
@@ -16,17 +16,17 @@ public class MsPacManResult implements CaseComponent, Cloneable {
 		this.id = id;
 	}
 
-	public Integer getScore() {
+	public Double getScore() {
 		return score;
 	}
 
-	public void setScore(Integer score) {
+	public void setScore(Double score) {
 		this.score = score;
 	}
 
 	@Override
 	public Attribute getIdAttribute() {
-		return new Attribute("id", MsPacManResult.class);
+		return new Attribute("id", GhostResult.class);
 	}
 	
 	@Override
@@ -38,7 +38,4 @@ public class MsPacManResult implements CaseComponent, Cloneable {
 	public String toString() {
 		return "MsPacManResult [id=" + id + ", score=" + score + "]";
 	} 
-	
-	
-
 }

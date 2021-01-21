@@ -1,8 +1,8 @@
-package es.ucm.fdi.ici.c2021.practica5.grupo02.CBRengine;
+package es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.CBRengine;
 
 import java.util.Vector;
 
-
+import es.ucm.fdi.ici.c2021.practica5.grupo02.CBRengine.CachedLinearCaseBase;
 import pacman.game.Game;
 import ucm.gaia.jcolibri.cbrcore.CBRCase;
 import ucm.gaia.jcolibri.cbrcore.CBRCaseBase;

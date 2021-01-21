@@ -1,9 +1,11 @@
-package es.ucm.fdi.ici.c2021.practica5.grupo02.CBRengine;
+package es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine;
 
 import java.io.File;
 import java.util.Collection;
 
 import es.ucm.fdi.ici.c2021.practica5.grupo02.*;
+import es.ucm.fdi.ici.c2021.practica5.grupo02.CBRengine.CachedLinearCaseBase;
+import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.GhostActionSelector;
 import ucm.gaia.jcolibri.method.retrieve.*;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNScoringMethod;
@@ -18,18 +20,16 @@ import ucm.gaia.jcolibri.cbrcore.CBRCaseBase;
 import ucm.gaia.jcolibri.cbrcore.CBRQuery;
 import ucm.gaia.jcolibri.exception.ExecutionException;
 
-public class MsPacManCBRengine implements StandardCBRApplication {
+public class GhostCBRengine implements StandardCBRApplication {
 
 	private String casebaseFile;
 	private Action action;
-	private MsPacManActionSelector actionSelector;
-	private MsPacManStorageManager storageManager;
+	private GhostActionSelector actionSelector;
+	private GhostStorageManager storageManager;
 
 	CustomPlainTextConnector connector;
 	CachedLinearCaseBase caseBase;
 	NNConfig simConfig;
-	
-	
 	
 	final static String CONNECTOR_FILE_PATH = "es/ucm/fdi/ici/c2021/practica5/grupo02/CBRengine/plaintextconfig.xml"; //Cuidado!! poner el grupo aquí
 
@@ -51,7 +51,7 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 	}
 	
 	
-	public MsPacManCBRengine(es.ucm.fdi.ici.c2021.practica5.grupo02.MsPacManActionSelector actionSelector, MsPacManStorageManager storageManager)
+	public GhostCBRengine(es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.GhostActionSelector actionSelector, GhostStorageManager storageManager)
 	{
 		this.actionSelector = actionSelector;
 		this.storageManager = storageManager;
@@ -72,11 +72,12 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 		
 		simConfig = new ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig();
 		simConfig.setDescriptionSimFunction(new Average());
-		simConfig.addMapping(new Attribute("score",MsPacManDescription.class), new Interval(15000));
-		simConfig.addMapping(new Attribute("time",MsPacManDescription.class), new Interval(4000));
-		simConfig.addMapping(new Attribute("nearestPPill",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("nearestGhost",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("edibleGhost",MsPacManDescription.class), new Equal());
+		// Falta la pos de los otros ghosts
+		simConfig.addMapping(new Attribute("nearestPPill",GhostDescription.class), new Interval(15000));
+		simConfig.addMapping(new Attribute("iniDistToPacman",GhostDescription.class), new Interval(4000));
+		simConfig.addMapping(new Attribute("level",GhostDescription.class), new Interval(650));
+		simConfig.addMapping(new Attribute("movement",GhostDescription.class), new Interval(650));
+		simConfig.addMapping(new Attribute("edible",GhostDescription.class), new Equal());
 		
 	}
 
@@ -100,8 +101,8 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 			CBRCase mostSimilarCase = first.get_case();
 			double similarity = first.getEval();
 	
-			MsPacManResult result = (MsPacManResult) mostSimilarCase.getResult();
-			MsPacManSolution solution = (MsPacManSolution) mostSimilarCase.getSolution();
+			GhostResult result = (GhostResult) mostSimilarCase.getResult();
+			GhostSolution solution = (GhostSolution) mostSimilarCase.getSolution();
 			
 			//Now compute a solution for the query
 			this.action = actionSelector.getAction(solution.getAction());
@@ -124,9 +125,9 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 	 */
 	private CBRCase createNewCase(CBRQuery query) {
 		CBRCase newCase = new CBRCase();
-		MsPacManDescription newDescription = (MsPacManDescription) query.getDescription();
-		MsPacManResult newResult = new MsPacManResult();
-		MsPacManSolution newSolution = new MsPacManSolution();
+		GhostDescription newDescription = (GhostDescription) query.getDescription();
+		GhostResult newResult = new GhostResult();
+		GhostSolution newSolution = new GhostSolution();
 		int newId = this.caseBase.getCases().size();
 		newId+= storageManager.getPendingCases();
 		newDescription.setId(newId);

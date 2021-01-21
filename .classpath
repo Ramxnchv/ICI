@@ -38,8 +38,8 @@
 	<classpathentry kind="lib" path="lib/jsr94.jar"/>
 	<classpathentry kind="lib" path="lib/jFuzzyLogic.jar"/>
 	<classpathentry kind="lib" path="lib/PacManEngineFuzzy.jar"/>
-	<classpathentry kind="lib" path="D:/UCM/OPTATIVAS/ICI/ICI/lib/InfoVisual-CB.jar"/>
-	<classpathentry kind="lib" path="D:/UCM/OPTATIVAS/ICI/ICI/lib/ontobridge.jar"/>
-	<classpathentry kind="lib" path="D:/UCM/OPTATIVAS/ICI/ICI/lib/jCOLIBRI-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/jCOLIBRI-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/InfoVisual-CB.jar"/>
+	<classpathentry kind="lib" path="lib/ontobridge.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

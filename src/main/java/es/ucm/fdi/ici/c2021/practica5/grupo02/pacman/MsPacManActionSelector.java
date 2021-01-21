@@ -1,8 +1,9 @@
-package es.ucm.fdi.ici.c2021.practica5.grupo02;
+package es.ucm.fdi.ici.c2021.practica5.grupo02.pacman;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import es.ucm.fdi.ici.c2021.practica5.grupo02.Action;
 
 import pacman.game.Game;
 
