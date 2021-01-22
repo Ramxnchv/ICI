@@ -31,7 +31,7 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 	CachedLinearCaseBase caseBase;
 	NNConfig simConfig;
 	
-	final static String CONNECTOR_FILE_PATH = "es/ucm/fdi/ici/c2021/practica5/grupo02/CBRengine/plaintextconfig.xml"; //Cuidado!! poner el grupo aquí
+	final static String CONNECTOR_FILE_PATH = "es/ucm/fdi/ici/c2021/practica5/grupo02/pacman/CBRengine/pacmanplaintextconfig.xml"; //Cuidado!! poner el grupo aquí
 
 	/**
 	 * Simple extension to allow custom case base files. It also creates a new empty file if it does not exist.

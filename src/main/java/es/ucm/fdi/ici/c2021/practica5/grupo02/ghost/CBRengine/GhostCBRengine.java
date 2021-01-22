@@ -26,12 +26,14 @@ public class GhostCBRengine implements StandardCBRApplication {
 	private Action action;
 	private GhostActionSelector actionSelector;
 	private GhostStorageManager storageManager;
+	
+	private CBRCase lastAction;
 
 	CustomPlainTextConnector connector;
 	CachedLinearCaseBase caseBase;
 	NNConfig simConfig;
 	
-	final static String CONNECTOR_FILE_PATH = "es/ucm/fdi/ici/c2021/practica5/grupo02/CBRengine/plaintextconfig.xml"; //Cuidado!! poner el grupo aquí
+	final static String CONNECTOR_FILE_PATH = "es/ucm/fdi/ici/c2021/practica5/grupo02/ghost/CBRengine/ghostplaintextconfig.xml"; //Cuidado!! poner el grupo aquí
 
 	/**
 	 * Simple extension to allow custom case base files. It also creates a new empty file if it does not exist.
@@ -95,14 +97,16 @@ public class GhostCBRengine implements StandardCBRApplication {
 			this.action = actionSelector.findAction();
 		}else {
 			//Compute NN
-			// Hay que crear nuestro propio NNScoring?
 			Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(caseBase.getCases(), query, simConfig);
 			
 			// This simple implementation only uses 1NN
 			// Consider using kNNs with majority voting
 			RetrievalResult first = SelectCases.selectTopKRR(eval, 1).iterator().next();
+			
+			//-----
 			CBRCase mostSimilarCase = first.get_case();
 			double similarity = first.getEval();
+			//------
 	
 			GhostResult result = (GhostResult) mostSimilarCase.getResult();
 			GhostSolution solution = (GhostSolution) mostSimilarCase.getSolution();
@@ -116,9 +120,9 @@ public class GhostCBRengine implements StandardCBRApplication {
 			else if(result.getScore()<0) //This was a bad case, ask actionSelector for another one.
 				this.action = actionSelector.findAnotherAction(solution.getAction());
 		}
+		//lastAction = createNewCase(query);
 		CBRCase newCase = createNewCase(query);
 		this.storageManager.storeCase(newCase);
-		
 	}
 
 	/**

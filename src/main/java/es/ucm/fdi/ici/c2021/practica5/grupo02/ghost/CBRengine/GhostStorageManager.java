@@ -47,7 +47,7 @@ public class GhostStorageManager {
 		Double iniDistToPacman = description.getPacmanIniDist();
 		
 		// Obtener la distancia al pacman actual
-		Double currentDistToPacman = game.getDistance(description.getIniNodeIndex(), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
+		Double currentDistToPacman = game.getDistance(game.getGhostCurrentNodeIndex(description.getMe()), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
 		
 		// Calcular la diferencia de distancias
 		Double resultValue = currentDistToPacman - iniDistToPacman;

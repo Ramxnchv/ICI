@@ -1,0 +1,25 @@
+<TextFileConfiguration>
+	<FilePath>es/ucm/fdi/ici/practica5/data/generalcasebase.txt</FilePath>
+	<Delimiters>,</Delimiters>
+	<DescriptionClassName>es.ucm.fdi.ici.practica5.CBRengine.GhostDescription</DescriptionClassName>
+	<DescriptionMappings>
+		<Map>id</Map>
+		<Map>iniNodeIndex</Map>
+		<Map>me</Map>
+		<Map>nearestPPill</Map>		
+		<Map>pacmanIniDist</Map>		
+		<Map>pacmanRel</Map>
+		<Map>edible</Map>
+		<Map>level</Map>
+	</DescriptionMappings>
+	<SolutionClassName>es.ucm.fdi.ici.practica5.CBRengine.GhostSolution</SolutionClassName>
+	<SolutionMappings>
+		<Map>id</Map>
+		<Map>action</Map>
+	</SolutionMappings>
+	<ResultClassName>es.ucm.fdi.ici.practica5.CBRengine.GhostResult</ResultClassName>
+	<ResultMappings>
+		<Map>id</Map>
+		<Map>score</Map>
+	</ResultMappings>
+</TextFileConfiguration>

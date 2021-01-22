@@ -1,8 +1,8 @@
 package es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine;
 
+import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import ucm.gaia.jcolibri.cbrcore.Attribute;
-//import gaia.jcolibri.cbrcore.Attribute;
 
 public class GhostDescription implements ucm.gaia.jcolibri.cbrcore.CaseComponent {
 
@@ -10,9 +10,10 @@ public class GhostDescription implements ucm.gaia.jcolibri.cbrcore.CaseComponent
 	
 	// Informacion mia
 	int iniNodeIndex;
+	GHOST me;
 	// Info del fantasma mas cercano al ghost
-	Double closestGhostDist; // No creo que la queramos del todo
-	MOVE closestGhostRelPos; // Creo que con esto seria suficiente
+	//Double closestGhostDist; // No creo que la queramos del todo
+	//MOVE closestGhostRelPos; // Creo que con esto seria suficiente
 	// Otros param de juego
 	Integer nearestPPill;
 	Double pacmanIniDist;
@@ -20,12 +21,6 @@ public class GhostDescription implements ucm.gaia.jcolibri.cbrcore.CaseComponent
 	// Importantes a la hora de descartar
 	Boolean edible;
 	Integer level; // Nivel
-	
-	// Para la solucion
-	Double finalDistToPacman; // *score*
-	//MOVE finalRelPos;
-	Integer movement; // 0, 1, 2, 3, 4 (up, down, left, right, neutral)
-	
 	
 	public Integer getId() {
 		return id;
@@ -44,6 +39,15 @@ public class GhostDescription implements ucm.gaia.jcolibri.cbrcore.CaseComponent
 		this.iniNodeIndex = nIndex;
 	}
 	
+	public GHOST getMe() {
+		return me;
+	}
+
+	public void setMe(GHOST g) {
+		this.me = g;
+	}	
+	
+	/*
 	// Closest Ghost
 	public Double getClosestGhostDist() {
 		return closestGhostDist;
@@ -60,6 +64,7 @@ public class GhostDescription implements ucm.gaia.jcolibri.cbrcore.CaseComponent
 	public void setClosestRelPos(MOVE closestRelPos) {
 		this.closestGhostRelPos = closestRelPos;
 	}
+	*/
 	
 	// Pacman y pills
 	public Integer getNearestPPill() {
@@ -102,23 +107,6 @@ public class GhostDescription implements ucm.gaia.jcolibri.cbrcore.CaseComponent
 	public void setLevel(Integer lv) {
 		this.level = lv;
 	}
-	
-	// Solucion
-	public Integer getMovement() {
-		return movement;
-	}
-
-	public void setMovement(Integer mv) {
-		this.movement = mv;
-	}
-	
-	public Double getFinalDistToPacman() {
-		return finalDistToPacman;
-	}
-
-	public void setFinalDistToPacman(Double pacmanDist) {
-		this.finalDistToPacman = pacmanDist;
-	}
 
 	// Overrides
 	@Override
@@ -129,8 +117,8 @@ public class GhostDescription implements ucm.gaia.jcolibri.cbrcore.CaseComponent
 	@Override
 	public String toString() {
 		return "MsPacManDescription [id=" + id + ", iniDistToPacman=" + pacmanIniDist + ", RelPosToPacman=" + pacmanRelPos 
-				+ ", distToClosestGhost=" + closestGhostDist + ", RelPosToClosestGhost=" + closestGhostRelPos 
+				/*+ ", distToClosestGhost=" + closestGhostDist + ", RelPosToClosestGhost=" + closestGhostRelPos*/ 
 				+ ", edible=" + edible + ", nearestPPill=" + nearestPPill 
-				+ ", level=" + level + ", movement=" + movement + ", finalDistToPacman=" + finalDistToPacman + "]";
+				+ ", level=" + level + "]";
 	}
 }

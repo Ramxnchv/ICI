@@ -13,14 +13,11 @@ import pacman.game.Game;
 import ucm.gaia.jcolibri.cbrcore.CBRQuery;
 
 public class GhostInput implements Input {
-	// Para la rel pos
-	//private EnumMap<MOVE, Integer> movements;
-	
-	private GHOST closestGhost;
+	GHOST me;
 	Integer iniNodeIndex;
 	// Info del fantasma mas cercano al ghost
-	Double closestGhostDist;
-	MOVE closestGhostRelPos;
+	//Double closestGhostDist;
+	//MOVE closestGhostRelPos;
 	// Otros param de juego
 	Integer nearestPPill;
 	Double pacmanIniDist;
@@ -31,32 +28,30 @@ public class GhostInput implements Input {
 	
 	@Override
 	public void parseInput(Game game) {
-		for (GHOST g : GHOST.values()) {
-			computeOtherGhost(game, g);
-			computePacman(game, g);
-			computeNearestPPill(game, g);
-			iniNodeIndex = game.getGhostCurrentNodeIndex(g);
-			edible = game.isGhostEdible(g);
-			level = game.getCurrentLevel();
-		}
+		computeOtherGhost(game, me);
+		computePacman(game, me);
+		computeNearestPPill(game, me);
+		iniNodeIndex = game.getGhostCurrentNodeIndex(me);
+		edible = game.isGhostEdible(me);
+		level = game.getCurrentLevel();
+	}
+	
+	public void setGhost(GHOST g) {
+		me = g;
 	}
 
 	@Override
 	public CBRQuery getQuery() {
 		GhostDescription description = new GhostDescription();
+		description.setMe(me);
 		description.setIniNodeIndex(iniNodeIndex);
 		description.setEdible(edible);
 		description.setLevel(level);
 		description.setNearestPPill(nearestPPill);
 		description.setPacmanIniDist(pacmanIniDist);
 		description.setPacmanRelPos(pacmanRelPos);
-		description.setClosestGhostDist(closestGhostDist);
-		description.setClosestRelPos(closestGhostRelPos);
-		
-		//---PostAction---
-		// Creo que sze pone en el momento de la solucion
-		//description.setFinalDistToPacman(finalDistToPacman);
-		//description.setMovement(movement);
+		//description.setClosestGhostDist(closestGhostDist);
+		//description.setClosestRelPos(closestGhostRelPos);
 		
 		CBRQuery query = new CBRQuery();
 		query.setDescription(description);
@@ -71,7 +66,7 @@ public class GhostInput implements Input {
 
 	// Info CLOSESTGHOST
 	private void computeOtherGhost(Game game, GHOST me) {
-		closestGhost = null;
+		/*closestGhost = null;
 		int pos = game.getGhostCurrentNodeIndex(me);
 		for(GHOST g: GHOST.values()) {
 			if(g != me) {
@@ -96,7 +91,7 @@ public class GhostInput implements Input {
 				closestGhostDist = 0.0;
 				closestGhostRelPos = MOVE.NEUTRAL;
 			}
-		}
+		}*/
 	}
 	
 	// Info PPILLS
