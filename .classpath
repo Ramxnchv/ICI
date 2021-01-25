@@ -41,5 +41,7 @@
 	<classpathentry kind="lib" path="lib/jCOLIBRI-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/InfoVisual-CB.jar"/>
 	<classpathentry kind="lib" path="lib/ontobridge.jar"/>
+	<classpathentry kind="lib" path="lib/apache/log4j-api-2.14.0.jar"/>
+	<classpathentry kind="lib" path="lib/apache/log4j-core-2.14.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
