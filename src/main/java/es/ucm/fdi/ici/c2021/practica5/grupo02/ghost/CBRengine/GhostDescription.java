@@ -3,8 +3,9 @@ package es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import ucm.gaia.jcolibri.cbrcore.Attribute;
+import ucm.gaia.jcolibri.cbrcore.CaseComponent;
 
-public class GhostDescription implements ucm.gaia.jcolibri.cbrcore.CaseComponent {
+public class GhostDescription implements CaseComponent {
 
 	Integer id;
 	

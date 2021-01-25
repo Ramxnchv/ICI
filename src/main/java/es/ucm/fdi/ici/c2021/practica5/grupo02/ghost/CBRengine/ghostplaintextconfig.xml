@@ -1,7 +1,7 @@
 <TextFileConfiguration>
 	<FilePath>es/ucm/fdi/ici/practica5/data/generalcasebase.txt</FilePath>
 	<Delimiters>,</Delimiters>
-	<DescriptionClassName>es.ucm.fdi.ici.practica5.CBRengine.GhostDescription</DescriptionClassName>
+	<DescriptionClassName>es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostDescription</DescriptionClassName>
 	<DescriptionMappings>
 		<Map>id</Map>
 		<Map>iniNodeIndex</Map>
@@ -12,12 +12,12 @@
 		<Map>edible</Map>
 		<Map>level</Map>
 	</DescriptionMappings>
-	<SolutionClassName>es.ucm.fdi.ici.practica5.CBRengine.GhostSolution</SolutionClassName>
+	<SolutionClassName>es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostSolution</SolutionClassName>
 	<SolutionMappings>
 		<Map>id</Map>
 		<Map>action</Map>
 	</SolutionMappings>
-	<ResultClassName>es.ucm.fdi.ici.practica5.CBRengine.GhostResult</ResultClassName>
+	<ResultClassName>es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostResult</ResultClassName>
 	<ResultMappings>
 		<Map>id</Map>
 		<Map>score</Map>

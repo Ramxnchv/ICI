@@ -13,11 +13,13 @@ import ucm.gaia.jcolibri.method.retrieve.NNretrieval.similarity.global.Average;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.similarity.local.Equal;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.similarity.local.Interval;
 import ucm.gaia.jcolibri.method.retrieve.selection.SelectCases;
+import ucm.gaia.jcolibri.util.FileIO;
 import ucm.gaia.jcolibri.cbraplications.StandardCBRApplication;
 import ucm.gaia.jcolibri.cbrcore.Attribute;
 import ucm.gaia.jcolibri.cbrcore.CBRCase;
 import ucm.gaia.jcolibri.cbrcore.CBRCaseBase;
 import ucm.gaia.jcolibri.cbrcore.CBRQuery;
+import ucm.gaia.jcolibri.connector.PlainTextConnector;
 import ucm.gaia.jcolibri.exception.ExecutionException;
 
 public class GhostCBRengine implements StandardCBRApplication {
@@ -26,8 +28,6 @@ public class GhostCBRengine implements StandardCBRApplication {
 	private Action action;
 	private GhostActionSelector actionSelector;
 	private GhostStorageManager storageManager;
-	
-	private CBRCase lastAction;
 
 	CustomPlainTextConnector connector;
 	CachedLinearCaseBase caseBase;
@@ -38,7 +38,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 	/**
 	 * Simple extension to allow custom case base files. It also creates a new empty file if it does not exist.
 	 */
-	public class CustomPlainTextConnector extends ucm.gaia.jcolibri.connector.PlainTextConnector {
+	public class CustomPlainTextConnector extends PlainTextConnector {
 		public void setCaseBaseFile(String casebaseFile) {
 			super.PROP_FILEPATH = casebaseFile;
 			try {
@@ -53,7 +53,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 	}
 	
 	
-	public GhostCBRengine(es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.GhostActionSelector actionSelector, GhostStorageManager storageManager)
+	public GhostCBRengine(GhostActionSelector actionSelector, GhostStorageManager storageManager)
 	{
 		this.actionSelector = actionSelector;
 		this.storageManager = storageManager;
@@ -64,15 +64,15 @@ public class GhostCBRengine implements StandardCBRApplication {
 	}
 	
 	@Override
-	public void configure() throws ucm.gaia.jcolibri.exception.ExecutionException {
+	public void configure() throws ExecutionException {
 		connector = new CustomPlainTextConnector();
 		caseBase = new CachedLinearCaseBase();
 		
-		connector.initFromXMLfile(ucm.gaia.jcolibri.util.FileIO.findFile(CONNECTOR_FILE_PATH));
+		connector.initFromXMLfile(FileIO.findFile(CONNECTOR_FILE_PATH));
 		connector.setCaseBaseFile(this.casebaseFile);
 		this.storageManager.setCaseBase(caseBase);
 		
-		simConfig = new ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig();
+		simConfig = new NNConfig();
 		simConfig.setDescriptionSimFunction(new Average());
 		
 		//--------------------------------
