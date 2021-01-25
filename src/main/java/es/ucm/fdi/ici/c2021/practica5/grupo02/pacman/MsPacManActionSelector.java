@@ -29,6 +29,7 @@ public class MsPacManActionSelector {
 	 * Simplest implementation returns a random one.
 	 * @return
 	 */
+	// Se podria mejorar para intentar buscar la accion mejor en funcion del estado del juego y asi generar una base de casos fuerte mas rapidamente
 	public Action findAction() {
 		int randomIndex = new Random().nextInt(actions.size());
 		return actions.get(randomIndex);

@@ -2,9 +2,14 @@ package es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.CBRengine;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import es.ucm.fdi.ici.c2021.practica5.grupo02.*;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.CBRengine.CachedLinearCaseBase;
+import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostDescription;
+import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostResult;
+import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostSolution;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.MsPacManActionSelector;
 import ucm.gaia.jcolibri.method.retrieve.*;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig;
@@ -18,6 +23,7 @@ import ucm.gaia.jcolibri.cbrcore.Attribute;
 import ucm.gaia.jcolibri.cbrcore.CBRCase;
 import ucm.gaia.jcolibri.cbrcore.CBRCaseBase;
 import ucm.gaia.jcolibri.cbrcore.CBRQuery;
+import ucm.gaia.jcolibri.cbrcore.CaseComponent;
 import ucm.gaia.jcolibri.exception.ExecutionException;
 
 public class MsPacManCBRengine implements StandardCBRApplication {
@@ -72,11 +78,13 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 		
 		simConfig = new ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig();
 		simConfig.setDescriptionSimFunction(new Average());
-		simConfig.addMapping(new Attribute("score",MsPacManDescription.class), new Interval(15000));
-		simConfig.addMapping(new Attribute("time",MsPacManDescription.class), new Interval(4000));
-		simConfig.addMapping(new Attribute("nearestPPill",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("nearestGhost",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("edibleGhost",MsPacManDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("dist2nearestEdibleGhost",MsPacManDescription.class), new Interval(15000));
+		simConfig.addMapping(new Attribute("dist2nearestNotEdibleGhost",MsPacManDescription.class), new Interval(4000));
+		simConfig.addMapping(new Attribute("dist2nearestPP",MsPacManDescription.class), new Interval(650));
+		simConfig.addMapping(new Attribute("posiblesDirs",MsPacManDescription.class), new Interval(4));
+		simConfig.addMapping(new Attribute("level",MsPacManDescription.class), new Interval(50));
+		simConfig.addMapping(new Attribute("score",MsPacManDescription.class), new Interval(650));
+		simConfig.addMapping(new Attribute("pacmanLastMove",MsPacManDescription.class), new Interval(4));
 		
 	}
 
@@ -92,13 +100,17 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 			this.action = actionSelector.findAction();
 		}else {
 			//Compute NN
-			Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(caseBase.getCases(), query, simConfig);
+			//Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(caseBase.getCases(), query, simConfig);
+			Collection<RetrievalResult> eval = customNN(caseBase.getCases(),query);
 			
 			// This simple implementation only uses 1NN
 			// Consider using kNNs with majority voting
-			RetrievalResult first = SelectCases.selectTopKRR(eval, 1).iterator().next();
+			RetrievalResult first = SelectCases.selectTopKRR(eval, 5).iterator().next();
+			
+			//-----
 			CBRCase mostSimilarCase = first.get_case();
 			double similarity = first.getEval();
+			//------
 	
 			MsPacManResult result = (MsPacManResult) mostSimilarCase.getResult();
 			MsPacManSolution solution = (MsPacManSolution) mostSimilarCase.getSolution();
@@ -112,6 +124,7 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 			else if(result.getScore()<0) //This was a bad case, ask actionSelector for another one.
 				this.action = actionSelector.findAnotherAction(solution.getAction());
 		}
+		//lastAction = createNewCase(query);
 		CBRCase newCase = createNewCase(query);
 		this.storageManager.storeCase(newCase);
 		
@@ -137,6 +150,34 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 		newCase.setResult(newResult);
 		newCase.setSolution(newSolution);
 		return newCase;
+	}
+	
+	// Obtener los NN mas parecidos (No hay que tocarlo)
+	private Collection<RetrievalResult> customNN(Collection<CBRCase> cases, CBRQuery query) {
+		// Parallel stream
+
+		List<RetrievalResult> res = cases.parallelStream()
+				.map(c -> new RetrievalResult(c, computeSimilarity(query.getDescription(), c.getDescription())))
+		        .collect(Collectors.toList());
+
+		// Sort the result
+		res.sort(RetrievalResult::compareTo);
+		return res;
+	}
+	
+	// Comparar la similitud entre 2 casos (adaptarlo a nuestra info)
+	private Double computeSimilarity(CaseComponent description, CaseComponent description2) {
+		GhostDescription _query = (GhostDescription)description;
+		GhostDescription _case = (GhostDescription)description2;
+
+		double simil = 0;
+		//simil += Math.abs(_query.getScore()-_case.getScore())/150000;
+		//simil += Math.abs(_query.getTime()-_case.getTime())/4000;
+		//simil += Math.abs(_query.getNearestPPill()-_case.getNearestPPill())/650;
+		//simil += Math.abs(_query.getNearestGhost()-_case.getNearestGhost())/650;
+		//simil += _query.getEdibleGhost().equals(_case.getEdibleGhost()) ? 1.0 : 0.0;
+
+		return simil/5.0;
 	}
 	
 	public Action getSolution() {
