@@ -25,7 +25,7 @@ public class Ghost extends GhostController {
 	
 	private EnumMap<GHOST, MOVE> controllers;
 	
-	final static String FILE_PATH = "cbrdata/grupo02/%s.csv"; //Cuidado!! poner el grupo aquí
+	final static String FILE_PATH = "grupo02/ghost/cbrdata/%s.csv"; //Cuidado!! poner el grupo aqui
 	
 	public Ghost()
 	{
@@ -56,7 +56,6 @@ public class Ghost extends GhostController {
 		}
 	}
 	
-	
 	@Override
 	public void postCompute() {
 		try {
@@ -65,7 +64,6 @@ public class Ghost extends GhostController {
 			e.printStackTrace();
 		}
 	}
-	
 	
 	@Override
 	public EnumMap<GHOST, MOVE> getMove(Game game, long timeDue) {
@@ -94,5 +92,4 @@ public class Ghost extends GhostController {
 		}
 		return controllers;
 	}
-
 }

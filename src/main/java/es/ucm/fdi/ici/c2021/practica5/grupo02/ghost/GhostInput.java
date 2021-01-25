@@ -28,7 +28,7 @@ public class GhostInput implements Input {
 	
 	@Override
 	public void parseInput(Game game) {
-		computeOtherGhost(game, me);
+		//computeOtherGhost(game, me);
 		computePacman(game, me);
 		computeNearestPPill(game, me);
 		iniNodeIndex = game.getGhostCurrentNodeIndex(me);
