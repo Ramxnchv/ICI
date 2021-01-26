@@ -169,14 +169,17 @@ public class GhostCBRengine implements StandardCBRApplication {
 		GhostDescription _query = (GhostDescription)description;
 		GhostDescription _case = (GhostDescription)description2;
 
+		if(_query.getLevel() != _case.getLevel()) return 0.0;
+		if(_query.getEdible() != _case.getEdible()) return 0.0;
+		
 		double simil = 0;
-		//simil += Math.abs(_query.getScore()-_case.getScore())/150000;
-		//simil += Math.abs(_query.getTime()-_case.getTime())/4000;
-		//simil += Math.abs(_query.getNearestPPill()-_case.getNearestPPill())/650;
-		//simil += Math.abs(_query.getNearestGhost()-_case.getNearestGhost())/650;
-		//simil += _query.getEdibleGhost().equals(_case.getEdibleGhost()) ? 1.0 : 0.0;
+		simil += Math.abs(_query.getPacmanIniDist() - _case.getPacmanIniDist()) * 0.7;
+		simil += Math.abs(_query.getNearestPPill() - _case.getNearestPPill()) * 0.3;
+		
+		// Usar la relPos del pacman?
+		//simil += Math.abs(_query.getPacmanRelPos())
 
-		return simil/5.0;
+		return simil;
 	}
 	
 	public Action getSolution() {

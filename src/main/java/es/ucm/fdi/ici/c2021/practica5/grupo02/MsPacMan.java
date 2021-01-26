@@ -3,12 +3,11 @@ package es.ucm.fdi.ici.c2021.practica5.grupo02;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.ucm.fdi.ici.c2021.practica5.grupo02.actions.*;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.MsPacManActionSelector;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.MsPacManInput;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.CBRengine.MsPacManCBRengine;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.CBRengine.MsPacManStorageManager;
-import es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.actions.DownAction;
-import es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.actions.LeftAction;
 import pacman.controllers.PacmanController;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;

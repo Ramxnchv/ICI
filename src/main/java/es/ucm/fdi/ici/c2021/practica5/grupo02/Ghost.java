@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import es.ucm.fdi.ici.c2021.practica4.grupo02.ghosts.GhostsFuzzy;
+import es.ucm.fdi.ici.c2021.practica5.grupo02.actions.*;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.GhostActionSelector;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.GhostInput;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostCBRengine;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostStorageManager;
-import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.actions.*;
 import pacman.controllers.GhostController;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;

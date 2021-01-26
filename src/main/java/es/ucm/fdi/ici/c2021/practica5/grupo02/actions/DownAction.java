@@ -1,20 +1,20 @@
-package es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.actions;
+package es.ucm.fdi.ici.c2021.practica5.grupo02.actions;
 
 import es.ucm.fdi.ici.c2021.practica5.grupo02.Action;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
-public class UpAction implements Action {
+public class DownAction implements Action {
     
-	public UpAction() {}
+	public DownAction() {}
 	
 	@Override
 	public MOVE execute(Game game) {
-		return MOVE.UP;
+		return MOVE.DOWN;
     }
 
 	@Override
 	public String getActionId() {
-		return "Up";
+		return "Down";
 	}
 }
