@@ -29,6 +29,9 @@ public class MsPacMan extends PacmanController {
 		List<Action> actions = new ArrayList<Action>();
 		actions.add(new DownAction());
 		actions.add(new LeftAction());
+		actions.add(new UpAction());
+		actions.add(new DownAction());
+		
 		this.actionSelector = new MsPacManActionSelector(actions);
 
 		this.storageManager = new MsPacManStorageManager();

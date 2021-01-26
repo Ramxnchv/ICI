@@ -1,6 +1,8 @@
 package es.ucm.fdi.ici.c2021.practica5.grupo02.pacman;
 
 
+import java.util.Set;
+
 import es.ucm.fdi.ici.c2021.practica5.grupo02.Input;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.CBRengine.MsPacManDescription;
 import pacman.game.Constants.DM;
@@ -17,7 +19,7 @@ public class MsPacManInput implements Input {
 	
 	Integer dist2nearestPP;
 	
-	MOVE[] posiblesDirs;
+	Set<MOVE> posiblesDirs;
 	
 	MOVE pacmanLastMove;
 	
@@ -108,13 +110,7 @@ public class MsPacManInput implements Input {
 		int[] pacmanNeightbours = game.getNeighbouringNodes(game.getPacmanCurrentNodeIndex(), game.getPacmanLastMoveMade());
 		for (int n : pacmanNeightbours) {
 			MOVE m = game.getMoveToMakeToReachDirectNeighbour(game.getPacmanCurrentNodeIndex(), n);
-			boolean add = true;
-			for(int i=0;i<posiblesDirs.length;i++) {
-				if(m == posiblesDirs[i]) {
-					add=false;
-				}
-			}
-			if(add) {posiblesDirs[posiblesDirs.length] = m;}
+			this.posiblesDirs.add(m);
 		}
 	}
 }

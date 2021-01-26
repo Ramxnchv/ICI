@@ -1,5 +1,7 @@
 package es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.CBRengine;
 
+import java.util.Set;
+
 import pacman.game.Constants.MOVE;
 import ucm.gaia.jcolibri.cbrcore.Attribute;
 
@@ -13,7 +15,7 @@ public class MsPacManDescription implements ucm.gaia.jcolibri.cbrcore.CaseCompon
 	
 	Integer dist2nearestPP;
 	
-	MOVE[] posiblesDirs;
+	Set<MOVE> posiblesDirs;
 	
 	MOVE pacmanLastMove;
 	
@@ -53,11 +55,11 @@ public class MsPacManDescription implements ucm.gaia.jcolibri.cbrcore.CaseCompon
 		this.dist2nearestPP = dist2nearestPP;
 	}
 
-	public MOVE[] getPosiblesDirs() {
+	public Set<MOVE> getPosiblesDirs() {
 		return posiblesDirs;
 	}
 
-	public void setPosiblesDirs(MOVE[] posiblesDirs) {
+	public void setPosiblesDirs(Set<MOVE> posiblesDirs) {
 		this.posiblesDirs = posiblesDirs;
 	}
 

@@ -11,6 +11,7 @@ import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostDescription;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostResult;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostSolution;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.MsPacManActionSelector;
+import pacman.game.Constants.MOVE;
 import ucm.gaia.jcolibri.method.retrieve.*;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNScoringMethod;
@@ -167,17 +168,20 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 	
 	// Comparar la similitud entre 2 casos (adaptarlo a nuestra info)
 	private Double computeSimilarity(CaseComponent description, CaseComponent description2) {
-		GhostDescription _query = (GhostDescription)description;
-		GhostDescription _case = (GhostDescription)description2;
-
+		MsPacManDescription _query = (MsPacManDescription)description;
+		MsPacManDescription _case = (MsPacManDescription)description2;
+		
+		if(_query.getLevel() != _case.getLevel()) return 0.0;
+		
 		double simil = 0;
-		//simil += Math.abs(_query.getScore()-_case.getScore())/150000;
-		//simil += Math.abs(_query.getTime()-_case.getTime())/4000;
-		//simil += Math.abs(_query.getNearestPPill()-_case.getNearestPPill())/650;
-		//simil += Math.abs(_query.getNearestGhost()-_case.getNearestGhost())/650;
-		//simil += _query.getEdibleGhost().equals(_case.getEdibleGhost()) ? 1.0 : 0.0;
-
-		return simil/5.0;
+		
+		simil += Math.abs(_query.getDist2nearestNotEdibleGhost() - _case.getDist2nearestNotEdibleGhost()) * 0.4;
+		simil += Math.abs(_query.getDist2nearestEdibleGhost() - _case.getDist2nearestEdibleGhost()) * 0.2;
+		simil += Math.abs(_query.getDist2nearestPP() - _case.getDist2nearestPP()) * 0.2;
+		simil += _query.getPacmanLastMove().equals(_case.getPacmanLastMove()) ? 0.1 : 0 ;
+		simil += _query.getPosiblesDirs().containsAll(_case.getPosiblesDirs()) ? 0.1 : 0;
+		
+		return simil;
 	}
 	
 	public Action getSolution() {
