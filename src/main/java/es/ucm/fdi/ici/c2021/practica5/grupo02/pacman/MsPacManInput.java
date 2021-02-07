@@ -1,6 +1,7 @@
 package es.ucm.fdi.ici.c2021.practica5.grupo02.pacman;
 
 
+import java.util.HashSet;
 import java.util.Set;
 
 import es.ucm.fdi.ici.c2021.practica5.grupo02.Input;
@@ -13,19 +14,25 @@ import ucm.gaia.jcolibri.cbrcore.CBRQuery;
 
 public class MsPacManInput implements Input {
 
-	Integer dist2nearestEdibleGhost;
+	private Integer dist2nearestEdibleGhost;
 	
-	Integer dist2nearestNotEdibleGhost; 
+	private Integer dist2nearestNotEdibleGhost; 
 	
-	Integer dist2nearestPP;
+	private Integer dist2nearestPP;
 	
-	Set<MOVE> posiblesDirs;
+	private Set<MOVE> posiblesDirs;
 	
-	MOVE pacmanLastMove;
+	private MOVE pacmanLastMove;
 	
-	Integer score;
+	private Integer score;
 	
-	Integer level;
+	private Integer level;
+	
+	private final int INITIAL_POS = -1;
+	
+	public MsPacManInput() {
+		this.posiblesDirs = new HashSet<>();
+	}
 	
 	@Override
 	public void parseInput(Game game) {
@@ -58,9 +65,8 @@ public class MsPacManInput implements Input {
 		dist2nearestEdibleGhost = Integer.MAX_VALUE;
 		
 		for(GHOST g: GHOST.values()) {
-			if(game.isGhostEdible(g)) {
-				int pos = game.getGhostCurrentNodeIndex(g);
-				
+			int pos = game.getGhostCurrentNodeIndex(g);
+			if(pos != INITIAL_POS && game.isGhostEdible(g)) {
 				int distance; 
 				if(pos != -1) 
 					distance = (int)game.getDistance(game.getPacmanCurrentNodeIndex(), pos, DM.PATH);
@@ -80,9 +86,8 @@ public class MsPacManInput implements Input {
 		dist2nearestNotEdibleGhost = Integer.MAX_VALUE;
 		
 		for(GHOST g: GHOST.values()) {
-			if(game.isGhostEdible(g) == false) {
-				int pos = game.getGhostCurrentNodeIndex(g);
-				
+			int pos = game.getGhostCurrentNodeIndex(g);
+			if(pos != INITIAL_POS && game.isGhostEdible(g) == false) {	
 				int distance; 
 				if(pos != -1) 
 					distance = (int)game.getDistance(game.getPacmanCurrentNodeIndex(), pos, DM.PATH);
@@ -110,7 +115,9 @@ public class MsPacManInput implements Input {
 		int[] pacmanNeightbours = game.getNeighbouringNodes(game.getPacmanCurrentNodeIndex(), game.getPacmanLastMoveMade());
 		for (int n : pacmanNeightbours) {
 			MOVE m = game.getMoveToMakeToReachDirectNeighbour(game.getPacmanCurrentNodeIndex(), n);
-			this.posiblesDirs.add(m);
+			if(m!=null) {
+				this.posiblesDirs.add(m);
+			}
 		}
 	}
 }
