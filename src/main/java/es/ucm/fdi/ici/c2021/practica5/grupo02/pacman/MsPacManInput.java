@@ -20,6 +20,8 @@ public class MsPacManInput implements Input {
 	
 	private Integer dist2nearestPP;
 	
+	private Integer dist2nearestPill;
+	
 	private Set<MOVE> posiblesDirs;
 	
 	private MOVE pacmanLastMove;
@@ -39,6 +41,7 @@ public class MsPacManInput implements Input {
 		computeNearestNotEdibleGhost(game);
 		computeNearestEdibleGhost(game);
 		computeNearestPPill(game);
+		computeNearestPill(game);
 		//computePosibleDirs(game);
 		pacmanLastMove = game.getPacmanLastMoveMade();
 		score = game.getScore();
@@ -51,6 +54,7 @@ public class MsPacManInput implements Input {
 		description.setDist2nearestEdibleGhost(dist2nearestEdibleGhost);
 		description.setDist2nearestNotEdibleGhost(dist2nearestNotEdibleGhost);
 		description.setDist2nearestPP(dist2nearestPP);
+		description.setDist2nearestPill(dist2nearestPill);
 		description.setPacmanLastMove(pacmanLastMove.ordinal());
 		//description.setPosiblesDirs(posiblesDirs);
 		description.setLevel(level);
@@ -108,6 +112,15 @@ public class MsPacManInput implements Input {
 			int distance = (int)game.getDistance(game.getPacmanCurrentNodeIndex(), pos, DM.PATH);
 			if(distance < dist2nearestPP)
 				dist2nearestPP = distance;
+		}
+	}
+	
+	private void computeNearestPill(Game game) {
+		dist2nearestPill = Integer.MAX_VALUE;
+		for(int pos: game.getActivePillsIndices()) {
+			int distance = (int)game.getDistance(game.getPacmanCurrentNodeIndex(), pos, DM.PATH);
+			if(distance < dist2nearestPill)
+				dist2nearestPill = distance;
 		}
 	}
 	

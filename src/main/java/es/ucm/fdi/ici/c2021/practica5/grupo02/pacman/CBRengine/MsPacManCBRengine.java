@@ -83,6 +83,7 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 		simConfig.addMapping(new Attribute("dist2nearestEdibleGhost",MsPacManDescription.class), new Interval(15000));
 		simConfig.addMapping(new Attribute("dist2nearestNotEdibleGhost",MsPacManDescription.class), new Interval(4000));
 		simConfig.addMapping(new Attribute("dist2nearestPP",MsPacManDescription.class), new Interval(650));
+		simConfig.addMapping(new Attribute("dist2nearestPill",MsPacManDescription.class), new Interval(650));
 		//simConfig.addMapping(new Attribute("posiblesDirs",MsPacManDescription.class), new Interval(4));
 		simConfig.addMapping(new Attribute("level",MsPacManDescription.class), new Interval(50));
 		simConfig.addMapping(new Attribute("score",MsPacManDescription.class), new Interval(650));
@@ -177,9 +178,10 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 		double simil = 0;
 		
 		simil += Math.abs(_query.getDist2nearestNotEdibleGhost() - _case.getDist2nearestNotEdibleGhost()) * 0.4;
-		simil += Math.abs(_query.getDist2nearestEdibleGhost() - _case.getDist2nearestEdibleGhost()) * 0.2;
-		simil += Math.abs(_query.getDist2nearestPP() - _case.getDist2nearestPP()) * 0.2;
-		simil += _query.getPacmanLastMove().equals(_case.getPacmanLastMove()) ? 0.1 : 0 ;
+		simil += Math.abs(_query.getDist2nearestEdibleGhost() - _case.getDist2nearestEdibleGhost()) * 0.15;
+		simil += Math.abs(_query.getDist2nearestPP() - _case.getDist2nearestPP()) * 0.15;
+		simil += Math.abs(_query.getDist2nearestPill() - _case.getDist2nearestPill()) * 0.15;
+		simil += _query.getPacmanLastMove().equals(_case.getPacmanLastMove()) ? 0.15 : 0 ;
 		//simil += _query.getPosiblesDirs().containsAll(_case.getPosiblesDirs()) ? 0.1 : 0;
 		
 		return simil;
