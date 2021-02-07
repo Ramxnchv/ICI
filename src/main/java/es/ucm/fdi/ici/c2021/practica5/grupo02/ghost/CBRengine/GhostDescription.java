@@ -8,8 +8,8 @@ public class GhostDescription implements CaseComponent {
 	Integer id;
 	
 	// Informacion mia
-	Integer me;
 	Integer iniNodeIndex;
+	Integer me;
 	
 	// Info del fantasma mas cercano al ghost
 	//Double closestGhostDist; // No creo que la queramos del todo

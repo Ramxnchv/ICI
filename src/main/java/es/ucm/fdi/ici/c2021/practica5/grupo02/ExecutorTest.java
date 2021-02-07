@@ -23,7 +23,7 @@ public class ExecutorTest {
         GhostController ghosts = new Ghost();
         
         System.out.println( 
-        		executor.runGame(pacMan, ghosts, 40)
+        		executor.runGame(pacMan, ghosts, 1)
         );
         
     }

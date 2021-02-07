@@ -57,7 +57,12 @@ public class GhostInput implements Input {
 	
 	// Info PACMAN
 	private void computePacman(Game game, GHOST me) {
-		pacmanIniDist = (int) game.getDistance(game.getGhostCurrentNodeIndex(me), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
+		if(game.getGhostCurrentNodeIndex(me) == -1) {
+			pacmanIniDist = Integer.MAX_VALUE;
+		}
+		else {
+			pacmanIniDist = (int) game.getDistance(game.getGhostCurrentNodeIndex(me), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
+		}
 		pacmanRelPos = game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(me), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
 	}
 
