@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import es.ucm.fdi.ici.c2021.practica5.grupo02.CBRengine.CachedLinearCaseBase;
 import pacman.game.Constants.DM;
+import pacman.game.Constants.GHOST;
 import pacman.game.Game;
 import ucm.gaia.jcolibri.cbrcore.CBRCase;
 import ucm.gaia.jcolibri.cbrcore.CBRCaseBase;
@@ -44,13 +45,13 @@ public class GhostStorageManager {
 	
 	private void reviseCase(CBRCase bCase) {
 		GhostDescription description = (GhostDescription)bCase.getDescription();
-		Double iniDistToPacman = description.getPacmanIniDist();
+		Integer iniDistToPacman = description.getPacmanIniDist();
 		
 		// Obtener la distancia al pacman actual
-		Double currentDistToPacman = game.getDistance(game.getGhostCurrentNodeIndex(description.getMe()), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
+		Double currentDistToPacman = game.getDistance(game.getGhostCurrentNodeIndex(GHOST.values()[description.getMe()]), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
 		
 		// Calcular la diferencia de distancias
-		Double resultValue = currentDistToPacman - iniDistToPacman;
+		Integer resultValue = (int) (currentDistToPacman - iniDistToPacman);
 		
 		//-----
 		GhostResult result = (GhostResult)bCase.getResult();

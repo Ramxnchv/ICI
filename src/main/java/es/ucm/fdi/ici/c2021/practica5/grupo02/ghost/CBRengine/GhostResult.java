@@ -6,7 +6,7 @@ import ucm.gaia.jcolibri.cbrcore.CaseComponent;
 public class GhostResult implements CaseComponent, Cloneable {
 
 	Integer id;
-	Double score;
+	Integer score;
 	
 	public Integer getId() {
 		return id;
@@ -16,11 +16,11 @@ public class GhostResult implements CaseComponent, Cloneable {
 		this.id = id;
 	}
 
-	public Double getScore() {
+	public Integer getScore() {
 		return score;
 	}
 
-	public void setScore(Double score) {
+	public void setScore(Integer score) {
 		this.score = score;
 	}
 
@@ -36,6 +36,6 @@ public class GhostResult implements CaseComponent, Cloneable {
 
 	@Override
 	public String toString() {
-		return "MsPacManResult [id=" + id + ", score=" + score + "]";
+		return "GhostResult [id=" + id + ", score=" + score + "]";
 	} 
 }

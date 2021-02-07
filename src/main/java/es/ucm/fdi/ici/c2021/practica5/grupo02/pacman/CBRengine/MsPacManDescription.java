@@ -1,8 +1,5 @@
 package es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.CBRengine;
 
-import java.util.Set;
-
-import pacman.game.Constants.MOVE;
 import ucm.gaia.jcolibri.cbrcore.Attribute;
 import ucm.gaia.jcolibri.cbrcore.CaseComponent;
 
@@ -16,9 +13,9 @@ public class MsPacManDescription implements CaseComponent {
 	
 	Integer dist2nearestPP;
 	
-	Set<MOVE> posiblesDirs;
+	//Set<MOVE> posiblesDirs;
 	
-	MOVE pacmanLastMove;
+	Integer pacmanLastMove;
 	
 	Integer score;
 	
@@ -56,19 +53,19 @@ public class MsPacManDescription implements CaseComponent {
 		this.dist2nearestPP = dist2nearestPP;
 	}
 
-	public Set<MOVE> getPosiblesDirs() {
-		return posiblesDirs;
-	}
+//	public Set<MOVE> getPosiblesDirs() {
+//		return posiblesDirs;
+//	}
 
-	public void setPosiblesDirs(Set<MOVE> posiblesDirs) {
-		this.posiblesDirs = posiblesDirs;
-	}
+//	public void setPosiblesDirs(Set<MOVE> posiblesDirs) {
+//		this.posiblesDirs = posiblesDirs;
+//	}
 
-	public MOVE getPacmanLastMove() {
+	public Integer getPacmanLastMove() {
 		return pacmanLastMove;
 	}
 
-	public void setPacmanLastMove(MOVE pacmanLastMove) {
+	public void setPacmanLastMove(Integer pacmanLastMove) {
 		this.pacmanLastMove = pacmanLastMove;
 	}
 
@@ -96,7 +93,7 @@ public class MsPacManDescription implements CaseComponent {
 	@Override
 	public String toString() {
 		return "MsPacManDescription [id=" + id + ", score=" + score + ", dist2nearestEdibleGhost=" + dist2nearestEdibleGhost + ", dist2nearestNotEdibleGhost="
-				+ dist2nearestNotEdibleGhost + ", dist2nearestPP=" + dist2nearestPP + ", posiblesDirs=" + posiblesDirs + ", level=" + level
+				+ dist2nearestNotEdibleGhost + ", dist2nearestPP=" + dist2nearestPP + ", level=" + level
 				+ ", pacmanLastMove=" + pacmanLastMove + "]";
 	}
 	

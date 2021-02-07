@@ -19,6 +19,7 @@ import ucm.gaia.jcolibri.method.retrieve.NNretrieval.similarity.global.Average;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.similarity.local.Equal;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.similarity.local.Interval;
 import ucm.gaia.jcolibri.method.retrieve.selection.SelectCases;
+import ucm.gaia.jcolibri.util.FileIO;
 import ucm.gaia.jcolibri.cbraplications.StandardCBRApplication;
 import ucm.gaia.jcolibri.cbrcore.Attribute;
 import ucm.gaia.jcolibri.cbrcore.CBRCase;
@@ -69,20 +70,20 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 	}
 	
 	@Override
-	public void configure() throws ucm.gaia.jcolibri.exception.ExecutionException {
+	public void configure() throws ExecutionException {
 		connector = new CustomPlainTextConnector();
 		caseBase = new CachedLinearCaseBase();
 		
-		connector.initFromXMLfile(ucm.gaia.jcolibri.util.FileIO.findFile(CONNECTOR_FILE_PATH));
+		connector.initFromXMLfile(FileIO.findFile(CONNECTOR_FILE_PATH));
 		connector.setCaseBaseFile(this.casebaseFile);
 		this.storageManager.setCaseBase(caseBase);
 		
-		simConfig = new ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig();
+		simConfig = new NNConfig();
 		simConfig.setDescriptionSimFunction(new Average());
 		simConfig.addMapping(new Attribute("dist2nearestEdibleGhost",MsPacManDescription.class), new Interval(15000));
 		simConfig.addMapping(new Attribute("dist2nearestNotEdibleGhost",MsPacManDescription.class), new Interval(4000));
 		simConfig.addMapping(new Attribute("dist2nearestPP",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("posiblesDirs",MsPacManDescription.class), new Interval(4));
+		//simConfig.addMapping(new Attribute("posiblesDirs",MsPacManDescription.class), new Interval(4));
 		simConfig.addMapping(new Attribute("level",MsPacManDescription.class), new Interval(50));
 		simConfig.addMapping(new Attribute("score",MsPacManDescription.class), new Interval(650));
 		simConfig.addMapping(new Attribute("pacmanLastMove",MsPacManDescription.class), new Interval(4));
@@ -179,7 +180,7 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 		simil += Math.abs(_query.getDist2nearestEdibleGhost() - _case.getDist2nearestEdibleGhost()) * 0.2;
 		simil += Math.abs(_query.getDist2nearestPP() - _case.getDist2nearestPP()) * 0.2;
 		simil += _query.getPacmanLastMove().equals(_case.getPacmanLastMove()) ? 0.1 : 0 ;
-		simil += _query.getPosiblesDirs().containsAll(_case.getPosiblesDirs()) ? 0.1 : 0;
+		//simil += _query.getPosiblesDirs().containsAll(_case.getPosiblesDirs()) ? 0.1 : 0;
 		
 		return simil;
 	}

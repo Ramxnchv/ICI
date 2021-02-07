@@ -80,7 +80,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 		
 		//--------------------------------
 		// Falta la pos de los otros ghosts
-		simConfig.addMapping(new Attribute("me", GhostDescription.class), new Interval(GHOST.values().length));
+		simConfig.addMapping(new Attribute("me", GhostDescription.class), new Interval(4));
 		simConfig.addMapping(new Attribute("iniNodeIndex",GhostDescription.class), new Interval(4000));
 		simConfig.addMapping(new Attribute("nearestPPill",GhostDescription.class), new Interval(4000));
 		simConfig.addMapping(new Attribute("pacmanIniDist",GhostDescription.class), new Interval(4000));

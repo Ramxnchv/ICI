@@ -17,7 +17,7 @@ public class GhostInput implements Input {
 	//MOVE closestGhostRelPos;
 	// Otros param de juego
 	Integer nearestPPill;
-	Double pacmanIniDist;
+	Integer pacmanIniDist;
 	MOVE pacmanRelPos;
 	// Importantes a la hora de descartar
 	Boolean edible;
@@ -40,13 +40,13 @@ public class GhostInput implements Input {
 	@Override
 	public CBRQuery getQuery() {
 		GhostDescription description = new GhostDescription();
-		description.setMe(me);
+		description.setMe(me.ordinal());
 		description.setIniNodeIndex(iniNodeIndex);
 		description.setEdible(edible);
 		description.setLevel(level);
 		description.setNearestPPill(nearestPPill);
 		description.setPacmanIniDist(pacmanIniDist);
-		description.setPacmanRelPos(pacmanRelPos);
+		description.setPacmanRelPos(pacmanRelPos.ordinal());
 		//description.setClosestGhostDist(closestGhostDist);
 		//description.setClosestRelPos(closestGhostRelPos);
 		
@@ -57,7 +57,7 @@ public class GhostInput implements Input {
 	
 	// Info PACMAN
 	private void computePacman(Game game, GHOST me) {
-		pacmanIniDist = game.getDistance(game.getGhostCurrentNodeIndex(me), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
+		pacmanIniDist = (int) game.getDistance(game.getGhostCurrentNodeIndex(me), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
 		pacmanRelPos = game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(me), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
 	}
 

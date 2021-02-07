@@ -39,7 +39,7 @@ public class MsPacManInput implements Input {
 		computeNearestNotEdibleGhost(game);
 		computeNearestEdibleGhost(game);
 		computeNearestPPill(game);
-		computePosibleDirs(game);
+		//computePosibleDirs(game);
 		pacmanLastMove = game.getPacmanLastMoveMade();
 		score = game.getScore();
 		level = game.getCurrentLevel();
@@ -51,8 +51,8 @@ public class MsPacManInput implements Input {
 		description.setDist2nearestEdibleGhost(dist2nearestEdibleGhost);
 		description.setDist2nearestNotEdibleGhost(dist2nearestNotEdibleGhost);
 		description.setDist2nearestPP(dist2nearestPP);
-		description.setPacmanLastMove(pacmanLastMove);
-		description.setPosiblesDirs(posiblesDirs);
+		description.setPacmanLastMove(pacmanLastMove.ordinal());
+		//description.setPosiblesDirs(posiblesDirs);
 		description.setLevel(level);
 		description.setScore(score);
 		

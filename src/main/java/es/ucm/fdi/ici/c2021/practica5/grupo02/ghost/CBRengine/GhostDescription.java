@@ -1,7 +1,5 @@
 package es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine;
 
-import pacman.game.Constants.GHOST;
-import pacman.game.Constants.MOVE;
 import ucm.gaia.jcolibri.cbrcore.Attribute;
 import ucm.gaia.jcolibri.cbrcore.CaseComponent;
 
@@ -10,16 +8,16 @@ public class GhostDescription implements CaseComponent {
 	Integer id;
 	
 	// Informacion mia
-	GHOST me;
-	int iniNodeIndex;
+	Integer me;
+	Integer iniNodeIndex;
 	
 	// Info del fantasma mas cercano al ghost
 	//Double closestGhostDist; // No creo que la queramos del todo
 	//MOVE closestGhostRelPos; // Creo que con esto seria suficiente
 	// Otros param de juego
 	Integer nearestPPill;
-	Double pacmanIniDist;
-	MOVE pacmanRelPos;
+	Integer pacmanIniDist;
+	Integer pacmanRelPos;
 	// Importantes a la hora de descartar
 	Boolean edible;
 	Integer level; // Nivel
@@ -41,11 +39,11 @@ public class GhostDescription implements CaseComponent {
 		this.iniNodeIndex = nIndex;
 	}
 	
-	public GHOST getMe() {
+	public Integer getMe() {
 		return me;
 	}
 
-	public void setMe(GHOST g) {
+	public void setMe(Integer g) {
 		this.me = g;
 	}	
 	
@@ -77,19 +75,19 @@ public class GhostDescription implements CaseComponent {
 		this.nearestPPill = nearestPPill;
 	}
 	
-	public Double getPacmanIniDist() {
+	public Integer getPacmanIniDist() {
 		return pacmanIniDist;
 	}
 
-	public void setPacmanIniDist(Double pacmanDist) {
+	public void setPacmanIniDist(Integer pacmanDist) {
 		this.pacmanIniDist = pacmanDist;
 	}
 	
-	public MOVE getPacmanRelPos() {
+	public Integer getPacmanRelPos() {
 		return pacmanRelPos;
 	}
 
-	public void setPacmanRelPos(MOVE pacRelPos) {
+	public void setPacmanRelPos(Integer pacRelPos) {
 		this.pacmanRelPos = pacRelPos;
 	}
 	
@@ -118,7 +116,7 @@ public class GhostDescription implements CaseComponent {
 
 	@Override
 	public String toString() {
-		return "MsPacManDescription [id=" + id + ", iniDistToPacman=" + pacmanIniDist + ", RelPosToPacman=" + pacmanRelPos 
+		return "GhostDescription [id=" + id + ", iniDistToPacman=" + pacmanIniDist + ", RelPosToPacman=" + pacmanRelPos 
 				/*+ ", distToClosestGhost=" + closestGhostDist + ", RelPosToClosestGhost=" + closestGhostRelPos*/ 
 				+ ", edible=" + edible + ", nearestPPill=" + nearestPPill 
 				+ ", level=" + level + "]";

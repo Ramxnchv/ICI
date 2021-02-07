@@ -6,8 +6,7 @@
 		<Map>id</Map>
 		<Map>dist2nearestEdibleGhost</Map>
 		<Map>dist2nearestNotEdibleGhost</Map>
-		<Map>dist2nearestPP</Map>		
-		<Map>posiblesDirs</Map>		
+		<Map>dist2nearestPP</Map>			
 		<Map>pacmanLastMove</Map>
 		<Map>score</Map>
 		<Map>level</Map>		
