@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.*;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.CBRengine.CachedLinearCaseBase;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.GhostActionSelector;
+import pacman.game.Constants.GHOST;
 import ucm.gaia.jcolibri.method.retrieve.*;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig;
-import ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNScoringMethod;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.similarity.global.Average;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.similarity.local.Equal;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.similarity.local.Interval;
@@ -80,11 +80,13 @@ public class GhostCBRengine implements StandardCBRApplication {
 		
 		//--------------------------------
 		// Falta la pos de los otros ghosts
-		simConfig.addMapping(new Attribute("nearestPPill",GhostDescription.class), new Interval(15000));
+		simConfig.addMapping(new Attribute("me", GhostDescription.class), new Interval(GHOST.values().length));
+		simConfig.addMapping(new Attribute("iniNodeIndex",GhostDescription.class), new Interval(4000));
+		simConfig.addMapping(new Attribute("nearestPPill",GhostDescription.class), new Interval(4000));
 		simConfig.addMapping(new Attribute("pacmanIniDist",GhostDescription.class), new Interval(4000));
-		simConfig.addMapping(new Attribute("pacmanRel",GhostDescription.class), new Interval(4));
+		simConfig.addMapping(new Attribute("pacmanRelPos",GhostDescription.class), new Interval(4));
 		simConfig.addMapping(new Attribute("level",GhostDescription.class), new Interval(50));
-		simConfig.addMapping(new Attribute("movement",GhostDescription.class), new Interval(4));
+		//simConfig.addMapping(new Attribute("movement",GhostDescription.class), new Interval(4));
 		simConfig.addMapping(new Attribute("edible",GhostDescription.class), new Equal());
 	}
 

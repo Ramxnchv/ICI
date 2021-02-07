@@ -1,9 +1,6 @@
 package es.ucm.fdi.ici.c2021.practica5.grupo02.ghost;
 
 
-import java.util.EnumMap;
-import java.util.HashMap;
-
 import es.ucm.fdi.ici.c2021.practica5.grupo02.Input;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostDescription;
 import pacman.game.Constants.DM;

@@ -24,7 +24,7 @@ public class Ghost extends GhostController {
 	
 	private EnumMap<GHOST, MOVE> controllers;
 	
-	final static String FILE_PATH = "grupo02/ghost/cbrdata/%s.csv"; //Cuidado!! poner el grupo aqui
+	final static String FILE_PATH = "cbrdata/grupo02/%s.csv"; //Cuidado!! poner el grupo aqui
 	
 	public Ghost()
 	{

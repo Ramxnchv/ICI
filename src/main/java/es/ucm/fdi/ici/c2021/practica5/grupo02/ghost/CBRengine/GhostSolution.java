@@ -4,6 +4,7 @@ import ucm.gaia.jcolibri.cbrcore.Attribute;
 import ucm.gaia.jcolibri.cbrcore.CaseComponent;
 
 public class GhostSolution implements CaseComponent, Cloneable {
+	
 	Integer id;
 	String action;
 	

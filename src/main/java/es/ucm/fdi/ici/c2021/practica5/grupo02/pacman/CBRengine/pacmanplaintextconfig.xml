@@ -1,21 +1,23 @@
 <TextFileConfiguration>
 	<FilePath>es/ucm/fdi/ici/practica5/data/generalcasebase.txt</FilePath>
 	<Delimiters>,</Delimiters>
-	<DescriptionClassName>es.ucm.fdi.ici.practica5.CBRengine.MsPacManDescription</DescriptionClassName>
+	<DescriptionClassName>es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.CBRengine.MsPacManDescription</DescriptionClassName>
 	<DescriptionMappings>
 		<Map>id</Map>
+		<Map>dist2nearestEdibleGhost</Map>
+		<Map>dist2nearestNotEdibleGhost</Map>
+		<Map>dist2nearestPP</Map>		
+		<Map>posiblesDirs</Map>		
+		<Map>pacmanLastMove</Map>
 		<Map>score</Map>
-		<Map>time</Map>
-		<Map>nearestPPill</Map>		
-		<Map>nearestGhost</Map>		
-		<Map>edibleGhost</Map>		
+		<Map>level</Map>		
 	</DescriptionMappings>
-	<SolutionClassName>es.ucm.fdi.ici.practica5.CBRengine.MsPacManSolution</SolutionClassName>
+	<SolutionClassName>es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.CBRengine.MsPacManSolution</SolutionClassName>
 	<SolutionMappings>
 		<Map>id</Map>
 		<Map>action</Map>
 	</SolutionMappings>
-	<ResultClassName>es.ucm.fdi.ici.practica5.CBRengine.MsPacManResult</ResultClassName>
+	<ResultClassName>es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.CBRengine.MsPacManResult</ResultClassName>
 	<ResultMappings>
 		<Map>id</Map>
 		<Map>score</Map>

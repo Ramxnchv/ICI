@@ -4,8 +4,9 @@ import java.util.Set;
 
 import pacman.game.Constants.MOVE;
 import ucm.gaia.jcolibri.cbrcore.Attribute;
+import ucm.gaia.jcolibri.cbrcore.CaseComponent;
 
-public class MsPacManDescription implements ucm.gaia.jcolibri.cbrcore.CaseComponent {
+public class MsPacManDescription implements CaseComponent {
 
 	Integer id;
 	
