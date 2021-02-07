@@ -8,7 +8,7 @@
 		<Map>me</Map>
 		<Map>nearestPPill</Map>		
 		<Map>pacmanIniDist</Map>		
-		<Map>pacmanRel</Map>
+		<Map>pacmanRelPos</Map>
 		<Map>edible</Map>
 		<Map>level</Map>
 	</DescriptionMappings>

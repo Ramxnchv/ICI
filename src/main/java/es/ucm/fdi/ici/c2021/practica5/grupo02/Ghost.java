@@ -70,9 +70,7 @@ public class Ghost extends GhostController {
 		for(GHOST g : GHOST.values()) {
 			//This implementation only computes a new action when MsPacMan is in a junction. 
 			//This is relevant for the case storage policy
-			if(!game.isJunction(game.getGhostCurrentNodeIndex(g))) {
-				move = MOVE.NEUTRAL;
-			}
+			if (game.getGhostCurrentNodeIndex(g) == -1 || !game.isJunction(game.getGhostCurrentNodeIndex(g))) move = MOVE.NEUTRAL;
 			else {
 				try {
 					input.setGhost(g);

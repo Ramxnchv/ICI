@@ -86,7 +86,6 @@ public class GhostCBRengine implements StandardCBRApplication {
 		simConfig.addMapping(new Attribute("pacmanIniDist",GhostDescription.class), new Interval(4000));
 		simConfig.addMapping(new Attribute("pacmanRelPos",GhostDescription.class), new Interval(4));
 		simConfig.addMapping(new Attribute("level",GhostDescription.class), new Interval(50));
-		//simConfig.addMapping(new Attribute("movement",GhostDescription.class), new Interval(4));
 		simConfig.addMapping(new Attribute("edible",GhostDescription.class), new Equal());
 	}
 
@@ -141,8 +140,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 		GhostDescription newDescription = (GhostDescription) query.getDescription();
 		GhostResult newResult = new GhostResult();
 		GhostSolution newSolution = new GhostSolution();
-		int newId = this.caseBase.getCases().size();
-		newId+= storageManager.getPendingCases();
+		int newId = this.caseBase.getCases().size() + storageManager.getPendingCases() + 1;
 		newDescription.setId(newId);
 		newResult.setId(newId);
 		newSolution.setId(newId);
