@@ -79,14 +79,13 @@ public class GhostCBRengine implements StandardCBRApplication {
 		simConfig.setDescriptionSimFunction(new Average());
 		
 		//--------------------------------
-		// Falta la pos de los otros ghosts
-		simConfig.addMapping(new Attribute("me", GhostDescription.class), new Interval(4));
 		simConfig.addMapping(new Attribute("iniNodeIndex",GhostDescription.class), new Interval(4000));
+		simConfig.addMapping(new Attribute("me", GhostDescription.class), new Interval(4));
 		simConfig.addMapping(new Attribute("nearestPPill",GhostDescription.class), new Interval(4000));
 		simConfig.addMapping(new Attribute("pacmanIniDist",GhostDescription.class), new Interval(4000));
 		simConfig.addMapping(new Attribute("pacmanRelPos",GhostDescription.class), new Interval(4));
-		simConfig.addMapping(new Attribute("level",GhostDescription.class), new Interval(50));
 		simConfig.addMapping(new Attribute("edible",GhostDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("level",GhostDescription.class), new Interval(50));
 	}
 
 	@Override
@@ -106,11 +105,11 @@ public class GhostCBRengine implements StandardCBRApplication {
 			
 			// This simple implementation only uses 1NN
 			// Consider using kNNs with majority voting
-			RetrievalResult first = SelectCases.selectTopKRR(eval, 5).iterator().next();
+			RetrievalResult cases = SelectCases.selectTopKRR(eval, 5).iterator().next();
 			
 			//-----
-			CBRCase mostSimilarCase = first.get_case();
-			double similarity = first.getEval();
+			CBRCase mostSimilarCase = cases.get_case();
+			double similarity = cases.getEval();
 			//------
 	
 			GhostResult result = (GhostResult) mostSimilarCase.getResult();
@@ -122,7 +121,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 			if(similarity<0.7) //Sorry not enough similarity, ask actionSelector for an action
 				this.action = actionSelector.findAction();
 			
-			else if(result.getScore()<0) //This was a bad case, ask actionSelector for another one.
+			else if(result.getScore()<20) //This was a bad case, ask actionSelector for another one.
 				this.action = actionSelector.findAnotherAction(solution.getAction());
 		}
 		//lastAction = createNewCase(query);
@@ -173,8 +172,10 @@ public class GhostCBRengine implements StandardCBRApplication {
 		if(_query.getEdible() != _case.getEdible()) return 0.0;
 		
 		double simil = 0;
-		simil += Math.abs(_query.getPacmanIniDist() - _case.getPacmanIniDist()) * 0.7;
-		simil += Math.abs(_query.getNearestPPill() - _case.getNearestPPill()) * 0.3;
+		simil += Math.abs(_query.getPacmanIniDist() - _case.getPacmanIniDist()) * 0.5;
+		simil += Math.abs(_query.getNearestPPill() - _case.getNearestPPill()) * 0.25;
+		simil += Math.abs(_query.getIniNodeIndex() - _case.getIniNodeIndex()) * 0.25;
+		if(_query.getPacmanRelPos() == _case.getPacmanRelPos()) simil += 0.25;
 		
 		// Usar la relPos del pacman?
 		//simil += Math.abs(_query.getPacmanRelPos())

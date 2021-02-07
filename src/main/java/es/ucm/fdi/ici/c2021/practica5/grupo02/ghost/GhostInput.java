@@ -10,7 +10,7 @@ import pacman.game.Game;
 import ucm.gaia.jcolibri.cbrcore.CBRQuery;
 
 public class GhostInput implements Input {
-	GHOST me;
+	Integer me;
 	Integer iniNodeIndex;
 	// Info del fantasma mas cercano al ghost
 	//Double closestGhostDist;
@@ -27,20 +27,20 @@ public class GhostInput implements Input {
 	public void parseInput(Game game) {
 		//computeOtherGhost(game, me);
 		computePacman(game, me);
-		computeNearestPPill(game, me);
-		iniNodeIndex = game.getGhostCurrentNodeIndex(me);
-		edible = game.isGhostEdible(me);
+		computeNearestPPill(game);
+		iniNodeIndex = game.getGhostCurrentNodeIndex(GHOST.values()[me]);
+		edible = game.isGhostEdible(GHOST.values()[me]);
 		level = game.getCurrentLevel();
 	}
 	
 	public void setGhost(GHOST g) {
-		me = g;
+		me = g.ordinal();
 	}
 
 	@Override
 	public CBRQuery getQuery() {
 		GhostDescription description = new GhostDescription();
-		description.setMe(me.ordinal());
+		description.setMe(me);
 		description.setIniNodeIndex(iniNodeIndex);
 		description.setEdible(edible);
 		description.setLevel(level);
@@ -56,18 +56,18 @@ public class GhostInput implements Input {
 	}
 	
 	// Info PACMAN
-	private void computePacman(Game game, GHOST me) {
-		if(game.getGhostCurrentNodeIndex(me) == -1) {
+	private void computePacman(Game game, Integer me) {
+		if(game.getGhostCurrentNodeIndex(GHOST.values()[me]) == -1) {
 			pacmanIniDist = Integer.MAX_VALUE;
 		}
 		else {
-			pacmanIniDist = (int) game.getDistance(game.getGhostCurrentNodeIndex(me), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
+			pacmanIniDist = (int) game.getDistance(game.getGhostCurrentNodeIndex(GHOST.values()[me]), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
 		}
-		pacmanRelPos = game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(me), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
+		pacmanRelPos = game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(GHOST.values()[me]), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
 	}
 
 	// Info CLOSESTGHOST
-	private void computeOtherGhost(Game game, GHOST me) {
+	private void computeOtherGhost(Game game, Integer me) {
 		/*closestGhost = null;
 		int pos = game.getGhostCurrentNodeIndex(me);
 		for(GHOST g: GHOST.values()) {
@@ -97,9 +97,9 @@ public class GhostInput implements Input {
 	}
 	
 	// Info PPILLS
-	private void computeNearestPPill(Game game, GHOST g) {
-		nearestPPill = Integer.MAX_VALUE;
-		for(int pos: game.getPowerPillIndices()) {
+	private void computeNearestPPill(Game game) {
+		nearestPPill = 0;
+		for(int pos: game.getActivePowerPillsIndices()) {
 			int distance = (int)game.getDistance(game.getPacmanCurrentNodeIndex(), pos, DM.PATH);
 			if(distance < nearestPPill)
 				nearestPPill = distance;

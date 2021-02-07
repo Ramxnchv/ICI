@@ -55,6 +55,9 @@ public class GhostStorageManager {
 		
 		// Calcular la diferencia de distancias
 		Integer resultValue = (int) (currentDistToPacman - iniDistToPacman);
+		if(description.edible) resultValue *= -1;
+		
+		resultValue *= -1;
 		
 		//-----
 		GhostResult result = (GhostResult)bCase.getResult();
