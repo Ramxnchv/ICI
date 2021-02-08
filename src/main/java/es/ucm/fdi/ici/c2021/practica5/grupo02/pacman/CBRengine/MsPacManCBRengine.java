@@ -175,12 +175,21 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 		if(_query.getLevel() != _case.getLevel()) return 0.0;
 		
 		double simil = 0;
+		if(1 - (Math.abs(_query.getDist2nearestNotEdibleGhost() - _case.getDist2nearestNotEdibleGhost())/100) > 0) {
+			simil += (1 - (Math.abs(_query.getDist2nearestNotEdibleGhost() - _case.getDist2nearestNotEdibleGhost())/100) * 0.4);
+		}
+		if(1 - (Math.abs(_query.getDist2nearestEdibleGhost() - _case.getDist2nearestEdibleGhost())/100) > 0) {
+			simil += (1 - (Math.abs(_query.getDist2nearestEdibleGhost() - _case.getDist2nearestEdibleGhost())/100) * 0.15);
+		}
+		if(1 - (Math.abs(_query.getDist2nearestPP() - _case.getDist2nearestPP())/100) > 0) {
+			simil += (1 - (Math.abs(_query.getDist2nearestPP() - _case.getDist2nearestPP())/100) * 0.15);
+		}
+		if(1 - (Math.abs(_query.getDist2nearestPill() - _case.getDist2nearestPill())/100) > 0) {
+			simil += (1 - (Math.abs(_query.getDist2nearestPill() - _case.getDist2nearestPill())/100) * 0.15);
+		}
 		
-		simil += Math.abs(_query.getDist2nearestNotEdibleGhost() - _case.getDist2nearestNotEdibleGhost()) * 0.4;
-		simil += Math.abs(_query.getDist2nearestEdibleGhost() - _case.getDist2nearestEdibleGhost()) * 0.15;
-		simil += Math.abs(_query.getDist2nearestPP() - _case.getDist2nearestPP()) * 0.15;
-		simil += Math.abs(_query.getDist2nearestPill() - _case.getDist2nearestPill()) * 0.15;
 		simil += _query.getPacmanLastMove().equals(_case.getPacmanLastMove()) ? 0.15 : 0 ;
+		
 		//simil += _query.getPosiblesDirs().containsAll(_case.getPosiblesDirs()) ? 0.1 : 0;
 		
 		return simil;
