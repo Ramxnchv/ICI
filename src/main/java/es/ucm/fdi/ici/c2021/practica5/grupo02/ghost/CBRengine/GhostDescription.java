@@ -13,6 +13,7 @@ public class GhostDescription implements CaseComponent {
 	Integer nearestPPill;
 	Integer pacmanIniDist;
 	Integer pacmanRelPos;
+	//Integer pacmanLives;
 	// Importantes a la hora de descartar
 	Boolean edible;
 	Integer level;
@@ -24,6 +25,15 @@ public class GhostDescription implements CaseComponent {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public Integer getLives() {
+		//return pacmanLives;
+		return 0;
+	}
+
+	public void setLives(Integer hp) {
+		//this.pacmanLives = hp;
 	}
 
 	public Integer getMe() {
@@ -82,7 +92,7 @@ public class GhostDescription implements CaseComponent {
 	@Override
 	public String toString() {
 		return "GhostDescription [id=" + id + ", me=" + me + ", nearestPPill=" + nearestPPill + ", pacmanIniDist="
-				+ pacmanIniDist + ", pacmanRelPos=" + pacmanRelPos + ", edible=" + edible + ", level=" + level + "]";
+				+ pacmanIniDist + ", pacmanRelPos=" + pacmanRelPos + /*", pacmanLives=" + pacmanLives +*/ ", edible=" + edible + ", level=" + level + "]";
 	}
 
 }

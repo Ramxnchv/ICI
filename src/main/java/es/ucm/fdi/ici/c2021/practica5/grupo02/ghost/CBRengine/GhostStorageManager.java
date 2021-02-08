@@ -16,7 +16,7 @@ public class GhostStorageManager {
 	CachedLinearCaseBase caseBase;
 	Vector<CBRCase> buffer;
 
-	private final static int TIME_WINDOW = 3;
+	private final static int TIME_WINDOW = 5;
 	
 	public GhostStorageManager()
 	{
@@ -55,8 +55,18 @@ public class GhostStorageManager {
 			currentDistToPacman > iniDistToPacman && !game.isGhostEdible(GHOST.values()[description.getMe()]))  // Si la distancia ha disminuido siendo comestibles
 				result.setScore(0); // La puntuación es 0
 		
+		Integer puntuacion = Math.abs(iniDistToPacman - currentDistToPacman);
+		//Integer puntuacion = iniDistToPacman - currentDistToPacman;
+		
+		// Si hemos comido al pacman durante la accion aumentamos la puntuacion de ese movimiento.
+		if(description.getLives() > game.getPacmanNumberOfLivesRemaining() && currentDistToPacman < 10) puntuacion += 100;
+		
 		// Si no, puntuamos el caso con la diferencia absoluta entre la distancia al pacman hace N intersecciones y la actual
-		result.setScore(Math.abs(iniDistToPacman - currentDistToPacman));
+		result.setScore(puntuacion);
+		
+		//System.out.printf(description.toString()+"\n");
+		//System.out.printf(result.toString()+"\n");
+		//System.out.printf("----------------\n");
 		
 		//Store the old case right now into the case base
 		//Alternatively we could store all them when game finishes in close() method

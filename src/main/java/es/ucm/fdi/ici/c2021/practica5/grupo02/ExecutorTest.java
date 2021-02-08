@@ -16,12 +16,12 @@ public class ExecutorTest {
 				.setScaleFactor(3.0)
 				.build();
     	
-        PacmanController pacMan = new HumanController(new KeyBoardInput());
-        //PacmanController pacMan = new MsPacMan();
+        //PacmanController pacMan = new HumanController(new KeyBoardInput());
+        PacmanController pacMan = new MsPacMan();
         GhostController ghosts = new Ghost();
         
         System.out.println( 
-        		executor.runGame(pacMan, ghosts, 40)
+        		executor.runGame(pacMan, ghosts, 1)
         );
         
     }

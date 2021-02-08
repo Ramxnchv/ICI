@@ -87,6 +87,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 		simConfig.addMapping(new Attribute("nearestPPill",GhostDescription.class), new Interval(650));
 		simConfig.addMapping(new Attribute("pacmanIniDist",GhostDescription.class), new Interval(650));
 		simConfig.addMapping(new Attribute("pacmanRelPos",GhostDescription.class), new Equal());
+		//simConfig.addMapping(new Attribute("pacmanLives",GhostDescription.class), new Interval(3));
 		simConfig.addMapping(new Attribute("edible",GhostDescription.class), new Equal());
 		simConfig.addMapping(new Attribute("level",GhostDescription.class), new Equal());
 	}
@@ -125,7 +126,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 			if(similarity<0.7) //Sorry not enough similarity, ask actionSelector for an action
 				this.action = actionSelector.findAction();
 			
-			else if(result.getScore() == 0) //This was a bad case, ask actionSelector for another one.
+			else if(result.getScore() <= 0) //This was a bad case, ask actionSelector for another one.
 				this.action = actionSelector.findAnotherAction(solution.getAction());
 		}
 		//lastAction = createNewCase(query);
