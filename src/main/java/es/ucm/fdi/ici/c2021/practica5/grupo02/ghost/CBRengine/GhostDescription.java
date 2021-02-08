@@ -8,20 +8,16 @@ public class GhostDescription implements CaseComponent {
 	Integer id;
 	
 	// Informacion mia
-	Integer iniNodeIndex;
 	Integer me;
-	
-	// Info del fantasma mas cercano al ghost
-	//Double closestGhostDist; // No creo que la queramos del todo
-	//MOVE closestGhostRelPos; // Creo que con esto seria suficiente
-	// Otros param de juego
+	// Otros parámetros del juego
 	Integer nearestPPill;
 	Integer pacmanIniDist;
 	Integer pacmanRelPos;
 	// Importantes a la hora de descartar
 	Boolean edible;
-	Integer level; // Nivel
+	Integer level;
 	
+
 	public Integer getId() {
 		return id;
 	}
@@ -29,44 +25,15 @@ public class GhostDescription implements CaseComponent {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
-	// MIO
-	public int getIniNodeIndex() {
-		return iniNodeIndex;
-	}
 
-	public void setIniNodeIndex(int nIndex) {
-		this.iniNodeIndex = nIndex;
-	}
-	
 	public Integer getMe() {
 		return me;
 	}
 
-	public void setMe(Integer g) {
-		this.me = g;
-	}	
-	
-	/*
-	// Closest Ghost
-	public Double getClosestGhostDist() {
-		return closestGhostDist;
+	public void setMe(Integer me) {
+		this.me = me;
 	}
 
-	public void setClosestGhostDist(Double closestDist) {
-		this.closestGhostDist = closestDist;
-	}
-	
-	public MOVE getClosestRelPos() {
-		return closestGhostRelPos;
-	}
-
-	public void setClosestRelPos(MOVE closestRelPos) {
-		this.closestGhostRelPos = closestRelPos;
-	}
-	*/
-	
-	// Pacman y pills
 	public Integer getNearestPPill() {
 		return nearestPPill;
 	}
@@ -74,28 +41,27 @@ public class GhostDescription implements CaseComponent {
 	public void setNearestPPill(Integer nearestPPill) {
 		this.nearestPPill = nearestPPill;
 	}
-	
+
 	public Integer getPacmanIniDist() {
 		return pacmanIniDist;
 	}
 
-	public void setPacmanIniDist(Integer pacmanDist) {
-		this.pacmanIniDist = pacmanDist;
+	public void setPacmanIniDist(Integer pacmanIniDist) {
+		this.pacmanIniDist = pacmanIniDist;
 	}
-	
+
 	public Integer getPacmanRelPos() {
 		return pacmanRelPos;
 	}
 
-	public void setPacmanRelPos(Integer pacRelPos) {
-		this.pacmanRelPos = pacRelPos;
+	public void setPacmanRelPos(Integer pacmanRelPos) {
+		this.pacmanRelPos = pacmanRelPos;
 	}
-	
-	// Descartadores
+
 	public Boolean getEdible() {
 		return edible;
 	}
-	
+
 	public void setEdible(Boolean edible) {
 		this.edible = edible;
 	}
@@ -104,11 +70,10 @@ public class GhostDescription implements CaseComponent {
 		return level;
 	}
 
-	public void setLevel(Integer lv) {
-		this.level = lv;
+	public void setLevel(Integer level) {
+		this.level = level;
 	}
 
-	// Overrides
 	@Override
 	public Attribute getIdAttribute() {
 		return new Attribute("id", GhostDescription.class);
@@ -116,9 +81,8 @@ public class GhostDescription implements CaseComponent {
 
 	@Override
 	public String toString() {
-		return "GhostDescription [id=" + id + ", iniDistToPacman=" + pacmanIniDist + ", RelPosToPacman=" + pacmanRelPos 
-				/*+ ", distToClosestGhost=" + closestGhostDist + ", RelPosToClosestGhost=" + closestGhostRelPos*/ 
-				+ ", edible=" + edible + ", nearestPPill=" + nearestPPill 
-				+ ", level=" + level + "]";
+		return "GhostDescription [id=" + id + ", me=" + me + ", nearestPPill=" + nearestPPill + ", pacmanIniDist="
+				+ pacmanIniDist + ", pacmanRelPos=" + pacmanRelPos + ", edible=" + edible + ", level=" + level + "]";
 	}
+
 }

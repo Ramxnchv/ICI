@@ -15,14 +15,13 @@ public class MsPacManDescription implements CaseComponent {
 	
 	Integer dist2nearestPill;
 	
-	//Set<MOVE> posiblesDirs;
-	
 	Integer pacmanLastMove;
 	
 	Integer score;
 	
 	Integer level;
 	
+
 	public Integer getId() {
 		return id;
 	}
@@ -54,16 +53,6 @@ public class MsPacManDescription implements CaseComponent {
 	public void setDist2nearestPP(Integer dist2nearestPP) {
 		this.dist2nearestPP = dist2nearestPP;
 	}
-	
-	
-
-//	public Set<MOVE> getPosiblesDirs() {
-//		return posiblesDirs;
-//	}
-
-//	public void setPosiblesDirs(Set<MOVE> posiblesDirs) {
-//		this.posiblesDirs = posiblesDirs;
-//	}
 
 	public Integer getDist2nearestPill() {
 		return dist2nearestPill;
@@ -85,8 +74,8 @@ public class MsPacManDescription implements CaseComponent {
 		return score;
 	}
 
-	public void setScore(Integer Score) {
-		score = Score;
+	public void setScore(Integer score) {
+		this.score = score;
 	}
 
 	public Integer getLevel() {
@@ -104,11 +93,10 @@ public class MsPacManDescription implements CaseComponent {
 
 	@Override
 	public String toString() {
-		return "MsPacManDescription [id=" + id + ", score=" + score + ", dist2nearestEdibleGhost=" + dist2nearestEdibleGhost + ", dist2nearestNotEdibleGhost="
-				+ dist2nearestNotEdibleGhost + ", dist2nearestPP=" + dist2nearestPP + ", dist2nearestPill=" + dist2nearestPill + ", level=" + level
-				+ ", pacmanLastMove=" + pacmanLastMove + "]";
+		return "MsPacManDescription [id=" + id + ", dist2nearestEdibleGhost=" + dist2nearestEdibleGhost
+				+ ", dist2nearestNotEdibleGhost=" + dist2nearestNotEdibleGhost + ", dist2nearestPP=" + dist2nearestPP
+				+ ", dist2nearestPill=" + dist2nearestPill + ", pacmanLastMove=" + pacmanLastMove + ", score=" + score
+				+ ", level=" + level + "]";
 	}
-	
-	
 
 }

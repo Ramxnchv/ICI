@@ -2,13 +2,17 @@ package es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import es.ucm.fdi.ici.c2021.practica5.grupo02.*;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.CBRengine.CachedLinearCaseBase;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.GhostActionSelector;
+import pacman.game.Constants;
 import pacman.game.Constants.GHOST;
+import pacman.game.Constants.MOVE;
 import ucm.gaia.jcolibri.method.retrieve.*;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.similarity.global.Average;
@@ -79,13 +83,12 @@ public class GhostCBRengine implements StandardCBRApplication {
 		simConfig.setDescriptionSimFunction(new Average());
 		
 		//--------------------------------
-		simConfig.addMapping(new Attribute("iniNodeIndex",GhostDescription.class), new Interval(4000));
-		simConfig.addMapping(new Attribute("me", GhostDescription.class), new Interval(4));
-		simConfig.addMapping(new Attribute("nearestPPill",GhostDescription.class), new Interval(4000));
-		simConfig.addMapping(new Attribute("pacmanIniDist",GhostDescription.class), new Interval(4000));
-		simConfig.addMapping(new Attribute("pacmanRelPos",GhostDescription.class), new Interval(4));
+		simConfig.addMapping(new Attribute("me", GhostDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("nearestPPill",GhostDescription.class), new Interval(650));
+		simConfig.addMapping(new Attribute("pacmanIniDist",GhostDescription.class), new Interval(650));
+		simConfig.addMapping(new Attribute("pacmanRelPos",GhostDescription.class), new Equal());
 		simConfig.addMapping(new Attribute("edible",GhostDescription.class), new Equal());
-		simConfig.addMapping(new Attribute("level",GhostDescription.class), new Interval(50));
+		simConfig.addMapping(new Attribute("level",GhostDescription.class), new Equal());
 	}
 
 	@Override
@@ -93,6 +96,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 		caseBase.init(connector);
 		return caseBase;
 	}
+
 
 	@Override
 	public void cycle(CBRQuery query) throws ExecutionException {
@@ -121,12 +125,24 @@ public class GhostCBRengine implements StandardCBRApplication {
 			if(similarity<0.7) //Sorry not enough similarity, ask actionSelector for an action
 				this.action = actionSelector.findAction();
 			
-			else if(result.getScore()<20) //This was a bad case, ask actionSelector for another one.
+			else if(result.getScore() == 0) //This was a bad case, ask actionSelector for another one.
 				this.action = actionSelector.findAnotherAction(solution.getAction());
 		}
 		//lastAction = createNewCase(query);
 		CBRCase newCase = createNewCase(query);
 		this.storageManager.storeCase(newCase);
+	}
+	
+	private Action actionPoll(Collection<RetrievalResult> cases, CaseComponent caseDescription) {
+		HashMap<Action, Double> pollResults = new HashMap<Action, Double>();
+		for (RetrievalResult r : cases) {
+			CBRCase c = r.get_case();
+			Action a = actionSelector.getAction(((GhostSolution) c.getSolution()).getAction());
+			pollResults.put(a, pollResults.getOrDefault(a, 0.) + ((GhostResult) c.getResult()).getScore() * computeSimilarity(caseDescription, c.getDescription()));
+		}
+		Action a = null; Double mostVoted = .0;
+		for (Entry<Action, Double> e : pollResults.entrySet()) if (e.getValue() > mostVoted) {	a = e.getKey(); mostVoted = e.getValue();	}	
+		return a;
 	}
 
 	/**
@@ -174,12 +190,10 @@ public class GhostCBRengine implements StandardCBRApplication {
 		double simil = 0;
 		simil += Math.abs(_query.getPacmanIniDist() - _case.getPacmanIniDist()) * 0.5;
 		simil += Math.abs(_query.getNearestPPill() - _case.getNearestPPill()) * 0.25;
-		simil += Math.abs(_query.getIniNodeIndex() - _case.getIniNodeIndex()) * 0.25;
-		if(_query.getPacmanRelPos() == _case.getPacmanRelPos()) simil += 0.25;
+		simil += ((_query.getPacmanRelPos() == _case.getPacmanRelPos()) ? 1. :		// Si es la misma posición
+			((MOVE.values()[_query.getPacmanRelPos()].opposite().ordinal() == _case.getPacmanRelPos()) ? .0 : 	// Si es la opuesta
+				.5)) * 0.25;		// Si difiere pero no es diametralmente opuesta
 		
-		// Usar la relPos del pacman?
-		//simil += Math.abs(_query.getPacmanRelPos())
-
 		return simil;
 	}
 	

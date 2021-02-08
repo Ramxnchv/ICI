@@ -84,7 +84,6 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 		simConfig.addMapping(new Attribute("dist2nearestNotEdibleGhost",MsPacManDescription.class), new Interval(4000));
 		simConfig.addMapping(new Attribute("dist2nearestPP",MsPacManDescription.class), new Interval(650));
 		simConfig.addMapping(new Attribute("dist2nearestPill",MsPacManDescription.class), new Interval(650));
-		//simConfig.addMapping(new Attribute("posiblesDirs",MsPacManDescription.class), new Interval(4));
 		simConfig.addMapping(new Attribute("level",MsPacManDescription.class), new Interval(50));
 		simConfig.addMapping(new Attribute("score",MsPacManDescription.class), new Interval(650));
 		simConfig.addMapping(new Attribute("pacmanLastMove",MsPacManDescription.class), new Interval(4));

@@ -41,11 +41,7 @@ public class GhostActionSelector {
 	 * @return
 	 */	
 	public Action findAnotherAction(String failledAction) {
-		int randomIndex = new Random().nextInt(actions.size());
-		Action other = actions.get(randomIndex);
-		if(other.getActionId().equals(failledAction))
-			randomIndex = (randomIndex+1)%actions.size();
-		return actions.get(randomIndex);
+		return actions.get((actions.indexOf(getAction(failledAction)) + 2) % actions.size());
 	}
 
 	public Action getAction(String action) {

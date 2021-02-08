@@ -11,6 +11,7 @@ import ucm.gaia.jcolibri.cbrcore.CBRCaseBase;
 import ucm.gaia.jcolibri.method.retain.StoreCasesMethod;
 
 public class GhostStorageManager {
+	
 	Game game;
 	CachedLinearCaseBase caseBase;
 	Vector<CBRCase> buffer;
@@ -36,8 +37,7 @@ public class GhostStorageManager {
 		this.buffer.add(newCase);
 		
 		//Check buffer for old cases to store
-		if(this.buffer.size()>TIME_WINDOW)
-		{
+		if (this.buffer.size()>TIME_WINDOW) {
 			CBRCase bCase = this.buffer.remove(0);
 			reviseCase(bCase);
 		}
@@ -45,23 +45,18 @@ public class GhostStorageManager {
 	
 	private void reviseCase(CBRCase bCase) {
 		GhostDescription description = (GhostDescription)bCase.getDescription();
-		Integer iniDistToPacman = description.getPacmanIniDist();
+		GhostResult result = (GhostResult) bCase.getResult();
+		Integer iniDistToPacman = description.getPacmanIniDist(); // Distancia inicial al pacman
+		Integer currentDistToPacman = (int) game.getDistance(game.getGhostCurrentNodeIndex(GHOST.values()[description.getMe()]), game.getPacmanCurrentNodeIndex(), DM.PATH);
 		
-		Double currentDistToPacman = Double.MAX_VALUE;
-		// Obtener la distancia al pacman actual
-		if(game.getGhostCurrentNodeIndex(GHOST.values()[description.getMe()]) != -1) {
-			currentDistToPacman = game.getDistance(game.getGhostCurrentNodeIndex(GHOST.values()[description.getMe()]), game.getPacmanCurrentNodeIndex(), DM.EUCLID);
-		}
 		
-		// Calcular la diferencia de distancias
-		Integer resultValue = (int) (currentDistToPacman - iniDistToPacman);
-		if(description.edible) resultValue *= -1;
+		if (game.getGhostCurrentNodeIndex(GHOST.values()[description.getMe()]) == -1 ||							// Si nos han comido
+			currentDistToPacman < iniDistToPacman && game.isGhostEdible(GHOST.values()[description.getMe()]) || // Si la distancia ha disminuido sin que seamos comestibles
+			currentDistToPacman > iniDistToPacman && !game.isGhostEdible(GHOST.values()[description.getMe()]))  // Si la distancia ha disminuido siendo comestibles
+				result.setScore(0); // La puntuación es 0
 		
-		resultValue *= -1;
-		
-		//-----
-		GhostResult result = (GhostResult)bCase.getResult();
-		result.setScore(resultValue);
+		// Si no, puntuamos el caso con la diferencia absoluta entre la distancia al pacman hace N intersecciones y la actual
+		result.setScore(Math.abs(iniDistToPacman - currentDistToPacman));
 		
 		//Store the old case right now into the case base
 		//Alternatively we could store all them when game finishes in close() method

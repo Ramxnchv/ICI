@@ -17,19 +17,21 @@ import ucm.gaia.jcolibri.exception.ExecutionException;
 
 public class Ghost extends GhostController {
 
-	GhostInput input;
 	GhostCBRengine cbrEngine;
 	GhostActionSelector actionSelector;
 	GhostStorageManager storageManager;
-	
-	private EnumMap<GHOST, MOVE> controllers;
+
+	EnumMap<GHOST, GhostInput> inputs;
+	private EnumMap<GHOST, MOVE> moves;
 	
 	final static String FILE_PATH = "cbrdata/grupo02/%s.csv"; //Cuidado!! poner el grupo aqui
 	
 	public Ghost()
 	{
-		controllers = new EnumMap<GHOST, MOVE>(GHOST.class);
-		this.input = new GhostInput();
+		moves = new EnumMap<GHOST, MOVE>(GHOST.class);
+		inputs = new EnumMap<GHOST, GhostInput>(GHOST.class);
+		
+		for (GHOST g : GHOST.values()) inputs.put(g, new GhostInput(g));
 		
 		List<Action> actions = new ArrayList<Action>();
 		actions.add(new DownAction());
@@ -68,16 +70,15 @@ public class Ghost extends GhostController {
 	public EnumMap<GHOST, MOVE> getMove(Game game, long timeDue) {
 		MOVE move;
 		for(GHOST g : GHOST.values()) {
-			//This implementation only computes a new action when MsPacMan is in a junction. 
+			//This implementation only computes a new action when Ghost is in a junction. 
 			//This is relevant for the case storage policy
 			if (game.getGhostCurrentNodeIndex(g) == -1 || !game.isJunction(game.getGhostCurrentNodeIndex(g))) move = MOVE.NEUTRAL;
 			else {
 				try {
-					input.setGhost(g);
-					input.parseInput(game);
+					inputs.get(g).parseInput(game);
 					actionSelector.setGame(game);
 					storageManager.setGame(game);
-					cbrEngine.cycle(input.getQuery());
+					cbrEngine.cycle(inputs.get(g).getQuery());
 					Action action = cbrEngine.getSolution();
 					move = action.execute(game);
 				} catch (Exception e) {
@@ -85,8 +86,8 @@ public class Ghost extends GhostController {
 					move = MOVE.NEUTRAL;
 				}
 			}
-			controllers.put(g, move);
+			moves.put(g, move);
 		}
-		return controllers;
+		return moves;
 	}
 }
