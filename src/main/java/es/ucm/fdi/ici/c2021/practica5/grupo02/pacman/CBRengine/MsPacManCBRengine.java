@@ -7,16 +7,10 @@ import java.util.stream.Collectors;
 
 import es.ucm.fdi.ici.c2021.practica5.grupo02.*;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.CBRengine.CachedLinearCaseBase;
-import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostDescription;
-import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostResult;
-import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.CBRengine.GhostSolution;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.MsPacManActionSelector;
-import pacman.game.Constants.MOVE;
 import ucm.gaia.jcolibri.method.retrieve.*;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig;
-import ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNScoringMethod;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.similarity.global.Average;
-import ucm.gaia.jcolibri.method.retrieve.NNretrieval.similarity.local.Equal;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.similarity.local.Interval;
 import ucm.gaia.jcolibri.method.retrieve.selection.SelectCases;
 import ucm.gaia.jcolibri.util.FileIO;
@@ -26,6 +20,7 @@ import ucm.gaia.jcolibri.cbrcore.CBRCase;
 import ucm.gaia.jcolibri.cbrcore.CBRCaseBase;
 import ucm.gaia.jcolibri.cbrcore.CBRQuery;
 import ucm.gaia.jcolibri.cbrcore.CaseComponent;
+import ucm.gaia.jcolibri.connector.PlainTextConnector;
 import ucm.gaia.jcolibri.exception.ExecutionException;
 
 public class MsPacManCBRengine implements StandardCBRApplication {
@@ -44,7 +39,7 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 	/**
 	 * Simple extension to allow custom case base files. It also creates a new empty file if it does not exist.
 	 */
-	public class CustomPlainTextConnector extends ucm.gaia.jcolibri.connector.PlainTextConnector {
+	public class CustomPlainTextConnector extends PlainTextConnector {
 		public void setCaseBaseFile(String casebaseFile) {
 			super.PROP_FILEPATH = casebaseFile;
 			try {
@@ -59,7 +54,7 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 	}
 	
 	
-	public MsPacManCBRengine(es.ucm.fdi.ici.c2021.practica5.grupo02.pacman.MsPacManActionSelector actionSelector, MsPacManStorageManager storageManager)
+	public MsPacManCBRengine(MsPacManActionSelector actionSelector, MsPacManStorageManager storageManager)
 	{
 		this.actionSelector = actionSelector;
 		this.storageManager = storageManager;

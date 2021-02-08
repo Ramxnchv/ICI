@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.*;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.CBRengine.CachedLinearCaseBase;
 import es.ucm.fdi.ici.c2021.practica5.grupo02.ghost.GhostActionSelector;
-import pacman.game.Constants;
-import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import ucm.gaia.jcolibri.method.retrieve.*;
 import ucm.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig;
@@ -87,7 +85,6 @@ public class GhostCBRengine implements StandardCBRApplication {
 		simConfig.addMapping(new Attribute("nearestPPill",GhostDescription.class), new Interval(650));
 		simConfig.addMapping(new Attribute("pacmanIniDist",GhostDescription.class), new Interval(650));
 		simConfig.addMapping(new Attribute("pacmanRelPos",GhostDescription.class), new Equal());
-		//simConfig.addMapping(new Attribute("pacmanLives",GhostDescription.class), new Interval(3));
 		simConfig.addMapping(new Attribute("edible",GhostDescription.class), new Equal());
 		simConfig.addMapping(new Attribute("level",GhostDescription.class), new Equal());
 	}
@@ -110,23 +107,24 @@ public class GhostCBRengine implements StandardCBRApplication {
 			
 			// This simple implementation only uses 1NN
 			// Consider using kNNs with majority voting
-			RetrievalResult cases = SelectCases.selectTopKRR(eval, 5).iterator().next();
+			Collection<RetrievalResult> cases = SelectCases.selectTopKRR(eval, 5);
+			RetrievalResult top = cases.iterator().next();
 			
 			//-----
-			CBRCase mostSimilarCase = cases.get_case();
-			double similarity = cases.getEval();
+			CBRCase mostSimilarCase = top.get_case();
+			double similarity = top.getEval();
 			//------
 	
 			GhostResult result = (GhostResult) mostSimilarCase.getResult();
 			GhostSolution solution = (GhostSolution) mostSimilarCase.getSolution();
 			
-			//Now compute a solution for the query
-			this.action = actionSelector.getAction(solution.getAction());
+			//Now compute a solution for the query by polling with top-5 similar cases
+			this.action = actionPoll(cases, query.getDescription());
 			
-			if(similarity<0.7) //Sorry not enough similarity, ask actionSelector for an action
+			if(similarity < 0.7) //Sorry not enough similarity, ask actionSelector for an action
 				this.action = actionSelector.findAction();
 			
-			else if(result.getScore() <= 0) //This was a bad case, ask actionSelector for another one.
+			else if(result.getScore() <= 0) 	// This was a bad case, ask actionSelector for another one.
 				this.action = actionSelector.findAnotherAction(solution.getAction());
 		}
 		//lastAction = createNewCase(query);

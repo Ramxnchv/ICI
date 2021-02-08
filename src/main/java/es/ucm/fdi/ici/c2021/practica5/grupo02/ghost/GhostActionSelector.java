@@ -29,7 +29,7 @@ public class GhostActionSelector {
 	 * Simplest implementation returns a random one.
 	 * @return
 	 */
-	// Se podria mejorar para intentar buscar la accion mejor en funcion del estado del juego y asi generar una base de casos fuerte mas rapidamente
+	// Se podria mejorar para intentar buscar la accion mejor en funcion del estado del juego y asi generar una base de casos fuerte más rapidamente
 	public Action findAction() {
 		int randomIndex = new Random().nextInt(actions.size());
 		return actions.get(randomIndex);
@@ -40,8 +40,10 @@ public class GhostActionSelector {
 	 * Simplest implementation returns another randomly.
 	 * @return
 	 */	
+	// Las acciones están ordenadas en orden circular, por lo que desplazar en una unidad supone un giro de 90º y en 2 unidades de 180º
 	public Action findAnotherAction(String failledAction) {
-		return actions.get((actions.indexOf(getAction(failledAction)) + 2) % actions.size());
+		int twist = ((new Random().nextInt() % 2 == 0) ? 2 : ((new Random().nextInt() % 2 == 0) ? -1 : 1));
+		return actions.get((actions.indexOf(getAction(failledAction)) + twist) % actions.size());
 	}
 
 	public Action getAction(String action) {

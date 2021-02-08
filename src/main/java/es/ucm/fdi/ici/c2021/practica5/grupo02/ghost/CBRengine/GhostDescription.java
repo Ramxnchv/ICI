@@ -13,7 +13,6 @@ public class GhostDescription implements CaseComponent {
 	Integer nearestPPill;
 	Integer pacmanIniDist;
 	Integer pacmanRelPos;
-	//Integer pacmanLives;
 	// Importantes a la hora de descartar
 	Boolean edible;
 	Integer level;

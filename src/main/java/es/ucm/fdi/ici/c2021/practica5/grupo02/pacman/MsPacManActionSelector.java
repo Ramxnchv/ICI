@@ -41,7 +41,8 @@ public class MsPacManActionSelector {
 	 * @return
 	 */	
 	public Action findAnotherAction(String failledAction) {
-		return actions.get((actions.indexOf(getAction(failledAction)) + 2) % actions.size());
+		int twist = ((new Random().nextInt() % 2 == 0) ? 2 : ((new Random().nextInt() % 2 == 0) ? -1 : 1));
+		return actions.get((actions.indexOf(getAction(failledAction)) + twist) % actions.size());
 	}
 
 	public Action getAction(String action) {

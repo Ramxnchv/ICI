@@ -63,11 +63,6 @@ public final class GameView extends JComponent {
 
     private Color[] redAlphas;
 
-    ///////////////////////////////////////////////
-    ////// Visual aids for debugging: start ///////
-    ///////////////////////////////////////////////
-    private int predictionTicks;
-
     /**
      * Instantiates a new game view.
      *
@@ -390,7 +385,6 @@ public final class GameView extends JComponent {
         overlay.setColor(Color.WHITE);
 
         overlay.setComposite(AlphaComposite.Clear);
-        int totalVisisble = 0;
         for (MOVE move : MOVE.values()) {
             int nextPoint = location;
             while (pacmanGame.isNodeObservable(nextPoint)) {
@@ -400,7 +394,6 @@ public final class GameView extends JComponent {
                         game.getNodeYCood(nextPoint) * MAG + 3,
                         14, 14
                 );
-                totalVisisble++;
                 nextPoint = game.getNeighbour(nextPoint, move);
             }
         }
